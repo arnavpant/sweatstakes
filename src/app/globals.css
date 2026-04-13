@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-background: #001233;
+  --color-surface: #001233;
+  --color-surface-dim: #001233;
+  --color-surface-container-lowest: #000d29;
+  --color-surface-container-low: #071a3b;
+  --color-surface-container: #0c1f40;
+  --color-surface-container-high: #18294b;
+  --color-surface-container-highest: #243456;
+  --color-surface-variant: #243456;
+  --color-surface-bright: #28395b;
+
+  /* Primary (blue-lavender) */
+  --color-primary: #b3c5ff;
+  --color-primary-container: #002366;
+  --color-primary-fixed: #dbe1ff;
+  --color-primary-fixed-dim: #b3c5ff;
+  --color-on-primary: #0d2c6e;
+  --color-on-primary-container: #758dd5;
+  --color-on-primary-fixed: #00174a;
+  --color-on-primary-fixed-variant: #2a4386;
+  --color-inverse-primary: #435b9f;
+
+  /* Secondary / Accent (emerald green) */
+  --color-secondary: #66dd8b;
+  --color-secondary-container: #25a55a;
+  --color-secondary-fixed: #83fba5;
+  --color-secondary-fixed-dim: #66dd8b;
+  --color-on-secondary: #003919;
+  --color-on-secondary-container: #003115;
+  --color-on-secondary-fixed: #00210c;
+  --color-on-secondary-fixed-variant: #005227;
+
+  /* Tertiary (also emerald) */
+  --color-tertiary: #66dd8b;
+  --color-tertiary-container: #003014;
+  --color-tertiary-fixed: #83fba5;
+  --color-tertiary-fixed-dim: #66dd8b;
+  --color-on-tertiary: #003919;
+  --color-on-tertiary-container: #24a459;
+  --color-on-tertiary-fixed: #00210c;
+  --color-on-tertiary-fixed-variant: #005227;
+
+  /* On-surface text */
+  --color-on-surface: #d8e2ff;
+  --color-on-surface-variant: #c5c6d2;
+  --color-on-background: #d8e2ff;
+  --color-inverse-surface: #d8e2ff;
+  --color-inverse-on-surface: #1f3051;
+
+  /* Error */
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+
+  /* Outlines */
+  --color-outline: #8e909c;
+  --color-outline-variant: #444650;
+
+  /* Misc */
+  --color-surface-tint: #b3c5ff;
+
+  /* Border radius */
+  --radius: 1rem;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
+  --radius-full: 9999px;
+
+  /* Font */
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Glass panel utility (per UI-SPEC) */
+@layer utilities {
+  .glass-panel {
+    background: rgba(12, 31, 64, 0.8);
+    backdrop-filter: blur(20px);
+  }
+  .emerald-glow {
+    box-shadow: 0 0 20px rgba(80, 200, 120, 0.15);
+  }
+}
