@@ -8,17 +8,21 @@ import { useRouter } from 'next/navigation'
 export function LeaveChallengeButton() {
   const [loading, setLoading] = useState(false)
   const [confirming, setConfirming] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   async function handleLeave() {
     setLoading(true)
+    setError(null)
     try {
       const result = await leaveChallengeAction()
       if (result.success) {
         router.refresh()
+      } else {
+        setError('Failed to leave challenge. Please try again.')
       }
     } catch {
-      // Silently handle error
+      setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)
       setConfirming(false)
@@ -59,6 +63,7 @@ export function LeaveChallengeButton() {
           {loading ? 'Leaving...' : 'Confirm'}
         </button>
       </div>
+      {error && <p role="alert" className="text-error text-sm text-center">{error}</p>}
     </div>
   )
 }
