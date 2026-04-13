@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, text, timestamp, unique } from 'drizzle-orm/pg-core'
 
 export const challenges = pgTable('challenges', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -12,7 +12,9 @@ export const challengeMembers = pgTable('challenge_members', {
   displayName: text('display_name').notNull(),
   avatarUrl: text('avatar_url'),
   joinedAt: timestamp('joined_at', { withTimezone: true }).defaultNow().notNull(),
-})
+}, (table) => [
+  unique('challenge_members_user_id_unique').on(table.userId),
+])
 
 export const inviteLinks = pgTable('invite_links', {
   id: uuid('id').primaryKey().defaultRandom(),

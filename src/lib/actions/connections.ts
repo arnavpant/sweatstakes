@@ -98,12 +98,19 @@ export async function joinChallengeAction(code: string) {
   }
 
   // Insert new member into the challenge
-  await db.insert(challengeMembers).values({
-    challengeId: updated[0].challengeId,
-    userId: user.id,
-    displayName: user.user_metadata.full_name || user.email || 'Member',
-    avatarUrl: user.user_metadata.avatar_url || null,
-  })
+  // Wrapped in try/catch to handle unique constraint violation (CR-01)
+  // if a concurrent request already inserted this user
+  try {
+    await db.insert(challengeMembers).values({
+      challengeId: updated[0].challengeId,
+      userId: user.id,
+      displayName: user.user_metadata.full_name || user.email || 'Member',
+      avatarUrl: user.user_metadata.avatar_url || null,
+    })
+  } catch {
+    // Unique constraint violation -- user already joined via concurrent request
+    return { error: 'already_in_challenge' }
+  }
 
   return { success: true }
 }
