@@ -133,7 +133,14 @@ export async function leaveChallengeAction() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
-  await db.delete(challengeMembers).where(eq(challengeMembers.userId, user.id))
+  const deleted = await db
+    .delete(challengeMembers)
+    .where(eq(challengeMembers.userId, user.id))
+    .returning()
+
+  if (deleted.length === 0) {
+    return { error: 'not_in_challenge' }
+  }
 
   return { success: true }
 }
