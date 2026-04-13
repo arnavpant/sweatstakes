@@ -69,7 +69,7 @@ Plans:
 - [x] 03-01-PLAN.md — Drizzle schema (checkIns table, weeklyGoal column), Server Actions (submit, updateGoal), week utilities, and test scaffolding
 - [x] 03-02-PLAN.md — BeReal-style dual-camera check-in flow with compression and Supabase Storage upload
 - [x] 03-03-PLAN.md — Goal stepper on Settings, day dots progress tracker, and streak counter on Dashboard
-- [ ] 03-04-PLAN.md — Bottom nav center FAB, database schema push, and end-to-end verification
+- [x] 03-04-PLAN.md — Bottom nav center FAB, database schema push, and end-to-end verification
 
 ### Phase 4: Points & Stakes
 **Goal**: Points flow correctly — users earn when they hit goals, owe when they miss, and can redeem against a group rewards menu
