@@ -4,6 +4,9 @@ import { db } from '@/db'
 import { challengeMembers } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { MemberAvatarRow } from '@/components/connections/member-avatar-row'
+import { DayDots } from '@/components/dashboard/day-dots'
+import { StreakCounter } from '@/components/dashboard/streak-counter'
+import { getWeeklyProgress, computeStreak, getMonday } from '@/lib/utils/week'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -36,6 +39,20 @@ export default async function DashboardPage() {
 
   const isInChallenge = members.length > 0
 
+  // Compute weekly progress and streak when user is in a challenge
+  let weeklyProgress = { checkedInDays: [] as string[], goal: 3 }
+  let streak = 0
+  let weekStart = ''
+
+  if (userMembership.length > 0) {
+    const now = new Date()
+    const monday = getMonday(now)
+    weekStart = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`
+
+    weeklyProgress = await getWeeklyProgress(user.id, userMembership[0].challengeId, now)
+    streak = await computeStreak(user.id, userMembership[0].challengeId, weeklyProgress.goal)
+  }
+
   return (
     <div className="px-4 pt-8">
       {/* Header: greeting with Google avatar */}
@@ -61,8 +78,14 @@ export default async function DashboardPage() {
 
       {/* Challenge state: avatar row OR empty state (D-15, D-16) */}
       {isInChallenge ? (
-        <div className="mb-6">
+        <div className="mb-6 space-y-3">
           <MemberAvatarRow members={members} />
+          <DayDots
+            checkedInDays={weeklyProgress.checkedInDays}
+            goal={weeklyProgress.goal}
+            weekStart={weekStart}
+          />
+          <StreakCounter streak={streak} />
         </div>
       ) : (
         <div className="bg-surface-container rounded-xl p-6">

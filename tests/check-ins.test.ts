@@ -557,34 +557,167 @@ describe('Camera & Upload Components (CHKN-01, CHKN-02)', () => {
 })
 
 // ============================================================
-// 5. Component stubs: future plans (CHKN-04, CHKN-05)
+// 5. Goal Stepper UI (CHKN-03)
 // ============================================================
 
-describe('Component stubs: future plans (CHKN-04, CHKN-05)', () => {
-  it.skip('day-dots.tsx will be created in Plan 03 (CHKN-04)', () => {
-    // Plan 03 will create src/components/dashboard/day-dots.tsx
-    expect(fs.existsSync('src/components/dashboard/day-dots.tsx')).toBe(true)
+describe('Goal Stepper UI (CHKN-03)', () => {
+  const goalStepperPath = 'src/components/settings/goal-stepper.tsx'
+  const settingsPagePath = 'src/app/(protected)/settings/page.tsx'
+
+  it('goal-stepper.tsx exists and is a client component', () => {
+    expect(fs.existsSync(goalStepperPath)).toBe(true)
+    const content = fs.readFileSync(goalStepperPath, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
   })
 
-  it.skip('streak-counter.tsx will be created in Plan 03 (CHKN-05)', () => {
-    // Plan 03 will create src/components/dashboard/streak-counter.tsx
-    expect(fs.existsSync('src/components/dashboard/streak-counter.tsx')).toBe(true)
+  it('goal-stepper.tsx imports updateWeeklyGoalAction', () => {
+    const content = fs.readFileSync(goalStepperPath, 'utf-8')
+    expect(content).toContain('updateWeeklyGoalAction')
+    expect(content).toContain("from '@/lib/actions/check-ins'")
   })
 
-  it.skip('goal-stepper.tsx will be created in Plan 03 (CHKN-03)', () => {
-    // Plan 03 will create src/components/settings/goal-stepper.tsx
-    expect(fs.existsSync('src/components/settings/goal-stepper.tsx')).toBe(true)
+  it('goal-stepper.tsx contains "days per week" text', () => {
+    const content = fs.readFileSync(goalStepperPath, 'utf-8')
+    expect(content.toLowerCase()).toContain('days per week')
   })
 
-  it('day-dots.tsx does NOT exist yet (planned for Plan 03)', () => {
-    expect(fs.existsSync('src/components/dashboard/day-dots.tsx')).toBe(false)
+  it('goal-stepper.tsx clamps goal range 1-7', () => {
+    const content = fs.readFileSync(goalStepperPath, 'utf-8')
+    expect(content).toContain('=== 1')
+    expect(content).toContain('=== 7')
   })
 
-  it('streak-counter.tsx does NOT exist yet (planned for Plan 03)', () => {
-    expect(fs.existsSync('src/components/dashboard/streak-counter.tsx')).toBe(false)
+  it('goal-stepper.tsx has accessible button labels', () => {
+    const content = fs.readFileSync(goalStepperPath, 'utf-8')
+    expect(content).toContain('aria-label="Decrease goal"')
+    expect(content).toContain('aria-label="Increase goal"')
   })
 
-  it('goal-stepper.tsx does NOT exist yet (planned for Plan 03)', () => {
-    expect(fs.existsSync('src/components/settings/goal-stepper.tsx')).toBe(false)
+  it('goal-stepper.tsx has error display with role="alert"', () => {
+    const content = fs.readFileSync(goalStepperPath, 'utf-8')
+    expect(content).toContain('role="alert"')
+  })
+
+  it('Settings page imports GoalStepper', () => {
+    const content = fs.readFileSync(settingsPagePath, 'utf-8')
+    expect(content).toContain('GoalStepper')
+    expect(content).toContain("from '@/components/settings/goal-stepper'")
+  })
+
+  it('Settings page queries weeklyGoal from challengeMembers', () => {
+    const content = fs.readFileSync(settingsPagePath, 'utf-8')
+    expect(content).toContain('weeklyGoal')
+    expect(content).toContain('challengeMembers.weeklyGoal')
+  })
+})
+
+// ============================================================
+// 6. Day Dots Progress (CHKN-04)
+// ============================================================
+
+describe('Day Dots Progress (CHKN-04)', () => {
+  const dayDotsPath = 'src/components/dashboard/day-dots.tsx'
+  const dashboardPath = 'src/app/(protected)/dashboard/page.tsx'
+
+  it('day-dots.tsx exists', () => {
+    expect(fs.existsSync(dayDotsPath)).toBe(true)
+  })
+
+  it('day-dots.tsx is NOT a client component (Server Component)', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+    expect(content).not.toContain("'use client'")
+  })
+
+  it('day-dots.tsx contains day letters M T W T F S S', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+    expect(content).toContain("'M'")
+    expect(content).toContain("'T'")
+    expect(content).toContain("'W'")
+    expect(content).toContain("'F'")
+    expect(content).toContain("'S'")
+  })
+
+  it('day-dots.tsx uses bg-secondary for filled dots', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+    expect(content).toContain('bg-secondary')
+  })
+
+  it('day-dots.tsx receives checkedInDays prop', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+    expect(content).toContain('checkedInDays')
+  })
+
+  it('day-dots.tsx shows progress count with days format', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+    expect(content).toContain('/{goal} days')
+  })
+
+  it('day-dots.tsx highlights today with ring', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+    expect(content).toContain('ring-2')
+    expect(content).toContain('ring-secondary')
+  })
+
+  it('Dashboard page imports DayDots', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain('DayDots')
+    expect(content).toContain("from '@/components/dashboard/day-dots'")
+  })
+
+  it('Dashboard page calls getWeeklyProgress', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain('getWeeklyProgress')
+  })
+})
+
+// ============================================================
+// 7. Streak Counter (CHKN-05)
+// ============================================================
+
+describe('Streak Counter (CHKN-05)', () => {
+  const streakCounterPath = 'src/components/dashboard/streak-counter.tsx'
+  const dashboardPath = 'src/app/(protected)/dashboard/page.tsx'
+
+  it('streak-counter.tsx exists', () => {
+    expect(fs.existsSync(streakCounterPath)).toBe(true)
+  })
+
+  it('streak-counter.tsx is NOT a client component (Server Component)', () => {
+    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+    expect(content).not.toContain("'use client'")
+  })
+
+  it('streak-counter.tsx shows "week streak" text', () => {
+    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+    // Handles both singular "week" and plural "weeks"
+    expect(content.toLowerCase()).toContain('streak')
+    expect(content.toLowerCase()).toContain('week')
+  })
+
+  it('streak-counter.tsx has fire emoji', () => {
+    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+    expect(content).toContain('\u{1F525}')
+  })
+
+  it('streak-counter.tsx handles zero streak', () => {
+    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+    expect(content).toContain('streak === 0')
+    expect(content.toLowerCase()).toContain('no streak yet')
+  })
+
+  it('streak-counter.tsx handles singular vs plural weeks', () => {
+    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+    expect(content).toContain("streak === 1 ? 'week' : 'weeks'")
+  })
+
+  it('Dashboard page imports StreakCounter', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain('StreakCounter')
+    expect(content).toContain("from '@/components/dashboard/streak-counter'")
+  })
+
+  it('Dashboard page calls computeStreak', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain('computeStreak')
   })
 })
