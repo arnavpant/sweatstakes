@@ -30,6 +30,9 @@ export async function signInWithGoogleAction() {
 
 export async function signOutAction() {
   const supabase = await createClient()
-  await supabase.auth.signOut()
+  const { error } = await supabase.auth.signOut()
+  if (error) {
+    redirect('/login?error=SignOutFailed')
+  }
   redirect('/login')
 }
