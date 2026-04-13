@@ -85,3 +85,86 @@ describe('Week utilities (CHKN-04, CHKN-05)', () => {
     expect(content).toContain('export function getWeekBounds')
   })
 })
+
+// ============================================================
+// Task 2: Server Actions + Progress/Streak (TDD RED)
+// ============================================================
+
+describe('Server Actions: check-in mutations (CHKN-01, CHKN-03)', () => {
+  const actionsPath = 'src/lib/actions/check-ins.ts'
+
+  it('check-ins.ts file exists', () => {
+    expect(fs.existsSync(actionsPath)).toBe(true)
+  })
+
+  it('file has use server directive', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content.trimStart().startsWith("'use server'")).toBe(true)
+  })
+
+  it('exports submitCheckInAction', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('export async function submitCheckInAction')
+  })
+
+  it('exports updateWeeklyGoalAction', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('export async function updateWeeklyGoalAction')
+  })
+
+  it('submitCheckInAction calls supabase.auth.getUser()', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('supabase.auth.getUser()')
+  })
+
+  it('submitCheckInAction queries challengeMembers for membership', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('challengeMembers')
+    expect(content).toContain("'Not in a challenge'")
+  })
+
+  it('submitCheckInAction inserts into checkIns', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('db.insert(checkIns)')
+  })
+
+  it('submitCheckInAction validates photoUrl', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain("'Invalid photo URL'")
+  })
+
+  it('submitCheckInAction validates checkedInDate format', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain("'Invalid date'")
+  })
+
+  it('updateWeeklyGoalAction validates goal with z.number().int().min(1).max(7)', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('z.number().int().min(1).max(7)')
+  })
+
+  it('updateWeeklyGoalAction updates challengeMembers weeklyGoal', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('weeklyGoal')
+    expect(content).toContain("'Goal must be between 1 and 7'")
+  })
+
+  it('both actions call supabase.auth.getUser() for auth check', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    const getUserMatches = content.match(/supabase\.auth\.getUser\(\)/g)
+    expect(getUserMatches).not.toBeNull()
+    expect(getUserMatches!.length).toBeGreaterThanOrEqual(2)
+  })
+})
+
+describe('Data utilities: progress and streak (CHKN-04, CHKN-05)', () => {
+  it('week.ts exports getWeeklyProgress function', () => {
+    const content = fs.readFileSync('src/lib/utils/week.ts', 'utf-8')
+    expect(content).toContain('export async function getWeeklyProgress')
+  })
+
+  it('week.ts exports computeStreak function', () => {
+    const content = fs.readFileSync('src/lib/utils/week.ts', 'utf-8')
+    expect(content).toContain('export async function computeStreak')
+  })
+})
