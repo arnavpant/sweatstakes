@@ -63,9 +63,9 @@ completed: 2026-04-13
 
 **Authenticated app shell with floating pill bottom nav, personalized dashboard, placeholder pages, sign-out flow, PWA manifest, and 18-test integration suite**
 
-## Status: AWAITING CHECKPOINT (Task 3)
+## Status: COMPLETE
 
-Tasks 1 and 2 complete. Task 3 is a human-verify checkpoint — user must manually test the full OAuth flow in a browser.
+Tasks 1 and 2 auto-executed. Task 3 (human-verify checkpoint) approved by user after manual testing of full OAuth flow.
 
 ## Performance
 
@@ -90,7 +90,7 @@ Tasks 1 and 2 complete. Task 3 is a human-verify checkpoint — user must manual
 
 1. **Task 1: Build protected layout, dashboard, bottom nav, placeholder pages, and settings** - `020fbab` (feat)
 2. **Task 2: Create PWA manifest, placeholder icons, icon inventory, and integration tests** - `d5a5ead` (feat)
-3. **Task 3: Verify end-to-end Google OAuth flow and app shell** - PENDING (checkpoint:human-verify)
+3. **Task 3: Verify end-to-end Google OAuth flow and app shell** - APPROVED (checkpoint:human-verify, user-verified 2026-04-13)
 
 ## Files Created/Modified
 
@@ -147,4 +147,4 @@ None beyond the regex false-positive documented above.
 
 ---
 *Phase: 01-foundation-auth*
-*Completed (partial): 2026-04-13*
+*Completed: 2026-04-13*
