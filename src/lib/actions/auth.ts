@@ -4,7 +4,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
-export async function signInWithGoogleAction() {
+export async function signInWithGoogleAction(next: string = '/dashboard') {
   const supabase = await createClient()
   const requestHeaders = await headers()
 
@@ -14,10 +14,11 @@ export async function signInWithGoogleAction() {
     requestHeaders.get('origin') ||
     'http://localhost:3000'
 
+  // Thread the next param through OAuth so auth/callback redirects to the right place (D-07, Pitfall 4)
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${siteUrl}/auth/callback`,
+      redirectTo: `${siteUrl}/auth/callback?next=${encodeURIComponent(next)}`,
     },
   })
 

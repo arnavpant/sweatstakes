@@ -21,11 +21,12 @@ export function GoogleSignInButton() {
   const [loading, setLoading] = useState(false)
   const searchParams = useSearchParams()
   const errorParam = searchParams.get('error')
+  const nextParam = searchParams.get('next')
 
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      await signInWithGoogleAction()
+      await signInWithGoogleAction(nextParam || '/dashboard')
     } catch {
       // signInWithGoogleAction calls redirect() on success — this catch handles unexpected errors
       setLoading(false)
