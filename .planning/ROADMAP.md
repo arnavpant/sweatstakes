@@ -29,12 +29,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. User can tap "Sign in with Google" and complete OAuth in the same browser tab
   3. User lands on the dashboard after a successful sign-in
   4. User is still logged in after refreshing the browser tab
-**Plans:** 3 plans
+**Plans:** 4 plans
 
 Plans:
 - [ ] 01-01-PLAN.md — Scaffold Next.js 16 with Tailwind v4 Royale design system, shadcn/ui, and test infrastructure
 - [ ] 01-02-PLAN.md — Supabase Auth with Google OAuth, proxy.ts session management, and Login screen UI
 - [ ] 01-03-PLAN.md — Dashboard shell, bottom navigation, placeholder pages, settings sign-out, PWA manifest, and icon inventory
+- [ ] 01-04-PLAN.md — Deploy to Vercel and configure OAuth redirect URIs for production URL
 
 ### Phase 2: Connections
 **Goal**: Users can bring their friends into a shared challenge via a link
@@ -92,7 +93,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Auth | 0/3 | Planning complete | - |
+| 1. Foundation & Auth | 0/4 | Planning complete | - |
 | 2. Connections | 0/TBD | Not started | - |
 | 3. Check-ins & Goals | 0/TBD | Not started | - |
 | 4. Points & Stakes | 0/TBD | Not started | - |

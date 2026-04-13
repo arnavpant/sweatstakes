@@ -2,8 +2,8 @@
 phase: 1
 slug: foundation-auth
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-12
 ---
 
@@ -18,7 +18,7 @@ created: 2026-04-12
 | Property | Value |
 |----------|-------|
 | **Framework** | vitest |
-| **Config file** | none — Wave 0 installs |
+| **Config file** | vitest.config.ts (created in Plan 01, Task 2) |
 | **Quick run command** | `npx vitest run --reporter=verbose` |
 | **Full suite command** | `npx vitest run --reporter=verbose` |
 | **Estimated runtime** | ~5 seconds |
@@ -47,11 +47,11 @@ created: 2026-04-12
 
 ## Wave 0 Requirements
 
-- [ ] `vitest` + `@testing-library/react` — install test framework
-- [ ] `vitest.config.ts` — configure vitest for Next.js 16
-- [ ] `tests/setup.ts` — shared test setup
+- [x] `vitest` + `@testing-library/react` — install test framework (Plan 01, Task 2)
+- [x] `vitest.config.ts` — configure vitest for Next.js 16 (Plan 01, Task 2)
+- [x] `tests/setup.ts` — shared test setup (Plan 01, Task 2)
 
-*If none: "Existing infrastructure covers all phase requirements."*
+*Wave 0 is satisfied by Plan 01, Task 2 which installs vitest, creates vitest.config.ts, and creates tests/setup.ts.*
 
 ---
 
@@ -67,11 +67,11 @@ created: 2026-04-12
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 10s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 10s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** signed off
