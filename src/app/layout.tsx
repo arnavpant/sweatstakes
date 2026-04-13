@@ -33,6 +33,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={jakartaSans.variable}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+      </head>
       <body className="bg-background text-on-surface font-sans antialiased min-h-dvh">
         <div className="pt-[env(safe-area-inset-top)]">
           {children}
