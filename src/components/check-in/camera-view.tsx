@@ -8,9 +8,9 @@ import { CountdownOverlay } from './countdown-overlay'
 import { PhotoPreview } from './photo-preview'
 
 type CameraPhase =
-  | 'rear-capture'
-  | 'selfie-countdown'
   | 'selfie-capture'
+  | 'rear-countdown'
+  | 'rear-auto-capture'
   | 'preview'
   | 'submitting'
   | 'done'
@@ -20,12 +20,12 @@ export function CameraView() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
 
-  const [phase, setPhase] = useState<CameraPhase>('rear-capture')
-  const [rearBlob, setRearBlob] = useState<Blob | null>(null)
+  const [phase, setPhase] = useState<CameraPhase>('selfie-capture')
+  const [selfieBlob, setSelfieBlob] = useState<Blob | null>(null)
   const [compositeBlob, setCompositeBlob] = useState<Blob | null>(null)
   const [countdown, setCountdown] = useState(3)
   const [error, setError] = useState<string | null>(null)
-  const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment')
+  const [facingMode, setFacingMode] = useState<'environment' | 'user'>('user')
 
   // Stop all tracks on a given stream
   const stopTracks = useCallback((stream: MediaStream | null) => {
@@ -141,12 +141,12 @@ export function CameraView() {
     })
   }, [])
 
-  // Initialize rear camera on mount
+  // Initialize selfie camera on mount
   useEffect(() => {
     let mounted = true
 
     const init = async () => {
-      const stream = await openCamera('environment')
+      const stream = await openCamera('user')
       if (!stream && mounted) {
         // Error already set by openCamera
       }
@@ -182,32 +182,32 @@ export function CameraView() {
     }
   }, [stopTracks])
 
-  // Selfie countdown timer
+  // Rear countdown timer
   useEffect(() => {
-    if (phase !== 'selfie-countdown') return
+    if (phase !== 'rear-countdown') return
 
     if (countdown <= 0) {
-      // Auto-capture selfie when countdown reaches 0
+      // Auto-capture rear photo when countdown reaches 0
       const autoCapture = async () => {
-        setPhase('selfie-capture')
-        const selfie = await captureFrame()
+        setPhase('rear-auto-capture')
+        const rear = await captureFrame()
 
-        // Stop front camera tracks
+        // Stop rear camera tracks
         stopTracks(streamRef.current)
         streamRef.current = null
 
-        if (selfie && rearBlob) {
-          const composite = await createComposite(rearBlob, selfie)
+        if (rear && selfieBlob) {
+          const composite = await createComposite(rear, selfieBlob)
           if (composite) {
             setCompositeBlob(composite)
             setPhase('preview')
           } else {
             setError('Failed to create composite image. Please try again.')
-            setPhase('rear-capture')
+            setPhase('selfie-capture')
           }
         } else {
-          setError('Failed to capture selfie. Please try again.')
-          setPhase('rear-capture')
+          setError('Failed to capture rear photo. Please try again.')
+          setPhase('selfie-capture')
         }
       }
 
@@ -220,36 +220,36 @@ export function CameraView() {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [phase, countdown, rearBlob, captureFrame, createComposite, stopTracks])
+  }, [phase, countdown, selfieBlob, captureFrame, createComposite, stopTracks])
 
-  // Handle rear camera shutter tap
-  const handleRearCapture = async () => {
+  // Handle selfie camera shutter tap
+  const handleSelfieCapture = async () => {
     const blob = await captureFrame()
     if (!blob) {
       setError('Failed to capture photo. Please try again.')
       return
     }
 
-    setRearBlob(blob)
+    setSelfieBlob(blob)
 
-    // Stop rear camera tracks
+    // Stop selfie camera tracks
     stopTracks(streamRef.current)
     streamRef.current = null
 
-    // Open front camera for selfie
-    const frontStream = await openCamera('user', { width: 640, height: 480 })
-    if (frontStream) {
+    // Open rear camera for environment photo
+    const rearStream = await openCamera('environment')
+    if (rearStream) {
       setCountdown(3)
-      setPhase('selfie-countdown')
+      setPhase('rear-countdown')
     } else {
-      // If front camera fails, still create a composite with just the rear photo
-      setError('Front camera not available. Using rear photo only.')
+      // If rear camera fails (e.g. laptop with single camera), show error
+      setError('Rear camera not available. Please try on a device with two cameras.')
     }
   }
 
-  // Handle flip camera during rear-capture phase
+  // Handle flip camera during selfie-capture phase
   const handleFlipCamera = async () => {
-    if (phase !== 'rear-capture') return
+    if (phase !== 'selfie-capture') return
 
     stopTracks(streamRef.current)
     streamRef.current = null
@@ -262,14 +262,14 @@ export function CameraView() {
 
   // Handle retake: restart entire flow
   const handleRetake = async () => {
-    setRearBlob(null)
+    setSelfieBlob(null)
     setCompositeBlob(null)
     setCountdown(3)
     setError(null)
-    setFacingMode('environment')
-    setPhase('rear-capture')
+    setFacingMode('user')
+    setPhase('selfie-capture')
 
-    await openCamera('environment')
+    await openCamera('user')
   }
 
   // Handle success: navigate back to dashboard
@@ -286,7 +286,7 @@ export function CameraView() {
   }
 
   // Error state
-  if (error && phase !== 'selfie-countdown' && phase !== 'selfie-capture') {
+  if (error && phase !== 'rear-countdown' && phase !== 'rear-auto-capture') {
     return (
       <div className="fixed inset-0 z-50 bg-background flex flex-col items-center justify-center p-6">
         <div className="text-center max-w-sm">
@@ -324,17 +324,17 @@ export function CameraView() {
           playsInline
           muted
           className={`absolute inset-0 w-full h-full object-cover ${
-            (phase === 'selfie-countdown' || phase === 'selfie-capture') ? 'scale-x-[-1]' : ''
+            phase === 'selfie-capture' ? 'scale-x-[-1]' : ''
           }`}
           style={
-            (phase === 'selfie-countdown' || phase === 'selfie-capture')
+            phase === 'selfie-capture'
               ? { transform: 'scaleX(-1)' }
               : undefined
           }
         />
 
         {/* Countdown overlay */}
-        {phase === 'selfie-countdown' && (
+        {phase === 'rear-countdown' && (
           <CountdownOverlay count={countdown} />
         )}
 
@@ -349,8 +349,8 @@ export function CameraView() {
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
 
-          {/* Flip camera button (only during rear capture) */}
-          {phase === 'rear-capture' && (
+          {/* Flip camera button (only during selfie capture) */}
+          {phase === 'selfie-capture' && (
             <button
               onClick={handleFlipCamera}
               aria-label="Switch camera"
@@ -361,11 +361,11 @@ export function CameraView() {
           )}
         </div>
 
-        {/* Phase indicator for selfie */}
-        {(phase === 'selfie-countdown' || phase === 'selfie-capture') && (
+        {/* Phase indicator for rear capture */}
+        {(phase === 'rear-countdown' || phase === 'rear-auto-capture') && (
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pt-[env(safe-area-inset-top,16px)]">
             <span className="bg-black/40 text-white text-sm font-medium px-3 py-1.5 rounded-full">
-              Selfie time!
+              Show your workout!
             </span>
           </div>
         )}
@@ -374,11 +374,11 @@ export function CameraView() {
       {/* Bottom controls */}
       <div className="bg-black/80 pb-[env(safe-area-inset-bottom,16px)]">
         <div className="flex items-center justify-center py-6">
-          {phase === 'rear-capture' && (
-            <CaptureButton onCapture={handleRearCapture} />
+          {phase === 'selfie-capture' && (
+            <CaptureButton onCapture={handleSelfieCapture} />
           )}
 
-          {(phase === 'selfie-countdown' || phase === 'selfie-capture') && (
+          {(phase === 'rear-countdown' || phase === 'rear-auto-capture') && (
             <div className="text-on-surface-variant text-sm font-medium">
               Hold still...
             </div>
