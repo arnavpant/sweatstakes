@@ -86,10 +86,10 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01-PLAN.md — Drizzle schema (points tables, rewards, redemptions), pure settlement algorithm, and test scaffold
-- [ ] 04-02-PLAN.md — Vercel Cron settlement endpoint, rewards/redemption Server Actions, and Settings timezone pickers
-- [ ] 04-03-PLAN.md — Streaks & Balance page UI (streak section, member leaderboard, rewards menu with bottom sheet and dialog)
-- [ ] 04-04-PLAN.md — Database schema push to Supabase and end-to-end human verification
+- [x] 04-01-PLAN.md — Drizzle schema (points tables, rewards, redemptions), pure settlement algorithm, and test scaffold
+- [x] 04-02-PLAN.md — Vercel Cron settlement endpoint, rewards/redemption Server Actions, and Settings timezone pickers
+- [x] 04-03-PLAN.md — Streaks & Balance page UI (streak section, member leaderboard, rewards menu with bottom sheet and dialog)
+- [x] 04-04-PLAN.md — Database schema push to Supabase and end-to-end human verification
 
 ### Phase 5: Dashboard, Feed & Polish
 **Goal**: All five Stitch-designed screens are fully functional and visually match the Royale design system

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 4 context gathered
-last_updated: "2026-04-13T20:28:17.038Z"
-last_activity: 2026-04-13
+status: phase_complete
+stopped_at: Phase 4 complete — UAT approved, verification passed
+last_updated: "2026-04-13T23:55:00Z"
+last_activity: 2026-04-13 -- Phase 04 execution complete
 progress:
   total_phases: 5
-  completed_phases: 3
-  total_plans: 11
-  completed_plans: 11
-  percent: 100
+  completed_phases: 4
+  total_plans: 15
+  completed_plans: 15
+  percent: 80
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-12)
 
 **Core value:** Friends actually stick to their workout routines because there's something real on the line — social accountability with tangible stakes.
-**Current focus:** Phase 03 — check-ins-goals
+**Current focus:** Phase 04 — points-stakes (COMPLETE)
 
 ## Current Position
 
-Phase: 03 (check-ins-goals) — EXECUTING
-Plan: 4 of 4
-Status: Phase complete — ready for verification
-Last activity: 2026-04-13
+Phase: 04 (points-stakes) — COMPLETE
+Plan: 4 of 4 complete
+Status: Phase verified — ready for next phase
+Last activity: 2026-04-13 -- Phase 04 execution complete
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -75,17 +75,22 @@ Recent decisions affecting current work:
 - [Phase 03]: Canvas composite uses createImageBitmap + roundRect for selfie thumbnail overlay; CSS scaleX(-1) mirror on preview only, raw capture for canvas
 - [Phase 03]: GoalStepper uses optimistic useState with revert-on-error; DayDots/StreakCounter are Server Components receiving data as props
 - [Phase 03]: Applied schema directly via SQL (not drizzle-kit push) due to drizzle-kit v0.31.10 introspection crash on Supabase check constraints
+- [Phase 04]: Pure settlement algorithm (computeSettlement) decoupled from DB — enables unit tests without DB and keeps week-end logic testable in isolation
+- [Phase 04]: Settlement is idempotent via settled_weeks unique constraint on (challenge_id, week_start) — safe to re-run cron
+- [Phase 04]: Timezone list populated via useEffect post-mount in SettlementSettings — avoids Intl.supportedValuesOf('timeZone') ICU mismatch between Node and browser
 
 ### Pending Todos
 
-None yet.
+- [Phase 04 code review — 2 critical findings to address before public launch]:
+  - CR-01: CRON_SECRET bypass when env var unset (src/app/api/cron/settle/route.ts:68-72)
+  - CR-02: Weekly cron schedule never fires for US timezones with hour=5 (vercel.json + route.ts timezone logic)
 
 ### Blockers/Concerns
 
-None yet.
+None blocking. The 2 critical code review findings are advisory for v1 (friends-only testing); must be fixed before any public/production deployment.
 
 ## Session Continuity
 
-Last session: 2026-04-13T20:28:17.030Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-points-stakes/04-CONTEXT.md
+Last session: 2026-04-13T23:55:00Z
+Stopped at: Phase 4 complete — UAT approved, verification passed
+Resume file: .planning/phases/04-points-stakes/04-VERIFICATION.md
