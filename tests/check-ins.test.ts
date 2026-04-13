@@ -721,3 +721,137 @@ describe('Streak Counter (CHKN-05)', () => {
     expect(content).toContain('computeStreak')
   })
 })
+
+// ============================================================
+// 8. Bottom Nav FAB (CHKN-01) - Plan 04
+// ============================================================
+
+describe('Bottom Nav FAB (CHKN-01)', () => {
+  const bottomNavPath = 'src/components/layout/bottom-nav.tsx'
+
+  it('bottom-nav.tsx contains /check-in href', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    expect(content).toContain('/check-in')
+  })
+
+  it('bottom-nav.tsx contains aria-label for check-in button', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    expect(content).toContain('aria-label="Check in"')
+  })
+
+  it('bottom-nav.tsx has 4 regular tabs plus FAB center element', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    // 4 regular tabs: Home, Feed, Streaks, Settings
+    expect(content).toContain("label: 'Home'")
+    expect(content).toContain("label: 'Feed'")
+    expect(content).toContain("label: 'Streaks'")
+    expect(content).toContain("label: 'Settings'")
+    // FAB uses bg-secondary for emerald green
+    expect(content).toContain('bg-secondary')
+    expect(content).toContain('rounded-full')
+    expect(content).toContain('w-14')
+    expect(content).toContain('h-14')
+  })
+
+  it('bottom-nav.tsx hides on /check-in route', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    // Should check pathname and return null for /check-in
+    expect(content).toContain("pathname === '/check-in'")
+    expect(content).toContain('return null')
+  })
+
+  it('bottom-nav.tsx FAB has shadow for elevation', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    expect(content).toContain('shadow-lg')
+    expect(content).toContain('shadow-secondary/30')
+  })
+
+  it('bottom-nav.tsx FAB has negative margin for pop-out effect', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    expect(content).toContain('-mt-5')
+  })
+
+  it('bottom-nav.tsx FAB uses camera icon (add_a_photo)', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    expect(content).toContain('add_a_photo')
+  })
+
+  it('bottom-nav.tsx tab order is Home, Feed, [FAB], Streaks, Settings', () => {
+    const content = fs.readFileSync(bottomNavPath, 'utf-8')
+    // leftTabs should be Home then Feed
+    const leftTabsMatch = content.match(/leftTabs\s*=\s*\[([\s\S]*?)\]/)
+    expect(leftTabsMatch).not.toBeNull()
+    const leftSection = leftTabsMatch![1]
+    expect(leftSection).toContain("'Home'")
+    expect(leftSection).toContain("'Feed'")
+    // rightTabs should be Streaks then Settings
+    const rightTabsMatch = content.match(/rightTabs\s*=\s*\[([\s\S]*?)\]/)
+    expect(rightTabsMatch).not.toBeNull()
+    const rightSection = rightTabsMatch![1]
+    expect(rightSection).toContain("'Streaks'")
+    expect(rightSection).toContain("'Settings'")
+    // Home appears before Feed in leftTabs
+    expect(leftSection.indexOf("'Home'")).toBeLessThan(leftSection.indexOf("'Feed'"))
+    // Streaks appears before Settings in rightTabs
+    expect(rightSection.indexOf("'Streaks'")).toBeLessThan(rightSection.indexOf("'Settings'"))
+  })
+})
+
+// ============================================================
+// 9. End-to-End Integration (all CHKN) - Plan 04
+// ============================================================
+
+describe('End-to-End Integration (all CHKN)', () => {
+  it('all required source files exist', () => {
+    const requiredFiles = [
+      'src/db/schema.ts',
+      'src/lib/actions/check-ins.ts',
+      'src/lib/utils/week.ts',
+      'src/components/check-in/camera-view.tsx',
+      'src/components/check-in/photo-preview.tsx',
+      'src/components/check-in/capture-button.tsx',
+      'src/components/check-in/countdown-overlay.tsx',
+      'src/components/dashboard/day-dots.tsx',
+      'src/components/dashboard/streak-counter.tsx',
+      'src/components/settings/goal-stepper.tsx',
+      'src/components/layout/bottom-nav.tsx',
+      'src/app/(protected)/check-in/page.tsx',
+    ]
+    for (const file of requiredFiles) {
+      expect(fs.existsSync(file)).toBe(true)
+    }
+  })
+
+  it('submitCheckInAction and updateWeeklyGoalAction are exported from check-ins actions', () => {
+    const content = fs.readFileSync('src/lib/actions/check-ins.ts', 'utf-8')
+    expect(content).toContain('export async function submitCheckInAction')
+    expect(content).toContain('export async function updateWeeklyGoalAction')
+  })
+
+  it('getWeeklyProgress and computeStreak are exported from week utils', () => {
+    const content = fs.readFileSync('src/lib/utils/week.ts', 'utf-8')
+    expect(content).toContain('export async function getWeeklyProgress')
+    expect(content).toContain('export async function computeStreak')
+  })
+
+  it('Dashboard imports both DayDots and StreakCounter', () => {
+    const content = fs.readFileSync('src/app/(protected)/dashboard/page.tsx', 'utf-8')
+    expect(content).toContain("from '@/components/dashboard/day-dots'")
+    expect(content).toContain("from '@/components/dashboard/streak-counter'")
+  })
+
+  it('Settings imports GoalStepper', () => {
+    const content = fs.readFileSync('src/app/(protected)/settings/page.tsx', 'utf-8')
+    expect(content).toContain("from '@/components/settings/goal-stepper'")
+  })
+
+  it('Check-in page imports CameraView', () => {
+    const content = fs.readFileSync('src/app/(protected)/check-in/page.tsx', 'utf-8')
+    expect(content).toContain("from '@/components/check-in/camera-view'")
+  })
+
+  it('Bottom nav links to /check-in', () => {
+    const content = fs.readFileSync('src/components/layout/bottom-nav.tsx', 'utf-8')
+    expect(content).toContain('href="/check-in"')
+  })
+})
