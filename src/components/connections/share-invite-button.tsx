@@ -9,6 +9,7 @@ interface ShareInviteButtonProps {
 
 export function ShareInviteButton({ url }: ShareInviteButtonProps) {
   const [copied, setCopied] = useState(false)
+  const [copyFailed, setCopyFailed] = useState(false)
   const [canShare, setCanShare] = useState(false)
 
   useEffect(() => {
@@ -38,7 +39,8 @@ export function ShareInviteButton({ url }: ShareInviteButtonProps) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // Clipboard API failed -- silently ignore
+      setCopyFailed(true)
+      setTimeout(() => setCopyFailed(false), 3000)
     }
   }
 
@@ -47,7 +49,9 @@ export function ShareInviteButton({ url }: ShareInviteButtonProps) {
       onClick={handleShare}
       className="flex items-center justify-center gap-2 w-full rounded-full py-3 bg-surface-container-high text-on-surface font-bold text-sm min-h-[44px]"
     >
-      {copied ? (
+      {copyFailed ? (
+        <span className="text-error">Copy failed -- try manually</span>
+      ) : copied ? (
         <>
           <Check className="h-4 w-4 text-secondary" />
           Copied!
