@@ -43,20 +43,29 @@ export async function generateInviteLinkAction() {
     challengeId = newChallenge.id
   }
 
-  // Generate unique 8-char code (D-02)
-  const code = generateCode()
+  // Generate unique 8-char code (D-02) with retry on collision (WR-01)
   // 24-hour expiry (D-03)
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
-
-  await db.insert(inviteLinks).values({
-    code,
-    challengeId,
-    createdBy: user.id,
-    expiresAt,
-  })
-
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-  return { url: `${siteUrl}/join/${code}` }
+
+  let attempts = 0
+  while (attempts < 3) {
+    const code = generateCode()
+    try {
+      await db.insert(inviteLinks).values({
+        code,
+        challengeId,
+        createdBy: user.id,
+        expiresAt,
+      })
+      return { url: `${siteUrl}/join/${code}` }
+    } catch {
+      attempts = attempts + 1
+      if (attempts >= 3) {
+        return { error: 'Failed to generate invite link. Please try again.' }
+      }
+    }
+  }
 }
 
 /**
