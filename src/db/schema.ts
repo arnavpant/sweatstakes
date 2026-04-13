@@ -3,6 +3,8 @@ import { pgTable, uuid, text, timestamp, unique, smallint, date, index } from 'd
 export const challenges = pgTable('challenges', {
   id: uuid('id').primaryKey().defaultRandom(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  timezone: text('timezone').notNull().default('America/New_York'),
+  settlementHour: smallint('settlement_hour').notNull().default(5),
 })
 
 export const challengeMembers = pgTable('challenge_members', {
@@ -38,3 +40,44 @@ export const checkIns = pgTable('check_ins', {
   index('check_ins_user_date_idx').on(t.userId, t.checkedInDate),
   index('check_ins_challenge_idx').on(t.challengeId, t.createdAt),
 ])
+
+// Phase 4: Points & Stakes tables
+
+export const settledWeeks = pgTable('settled_weeks', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  challengeId: uuid('challenge_id').notNull().references(() => challenges.id, { onDelete: 'cascade' }),
+  weekStart: date('week_start', { mode: 'string' }).notNull(),
+  settledAt: timestamp('settled_at', { withTimezone: true }).defaultNow().notNull(),
+}, (t) => [
+  unique('settled_weeks_challenge_week_unique').on(t.challengeId, t.weekStart),
+])
+
+export const pointTransactions = pgTable('point_transactions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  challengeId: uuid('challenge_id').notNull().references(() => challenges.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id').notNull(),
+  weekStart: date('week_start', { mode: 'string' }).notNull(),
+  delta: smallint('delta').notNull(),
+  reason: text('reason').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+}, (t) => [
+  index('pt_challenge_user_idx').on(t.challengeId, t.userId),
+])
+
+export const rewards = pgTable('rewards', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  challengeId: uuid('challenge_id').notNull().references(() => challenges.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  pointCost: smallint('point_cost').notNull(),
+  createdBy: uuid('created_by').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+})
+
+export const redemptions = pgTable('redemptions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  challengeId: uuid('challenge_id').notNull().references(() => challenges.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id').notNull(),
+  rewardId: uuid('reward_id').notNull(),
+  pointCost: smallint('point_cost').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+})
