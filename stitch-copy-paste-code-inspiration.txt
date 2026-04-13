@@ -1,0 +1,1170 @@
+<!-- Login (Royale) -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sweatstakes - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#c5c6d2",
+                    "primary-fixed-dim": "#b3c5ff",
+                    "on-error": "#690005",
+                    "background": "#001233",
+                    "secondary-fixed": "#83fba5",
+                    "on-tertiary-container": "#24a459",
+                    "tertiary-fixed-dim": "#66dd8b",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#003919",
+                    "surface-variant": "#243456",
+                    "secondary": "#66dd8b",
+                    "inverse-surface": "#d8e2ff",
+                    "surface": "#001233",
+                    "surface-container-lowest": "#000d29",
+                    "primary-container": "#002366",
+                    "secondary-fixed-dim": "#66dd8b",
+                    "on-secondary-fixed-variant": "#005227",
+                    "on-primary": "#0d2c6e",
+                    "on-secondary-container": "#003115",
+                    "on-background": "#d8e2ff",
+                    "on-surface": "#d8e2ff",
+                    "on-secondary-fixed": "#00210c",
+                    "on-primary-container": "#758dd5",
+                    "inverse-primary": "#435b9f",
+                    "outline-variant": "#444650",
+                    "tertiary-fixed": "#83fba5",
+                    "on-tertiary-fixed": "#00210c",
+                    "error-container": "#93000a",
+                    "surface-container": "#0c1f40",
+                    "on-tertiary-fixed-variant": "#005227",
+                    "primary": "#b3c5ff",
+                    "surface-container-high": "#18294b",
+                    "on-primary-fixed": "#00174a",
+                    "surface-dim": "#001233",
+                    "surface-container-low": "#071a3b",
+                    "tertiary-container": "#003014",
+                    "secondary-container": "#25a55a",
+                    "on-secondary": "#003919",
+                    "tertiary": "#66dd8b",
+                    "surface-container-highest": "#243456",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#dbe1ff",
+                    "outline": "#8e909c",
+                    "surface-tint": "#b3c5ff",
+                    "surface-bright": "#28395b",
+                    "on-primary-fixed-variant": "#2a4386",
+                    "inverse-on-surface": "#1f3051"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Plus Jakarta Sans"],
+                    "label": ["Plus Jakarta Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .emerald-glow {
+            box-shadow: 0 0 20px rgba(80, 200, 120, 0.15);
+        }
+        .glass-panel {
+            background: rgba(12, 31, 64, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation Suppression: Not rendered for Login screen as per UX guidelines -->
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 relative">
+<!-- Background Aesthetic Elements -->
+<div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+<div class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-secondary/10 blur-[120px]"></div>
+<div class="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] rounded-full bg-primary-container/30 blur-[120px]"></div>
+</div>
+<div class="w-full max-w-md space-y-10">
+<!-- Branding Header -->
+<div class="text-center space-y-4">
+<div class="inline-flex items-center justify-center w-20 h-20 rounded-xl bg-primary-container emerald-glow mb-2">
+<span class="material-symbols-outlined text-secondary text-5xl" style="font-variation-settings: 'FILL' 1;">celebration</span>
+</div>
+<h1 class="text-5xl font-extrabold tracking-tight text-on-surface leading-tight">
+                    Ready to sweat?
+                </h1>
+<p class="text-on-surface-variant text-lg font-medium">Enter your sanctuary to begin today's ritual.</p>
+</div>
+<!-- Login Form Section -->
+<div class="glass-panel p-8 rounded-xl border border-outline-variant/15 space-y-6">
+<div class="space-y-4">
+<!-- Email Input -->
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-4">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant">mail</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-14 pr-6 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-secondary/50 transition-all" placeholder="ritual@sweatstakes.com" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-4">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-14 pr-6 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-secondary/50 transition-all" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="flex justify-end px-2">
+<a class="text-sm font-semibold text-secondary hover:opacity-80 transition-opacity" href="#">Forgot ritual?</a>
+</div>
+</div>
+<!-- Primary CTA -->
+<button class="w-full bg-gradient-to-br from-secondary to-on-tertiary-container text-on-secondary-fixed py-5 rounded-full font-bold text-lg emerald-glow hover:scale-[1.02] active:scale-95 transition-all">
+                    Enter Sanctuary
+                </button>
+<!-- Divider -->
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-outline-variant/15"></div>
+<span class="flex-shrink mx-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">or continue with</span>
+<div class="flex-grow border-t border-outline-variant/15"></div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center space-x-3 bg-surface-container-highest/50 py-4 rounded-xl border border-outline-variant/10 hover:bg-surface-container-highest transition-colors active:scale-95">
+<div class="w-6 h-6 flex items-center justify-center">
+<svg class="w-5 h-5 fill-on-surface" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.05 20.28c-.98.95-2.05 1.61-3.19 1.61-1.04 0-1.57-.61-3-.61-1.44 0-2.02.61-3.12.61-1.25 0-2.42-.77-3.41-1.87-2.12-2.39-2.22-6.42-.14-8.8 1.05-1.19 2.37-1.89 3.6-1.89 1.25 0 2.05.69 3.12.69 1.05 0 1.61-.69 3.01-.69 1.05 0 2.19.53 3.03 1.34-2.14 1.14-1.78 4.2.33 5.48-.48 1.51-1.12 3-2.13 4.13zM12.03 6.64c-.03-2.61 2.25-4.8 4.81-4.8.1 2.91-2.44 5.09-4.81 4.8z"></path></svg>
+</div>
+<span class="font-bold text-sm">Apple</span>
+</button>
+<button class="flex items-center justify-center space-x-3 bg-surface-container-highest/50 py-4 rounded-xl border border-outline-variant/10 hover:bg-surface-container-highest transition-colors active:scale-95">
+<div class="w-6 h-6 flex items-center justify-center">
+<svg class="w-5 h-5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path><path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path></svg>
+</div>
+<span class="font-bold text-sm">Google</span>
+</button>
+</div>
+</div>
+<!-- Footer Text -->
+<p class="text-center text-on-surface-variant font-medium">
+                New to the Royale? 
+                <a class="text-secondary font-bold ml-1 hover:underline" href="#">Join the Sanctuary</a>
+</p>
+</div>
+</main>
+<!-- Bottom Navigation Suppression: Not rendered for Login screen as per UX guidelines -->
+<!-- Decorative Illustration/Image -->
+<div class="fixed right-[-10%] bottom-[5%] w-1/3 h-1/2 opacity-20 pointer-events-none hidden lg:block">
+<img class="w-full h-full object-cover rounded-xl grayscale mix-blend-screen" data-alt="dramatic low angle of a professional runner silhouette in a dark neon lit stadium with emerald green light streaks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF6QMgdz_JbuVFIt26d4m9PE3Y6l8rTR03vqcuHGbGHRM7Z7nAhdXBJf0GtKw8iDfGNaBfLJERWXjIpmyVX1lu9k1ksFqL7pEnCeivVW7sjBTiy6ouPNcFu4TP4u969AizJ0XUW08l9SCvS86SVmHSWOfPqV7FB-U_5p12q8yxR54nBu4Z6kmIHnfbxqfkvrSQ3BZsXK6V33glp1t9z_5oj4HtSk_7tMOb5x13icgbHIw4m3AwEss9MxnpEaCpl1u7YNHrfkP-XiQ"/>
+</div>
+</body></html>
+
+<!-- Streaks (Royale) -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sweatstakes | Streaks &amp; Balance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c5c6d2",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "on-error": "#690005",
+                        "background": "#001233",
+                        "secondary-fixed": "#83fba5",
+                        "on-tertiary-container": "#24a459",
+                        "tertiary-fixed-dim": "#66dd8b",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary": "#003919",
+                        "surface-variant": "#243456",
+                        "secondary": "#66dd8b",
+                        "inverse-surface": "#d8e2ff",
+                        "surface": "#001233",
+                        "surface-container-lowest": "#000d29",
+                        "primary-container": "#002366",
+                        "secondary-fixed-dim": "#66dd8b",
+                        "on-secondary-fixed-variant": "#005227",
+                        "on-primary": "#0d2c6e",
+                        "on-secondary-container": "#003115",
+                        "on-background": "#d8e2ff",
+                        "on-surface": "#d8e2ff",
+                        "on-secondary-fixed": "#00210c",
+                        "on-primary-container": "#758dd5",
+                        "inverse-primary": "#435b9f",
+                        "outline-variant": "#444650",
+                        "tertiary-fixed": "#83fba5",
+                        "on-tertiary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "surface-container": "#0c1f40",
+                        "on-tertiary-fixed-variant": "#005227",
+                        "primary": "#b3c5ff",
+                        "surface-container-high": "#18294b",
+                        "on-primary-fixed": "#00174a",
+                        "surface-dim": "#001233",
+                        "surface-container-low": "#071a3b",
+                        "tertiary-container": "#003014",
+                        "secondary-container": "#25a55a",
+                        "on-secondary": "#003919",
+                        "tertiary": "#66dd8b",
+                        "surface-container-highest": "#243456",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#dbe1ff",
+                        "outline": "#8e909c",
+                        "surface-tint": "#b3c5ff",
+                        "surface-bright": "#28395b",
+                        "on-primary-fixed-variant": "#2a4386",
+                        "inverse-on-surface": "#1f3051"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(12, 31, 64, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .emerald-glow {
+            box-shadow: 0 0 20px rgba(80, 200, 120, 0.2);
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #001233;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl shadow-lg shadow-[#000d29]/20 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#50C878] text-2xl active:scale-95 duration-200 transition-opacity hover:opacity-80">menu</span>
+<h1 class="text-2xl font-extrabold tracking-tight text-[#d8e2ff]">Sweatstakes</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#50C878] text-2xl active:scale-95 duration-200 transition-opacity hover:opacity-80">celebration</span>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto space-y-12">
+<!-- Section 1: Current Streaks -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<div>
+<p class="text-on-surface-variant text-xs font-medium tracking-widest uppercase mb-1">Rituals</p>
+<h2 class="text-3xl font-bold">Current Streaks</h2>
+</div>
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-4 border-surface overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="portrait of a young man with dark hair and a friendly expression in soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgaBC9vrHCiQj_LnJ-IJO9QzIeGopUWMql05c2Hj2hK2Taqj7dTOL5WE_mAU8FZYkzdYI4cZwlxUEeBnGYuzGBSLSSQGOp1Dp8u271swEDJnD7k1qYrJpAvbqR3HvotR9KxT6lrEQS0RzUh4xhZkAjqS_jYW0CIIcn6NiuiqclNIiLXfiwEBbxLmey8pkw3Zri_hOOOxN0WE0rLAEKKimqoq_bWwJ-y_CMBua-dPwhN1BYrKxiUBou991Iu8JcTFW3FbsbBYczmfE"/>
+</div>
+<div class="w-10 h-10 rounded-full border-4 border-surface overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="portrait of a smiling woman with long brown hair in a bright outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuRGHzQyufr8QgCzJJjlppcM2F2674NwqTf0X1A3pdHQLGezABkDdthr5_JsJ2lt5RdcNvXpHe22F1xCEBCKMk4K176abrfMWRUwzHmbLusqeELpysct_uGGhq0s7T4O4faMzXqu9LnL3DndHPGsMbFhYtjlRMAZtrhmr-kUt1np46L0HZaxcUNWtYx6csmDqKtp-61vK4WGTli-yq3xM9KP6DoorcD4s6tUCWQiCWeAeM6BvFSQmsXucsozjZWhdXltVDNGpjuyc"/>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Arnav's Card -->
+<div class="bg-surface-container-high rounded-xl p-8 relative overflow-hidden emerald-glow group transition-all duration-300">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold text-lg">Arnav</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-6xl font-extrabold text-secondary tracking-tighter">12</span>
+<span class="text-on-surface-variant font-medium">Days</span>
+</div>
+<div class="mt-6 w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-[85%]"></div>
+</div>
+</div>
+</div>
+<!-- Sana's Card -->
+<div class="bg-surface-container-high rounded-xl p-8 relative overflow-hidden group transition-all duration-300">
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-on-surface-variant">local_fire_department</span>
+<span class="font-bold text-lg">Sana</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-6xl font-extrabold text-on-surface tracking-tighter">8</span>
+<span class="text-on-surface-variant font-medium">Days</span>
+</div>
+<div class="mt-6 w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden">
+<div class="bg-surface-variant h-full rounded-full w-[60%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: The Ledger -->
+<section>
+<div class="bg-gradient-to-br from-surface-container-high to-surface-container rounded-xl p-10 text-center border border-white/5 relative overflow-hidden">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(80,200,120,0.1),transparent_50%)]"></div>
+<h3 class="text-on-surface-variant text-sm font-semibold tracking-widest uppercase mb-6">The Ledger</h3>
+<div class="flex flex-col items-center justify-center mb-8">
+<div class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<p class="text-3xl font-bold leading-tight">
+                        Arnav is up <span class="text-secondary">3 Dinners</span>
+</p>
+</div>
+<button class="w-full py-5 bg-gradient-to-br from-[#50C878] to-[#24a459] text-[#001233] font-bold rounded-full shadow-[0_10px_30px_rgba(80,200,120,0.3)] active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined font-bold">handshake</span>
+                    Settle the Score
+                </button>
+</div>
+</section>
+<!-- Section 3: History of Stakes -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-bold">History of Stakes</h2>
+<span class="text-secondary text-sm font-bold cursor-pointer hover:underline">View All</span>
+</div>
+<div class="space-y-4">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-6 bg-surface-container-low rounded-lg transition-colors hover:bg-surface-container-high">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">restaurant</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Steak Dinner at Prime</p>
+<p class="text-xs text-on-surface-variant">Arnav won • 2 days ago</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-secondary font-bold">+1</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-6 bg-surface-container-low rounded-lg transition-colors hover:bg-surface-container-high">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">directions_run</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Morning Coffee Run</p>
+<p class="text-xs text-on-surface-variant">Sana settled • Last Week</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant font-bold">0</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-6 bg-surface-container-low rounded-lg transition-colors hover:bg-surface-container-high">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">local_pizza</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Friday Night Pizza</p>
+<p class="text-xs text-on-surface-variant">Arnav won • 10 days ago</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-secondary font-bold">+1</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-6 left-0 right-0 flex justify-around items-center z-50">
+<div class="bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl shadow-2xl shadow-[#000d29]/40 flex justify-around items-center w-[90%] max-w-md rounded-full px-2 py-3 mx-auto">
+<button class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Sanctuary</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#50C878] to-[#24a459] text-[#001233] rounded-full p-3 shadow-[0_0_15px_rgba(80,200,120,0.4)] active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Streaks</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Feed</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Settings</span>
+</button>
+</div>
+</nav>
+</body></html>
+
+<!-- Feed (Royale) -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sweatstakes - Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c5c6d2",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "on-error": "#690005",
+                        "background": "#001233",
+                        "secondary-fixed": "#83fba5",
+                        "on-tertiary-container": "#24a459",
+                        "tertiary-fixed-dim": "#66dd8b",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary": "#003919",
+                        "surface-variant": "#243456",
+                        "secondary": "#66dd8b",
+                        "inverse-surface": "#d8e2ff",
+                        "surface": "#001233",
+                        "surface-container-lowest": "#000d29",
+                        "primary-container": "#002366",
+                        "secondary-fixed-dim": "#66dd8b",
+                        "on-secondary-fixed-variant": "#005227",
+                        "on-primary": "#0d2c6e",
+                        "on-secondary-container": "#003115",
+                        "on-background": "#d8e2ff",
+                        "on-surface": "#d8e2ff",
+                        "on-secondary-fixed": "#00210c",
+                        "on-primary-container": "#758dd5",
+                        "inverse-primary": "#435b9f",
+                        "outline-variant": "#444650",
+                        "tertiary-fixed": "#83fba5",
+                        "on-tertiary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "surface-container": "#0c1f40",
+                        "on-tertiary-fixed-variant": "#005227",
+                        "primary": "#b3c5ff",
+                        "surface-container-high": "#18294b",
+                        "on-primary-fixed": "#00174a",
+                        "surface-dim": "#001233",
+                        "surface-container-low": "#071a3b",
+                        "tertiary-container": "#003014",
+                        "secondary-container": "#25a55a",
+                        "on-secondary": "#003919",
+                        "tertiary": "#66dd8b",
+                        "surface-container-highest": "#243456",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#dbe1ff",
+                        "outline": "#8e909c",
+                        "surface-tint": "#b3c5ff",
+                        "surface-bright": "#28395b",
+                        "on-primary-fixed-variant": "#2a4386",
+                        "inverse-on-surface": "#1f3051"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #001233;
+            color: #d8e2ff;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .emerald-glow {
+            box-shadow: 0 0 20px rgba(80, 200, 120, 0.15);
+        }
+        .glass-panel {
+            background: rgba(12, 31, 64, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl shadow-lg shadow-[#000d29]/20 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#50C878] active:scale-95 duration-200 transition-opacity hover:opacity-80">menu</span>
+<span class="text-[#d8e2ff] text-2xl font-extrabold tracking-tight font-['Plus_Jakarta_Sans']">Sweatstakes</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#50C878] active:scale-95 duration-200 transition-opacity hover:opacity-80">celebration</span>
+</div>
+</nav>
+<!-- Main Feed Content -->
+<main class="pt-24 px-4 max-w-2xl mx-auto space-y-8">
+<!-- Header Section -->
+<header class="flex flex-col gap-1 px-2">
+<h1 class="text-3xl font-extrabold text-on-surface tracking-tight">The Sanctuary Feed</h1>
+<p class="text-on-surface-variant text-sm font-medium">Keep pace with your partner’s ritual.</p>
+</header>
+<!-- Feed Card 1: Partner Activity -->
+<div class="bg-surface-container-high rounded-xl overflow-hidden emerald-glow transition-all duration-300">
+<!-- Card Header -->
+<div class="p-6 flex justify-between items-start">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border-2 border-secondary overflow-hidden">
+<img alt="Partner Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a young woman with a determined expression, natural lighting, soft blue background tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPW6l8o3DwkfvGR1r9sguct0sP7c6lFoZlFSNxfJ3eSJaVjuSl77NJgGctSYagRaaxxurq5cnXo9KtIYRQoMrVqjbsZSQqYwNR1WIGx5K7QRms6Z9TEo1vLFJxgkRDVgsdCWmbpFMcNGWJI8uFH8JeJoHh8D38bn32V0VoArOvyAsXp7V9VJkB40jjh3N7tBQYDAa5A6hiFDJTX8pC-rA_EPJZCCgp5JM8XeH-Kq8UZ8UXO7fxSX0TVoBQDSNbrtL4aqWckbIEemk"/>
+</div>
+<div>
+<h3 class="text-on-surface font-bold text-lg">Sarah</h3>
+<p class="text-on-surface-variant text-xs font-medium uppercase tracking-widest">2 hours ago</p>
+</div>
+</div>
+<div class="bg-secondary-container/20 text-secondary px-4 py-1.5 rounded-full text-xs font-bold tracking-tight border border-secondary/30">
+                    Workout 3 of 4!
+                </div>
+</div>
+<!-- Check-in Photo -->
+<div class="px-4">
+<div class="relative aspect-[4/5] rounded-lg overflow-hidden group">
+<img alt="Workout Check-in" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Dimly lit high-end home gym with emerald green ambient lighting, kettlebells in foreground, moody atmospheric luxury fitness setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-_-0TjpJK0z742yPtL7prTKHE0AC3fADEk7u3O9crFJols95V9Vdve5UwgexfN4esQU_SgPY8hjkABlCaQBw3va4x5sFMGgLs0dgXhxMI3bkqfCkDXC1WvRhv6K3B4hWZyzKIgWJXgcdKyHRnS2cM9FVQzeVc1Pi6PFQafp3woRcZTQxHE59b98cSsPG1-ccgE65zLbsWgwx71TrFXz0PlbPX3tU_aNFkJ9hZu11eAZh3r8k8b82t1QX2pMM_1XoMh6OZei8JVTk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
+</div>
+</div>
+<!-- Journal Entry -->
+<div class="p-6 space-y-4">
+<div class="bg-surface-container-low p-5 rounded-lg border-l-4 border-secondary">
+<p class="text-on-surface text-base leading-relaxed font-medium italic">
+                        "Finally hit that personal best on the rows today. The sanctuary felt especially quiet this morning—perfect for focusing on the breath. Pushing through the mid-week slump!"
+                    </p>
+</div>
+<!-- Interaction Hub -->
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 bg-gradient-to-br from-[#50C878] to-[#24a459] text-[#001233] font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 shadow-lg shadow-secondary/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        Hype
+                    </button>
+<button class="flex-1 bg-surface-container-highest text-on-surface font-bold py-3 px-6 rounded-full border border-outline-variant/15 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">notifications_active</span>
+                        Nudge
+                    </button>
+</div>
+</div>
+</div>
+<!-- Feed Card 2: Partner Activity (Asymmetric Variation) -->
+<div class="bg-surface-container-high rounded-xl overflow-hidden transition-all duration-300">
+<div class="p-6 flex justify-between items-start">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border-2 border-outline-variant/30 overflow-hidden">
+<img alt="Partner Profile" class="w-full h-full object-cover" data-alt="Professional portrait of a man in his 30s with a warm smile, soft moody studio lighting, dark blue backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPy570lNkEsJyjdwNWBkYeGAwyqm8TzJDxxUj39czeMHInkEzfhcfXeDVDk3Szlfhj6HWoNfbLpS6fEvV-VwDjkFGci-7erlPO2pU6tbusYdTue6vEm9cr942rkwvZwv9xTTMKS6JpKeUsJQfD8FAKULO32W3cdVtES-lNDDl1VG7I1i2TVMdsDPdLNlu3wwXKxGwzjib3cGlUpprBsRey9MdwwSsTCIR-MqENjAyjFwBq8x6ZQ_-jy9la7RMS8DFsowB3KKyBKl0"/>
+</div>
+<div>
+<h3 class="text-on-surface font-bold text-lg">David</h3>
+<p class="text-on-surface-variant text-xs font-medium uppercase tracking-widest">Yesterday</p>
+</div>
+</div>
+<div class="bg-surface-variant/50 text-on-surface-variant px-4 py-1.5 rounded-full text-xs font-bold tracking-tight">
+                    Rest Day
+                </div>
+</div>
+<div class="px-4 grid grid-cols-2 gap-3">
+<div class="aspect-square rounded-lg overflow-hidden">
+<img alt="Yoga morning" class="w-full h-full object-cover" data-alt="Close-up of a yoga mat on a wooden floor with soft morning sunlight streaming through a window, serene atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARV65lmPBbK1Cs4qWh2y3yzz5mGxlQgB4tr_jmqDa2uhTH1VHUB__7zg20u-65mr2yAHHpZ3S24l0sdMvKjXS5iqWfybQ1hKOKYJ29uewtzL0mry9kmkWbTcMCbhPf1GePWqEf0m8oYw2ffTI0vkNCS6of3jTmsnvsLeSzNta1ftPlrJb6xwf7knK34ZJDOwdjSExkhyAUjax9EVJO6h5oYJUT_8k7G9KqUwv-tlfZaQf26HJxJXp4zHtvcJ5FoeEBAZ5ACQsMWI0"/>
+</div>
+<div class="aspect-square rounded-lg overflow-hidden">
+<img alt="Healthy meal" class="w-full h-full object-cover" data-alt="A vibrant green smoothie bowl topped with berries and seeds on a dark textured table, luxury healthy lifestyle aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl5QRWWLYeQGm2QXCorkn2mk5lgMjgl7ujxWUvpFItI66hHGL6wGjBHfAXTuISot_e-sYMZWRJsoke9dKsZ4kDL-gJUJHQXzkhnkh0VvJO8A-eZZ8tzEr60oIrZEi_WHFAyvQxnqXSkRdX_YQD4xJg7fLQbY-O-V_O4fMF7FwlwSPlmcka4GvZjeWljHTQ5fqQAKmYwmVNnc4_INAz_3IuuUDl5Dx4b8tyz1IHCU6-aBxJaXWmOT65fDkIwE1ZOIZIoNy8EtD6GUo"/>
+</div>
+</div>
+<div class="p-6">
+<p class="text-on-surface-variant text-sm font-medium leading-snug">
+                    Focusing on recovery today. Stretching and clean fuel to get ready for tomorrow's leg session.
+                </p>
+<div class="mt-6 flex justify-end gap-3">
+<button class="px-6 py-2 rounded-full bg-surface-container-low text-secondary font-bold text-sm border border-secondary/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                        Support
+                    </button>
+</div>
+</div>
+</div>
+<!-- Weekly Summary Bento -->
+<section class="grid grid-cols-2 gap-4">
+<div class="col-span-2 bg-gradient-to-br from-surface-container-high to-surface-container-lowest p-6 rounded-xl border border-outline-variant/10">
+<h4 class="text-secondary font-bold text-xs uppercase tracking-widest mb-4">Collective Streak</h4>
+<div class="flex items-end gap-2">
+<span class="text-6xl font-extrabold text-on-surface tracking-tighter">14</span>
+<span class="text-lg font-bold text-on-surface-variant mb-2">Days Unbroken</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-secondary text-3xl">trending_up</span>
+<p class="text-on-surface font-bold text-sm leading-tight">Sarah is 15% ahead of target</p>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-primary text-3xl">history</span>
+<p class="text-on-surface font-bold text-sm leading-tight">Last sync was 45m ago</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-full px-2 py-3 bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl shadow-2xl shadow-[#000d29]/40 flex justify-around items-center z-50">
+<!-- Sanctuary (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Sanctuary</span>
+</a>
+<!-- Streaks (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">local_fire_department</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Streaks</span>
+</a>
+<!-- Feed (Active) -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#50C878] to-[#24a459] text-[#001233] rounded-full p-3 shadow-[0_0_15px_rgba(80,200,120,0.4)] active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Feed</span>
+</a>
+<!-- Settings (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Settings</span>
+</a>
+</nav>
+</body></html>
+
+<!-- Settings (Royale) -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sweatstakes Settings - Shared Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #001233;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(12, 31, 64, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .tap-highlight-transparent {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#c5c6d2",
+                      "primary-fixed-dim": "#b3c5ff",
+                      "on-error": "#690005",
+                      "background": "#001233",
+                      "secondary-fixed": "#83fba5",
+                      "on-tertiary-container": "#24a459",
+                      "tertiary-fixed-dim": "#66dd8b",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary": "#003919",
+                      "surface-variant": "#243456",
+                      "secondary": "#66dd8b",
+                      "inverse-surface": "#d8e2ff",
+                      "surface": "#001233",
+                      "surface-container-lowest": "#000d29",
+                      "primary-container": "#002366",
+                      "secondary-fixed-dim": "#66dd8b",
+                      "on-secondary-fixed-variant": "#005227",
+                      "on-primary": "#0d2c6e",
+                      "on-secondary-container": "#003115",
+                      "on-background": "#d8e2ff",
+                      "on-surface": "#d8e2ff",
+                      "on-secondary-fixed": "#00210c",
+                      "on-primary-container": "#758dd5",
+                      "inverse-primary": "#435b9f",
+                      "outline-variant": "#444650",
+                      "tertiary-fixed": "#83fba5",
+                      "on-tertiary-fixed": "#00210c",
+                      "error-container": "#93000a",
+                      "surface-container": "#0c1f40",
+                      "on-tertiary-fixed-variant": "#005227",
+                      "primary": "#b3c5ff",
+                      "surface-container-high": "#18294b",
+                      "on-primary-fixed": "#00174a",
+                      "surface-dim": "#001233",
+                      "surface-container-low": "#071a3b",
+                      "tertiary-container": "#003014",
+                      "secondary-container": "#25a55a",
+                      "on-secondary": "#003919",
+                      "tertiary": "#66dd8b",
+                      "surface-container-highest": "#243456",
+                      "error": "#ffb4ab",
+                      "primary-fixed": "#dbe1ff",
+                      "outline": "#8e909c",
+                      "surface-tint": "#b3c5ff",
+                      "surface-bright": "#28395b",
+                      "on-primary-fixed-variant": "#2a4386",
+                      "inverse-on-surface": "#1f3051"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Plus Jakarta Sans"],
+                      "body": ["Plus Jakarta Sans"],
+                      "label": ["Plus Jakarta Sans"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl shadow-lg shadow-[#000d29]/20">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="text-[#50C878] tap-highlight-transparent active:scale-95 duration-200">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-2xl font-extrabold tracking-tight text-[#d8e2ff] font-['Plus_Jakarta_Sans']">Sweatstakes</h1>
+</div>
+<button class="text-[#50C878] tap-highlight-transparent active:scale-95 duration-200">
+<span class="material-symbols-outlined">celebration</span>
+</button>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Header Section -->
+<section class="space-y-2">
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight">Ritual Settings</h2>
+<p class="text-on-surface-variant text-sm font-medium">Customize your shared sanctuary experience</p>
+</section>
+<!-- Status Cards (Bento Style) -->
+<section class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-high rounded-xl p-6 flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-[#50C878] text-3xl">verified</span>
+<div>
+<p class="text-on-surface-variant text-xs font-bold uppercase tracking-wider mb-1">Status</p>
+<h3 class="text-xl font-bold text-on-surface">Active Bet</h3>
+</div>
+</div>
+<div class="bg-gradient-to-br from-surface-container-high to-surface-container-highest rounded-xl p-6 flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-[#50C878] text-3xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<div>
+<p class="text-on-surface-variant text-xs font-bold uppercase tracking-wider mb-1">Legacy</p>
+<h3 class="text-xl font-bold text-on-surface">12 Bets Won</h3>
+</div>
+</div>
+</section>
+<!-- Goal Stepper Section -->
+<section class="bg-surface-container-low rounded-xl p-8 space-y-6">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-lg font-bold text-on-surface">Weekly Goal</h3>
+<p class="text-on-surface-variant text-sm">Days of activity required</p>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-[#50C878]">4</span>
+<span class="text-on-surface-variant font-bold text-xl">/ 7</span>
+</div>
+</div>
+<div class="flex justify-between items-center gap-2">
+<!-- Circular Stepper Elements -->
+<div class="flex gap-2 flex-grow">
+<div class="h-2 rounded-full flex-grow bg-secondary shadow-[0_0_8px_rgba(80,200,120,0.4)]"></div>
+<div class="h-2 rounded-full flex-grow bg-secondary shadow-[0_0_8px_rgba(80,200,120,0.4)]"></div>
+<div class="h-2 rounded-full flex-grow bg-secondary shadow-[0_0_8px_rgba(80,200,120,0.4)]"></div>
+<div class="h-2 rounded-full flex-grow bg-secondary shadow-[0_0_8px_rgba(80,200,120,0.4)]"></div>
+<div class="h-2 rounded-full flex-grow bg-surface-variant"></div>
+<div class="h-2 rounded-full flex-grow bg-surface-variant"></div>
+<div class="h-2 rounded-full flex-grow bg-surface-variant"></div>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 py-3 bg-surface-container-highest rounded-full text-on-surface font-bold active:scale-95 transition-transform">-</button>
+<button class="flex-1 py-3 bg-surface-container-highest rounded-full text-on-surface font-bold active:scale-95 transition-transform">+</button>
+</div>
+</section>
+<!-- Stakes Input -->
+<section class="space-y-4">
+<label class="block text-sm font-bold text-on-surface-variant uppercase tracking-widest ml-2">The Stakes</label>
+<div class="bg-surface-container-low p-1 rounded-full group focus-within:ring-2 ring-[#50C878]/30 transition-all">
+<input class="w-full bg-transparent border-none focus:ring-0 px-6 py-4 text-on-surface font-medium placeholder-on-surface-variant/40" placeholder="Enter what's on the line..." type="text" value="Winner picks the Sunday movie"/>
+</div>
+</section>
+<!-- Toggles Section -->
+<section class="space-y-3">
+<div class="bg-surface-container-high rounded-xl p-5 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Notifications</p>
+<p class="text-xs text-on-surface-variant">Nudges and win alerts</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-14 h-8 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="bg-surface-container-high rounded-xl p-5 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">shield</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Private Sanctuary</p>
+<p class="text-xs text-on-surface-variant">Visible only to your partner</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-14 h-8 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</section>
+<!-- Primary Action -->
+<button class="w-full py-5 bg-gradient-to-br from-[#50C878] to-[#24a459] rounded-full text-[#001233] font-extrabold text-lg shadow-[0_0_20px_rgba(80,200,120,0.3)] active:scale-[0.98] transition-transform">
+            Save Settings
+        </button>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-6 left-0 right-0 flex justify-around items-center z-50 pointer-events-none">
+<div class="bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl w-[90%] max-w-md rounded-full px-2 py-3 flex justify-around items-center shadow-2xl shadow-[#000d29]/40 pointer-events-auto">
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Sanctuary</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl">local_fire_department</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Streaks</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Feed</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#50C878] to-[#24a459] text-[#001233] rounded-full p-3 shadow-[0_0_15px_rgba(80,200,120,0.4)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Settings</span>
+</a>
+</div>
+</nav>
+</body></html>
+
+<!-- Dashboard (Royale) -->
+<html class="dark"><head><meta charset="utf-8"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface-variant": "#c5c6d2",
+            "primary-fixed-dim": "#b3c5ff",
+            "on-error": "#690005",
+            "background": "#001233",
+            "secondary-fixed": "#83fba5",
+            "on-tertiary-container": "#24a459",
+            "tertiary-fixed-dim": "#66dd8b",
+            "on-error-container": "#ffdad6",
+            "on-tertiary": "#003919",
+            "surface-variant": "#243456",
+            "secondary": "#66dd8b",
+            "inverse-surface": "#d8e2ff",
+            "surface": "#001233",
+            "surface-container-lowest": "#000d29",
+            "primary-container": "#002366",
+            "secondary-fixed-dim": "#66dd8b",
+            "on-secondary-fixed-variant": "#005227",
+            "on-primary": "#0d2c6e",
+            "on-secondary-container": "#003115",
+            "on-background": "#d8e2ff",
+            "on-surface": "#d8e2ff",
+            "on-secondary-fixed": "#00210c",
+            "on-primary-container": "#758dd5",
+            "inverse-primary": "#435b9f",
+            "outline-variant": "#444650",
+            "tertiary-fixed": "#83fba5",
+            "on-tertiary-fixed": "#00210c",
+            "error-container": "#93000a",
+            "surface-container": "#0c1f40",
+            "on-tertiary-fixed-variant": "#005227",
+            "primary": "#b3c5ff",
+            "surface-container-high": "#18294b",
+            "on-primary-fixed": "#00174a",
+            "surface-dim": "#001233",
+            "surface-container-low": "#071a3b",
+            "tertiary-container": "#003014",
+            "secondary-container": "#25a55a",
+            "on-secondary": "#003919",
+            "tertiary": "#66dd8b",
+            "surface-container-highest": "#243456",
+            "error": "#ffb4ab",
+            "primary-fixed": "#dbe1ff",
+            "outline": "#8e909c",
+            "surface-tint": "#b3c5ff",
+            "surface-bright": "#28395b",
+            "on-primary-fixed-variant": "#2a4386",
+            "inverse-on-surface": "#1f3051"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      background: rgba(12, 31, 64, 0.8);
+      backdrop-filter: blur(20px);
+    }
+    .emerald-glow {
+      box-shadow: 0 0 20px rgba(80, 200, 120, 0.2);
+    }
+    .emerald-gradient {
+      background: linear-gradient(135deg, #50C878 0%, #24a459 100%);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl shadow-lg shadow-[#000d29]/20 flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#50C878] cursor-pointer hover:opacity-80 transition-opacity">menu</span>
+<h1 class="text-2xl font-extrabold tracking-tight text-[#d8e2ff] font-['Plus_Jakarta_Sans']">Sweatstakes</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#50C878] cursor-pointer hover:opacity-80 transition-opacity">celebration</span>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Greeting Section -->
+<section class="space-y-2">
+<h2 class="text-4xl font-extrabold tracking-tight text-on-surface">Let's get it, Arnav! 🔥</h2>
+<p class="text-on-surface-variant font-medium">Day 5 of the Royal Duel</p>
+</section>
+<!-- Stakes Card (High-end Bento Style) -->
+<section class="relative overflow-hidden bg-surface-container-high rounded-xl p-6 emerald-glow">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-secondary/10 text-secondary text-xs font-bold rounded-full mb-3 tracking-widest uppercase">The Active Bet</span>
+<h3 class="text-xl font-bold text-on-surface leading-tight">
+          Current Stakes: Loser pays for the Domino's order this weekend. 🍕
+        </h3>
+</div>
+</section>
+<!-- Duo Progress Tracker (The Sanctuary Markers) -->
+<section class="space-y-6">
+<!-- User Progress -->
+<div class="bg-surface-container-low rounded-xl p-6 space-y-4">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-xs font-bold text-secondary uppercase tracking-widest mb-1">Your Streak</p>
+<h4 class="text-3xl font-extrabold">5 / 7 Days</h4>
+</div>
+<div class="text-right">
+<span class="text-xs text-on-surface-variant font-medium">In the lead</span>
+</div>
+</div>
+<div class="flex justify-between items-center gap-2">
+<!-- Day Circles - User -->
+<div class="w-10 h-10 rounded-full emerald-gradient flex items-center justify-center shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-surface text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-10 h-10 rounded-full emerald-gradient flex items-center justify-center shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-surface text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-10 h-10 rounded-full emerald-gradient flex items-center justify-center shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-surface text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-10 h-10 rounded-full emerald-gradient flex items-center justify-center shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-surface text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-10 h-10 rounded-full emerald-gradient flex items-center justify-center shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-surface text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center">
+<span class="text-[10px] font-bold text-on-surface-variant">FRI</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center">
+<span class="text-[10px] font-bold text-on-surface-variant">SAT</span>
+</div>
+</div>
+</div>
+<!-- Partner Progress -->
+<div class="bg-surface-container-lowest/50 rounded-xl p-6 space-y-4 border border-outline-variant/10">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Partner's Progress</p>
+<h4 class="text-2xl font-bold text-on-surface/80">3 / 7 Days</h4>
+</div>
+<div class="flex -space-x-2">
+<img alt="Partner" class="w-8 h-8 rounded-full border-2 border-surface" data-alt="close-up portrait of a smiling young woman with warm lighting and soft urban background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbPJho4NE77YJHhkmYYdPO-CPob-B9gYoSqwlrNd2_kInnVf0VHnmLZiSk1BPMuIchFEo62Y-DMHeBMQ1j_Snb1PhCmBIfIQSSgO8dtifFB3rfu2EQJF_R9svWseLSQr2PSYBNwA2OpArU5BL8PlrjFjqpfRszJrmdb-qrCqJjyL-_TaZajrkHXC2XqMt1APpz68n3cajvcQMXlX5i98P-vCdk_iRFgTW6yaKhFucyXu-XpUeAOqbQeydPjzrqy8x7krwUtwoZKpw"/>
+</div>
+</div>
+<div class="flex justify-between items-center gap-2 opacity-60">
+<!-- Day Circles - Partner -->
+<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center"></div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center"></div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center"></div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center"></div>
+</div>
+</div>
+</section>
+<!-- Workout Gallery / Motivation -->
+<section class="grid grid-cols-2 gap-4">
+<div class="aspect-square rounded-lg overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="dramatic low-angle shot of a dark moody gym with neon emerald lights reflecting on lifting equipment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoryTD8L0PchBhAxHyBvP8xwB6kwwt9AL0xU0tUbd1veK5oNe16LWyK_nEGIbDXolveqWOr6UjEPbTiLAj4GoRjUaoXxbLqcmCjXpX9Harpddgqo5nSHnaqIw23LfBWCwuqnHgM__lQNL1Zoz3mSXrF1Lz3CEk3u2Uyu66DhptGtSVde7ccMVUFiKeNVNmk_jF8_cf1-pF0uHPTUWsFHL9B9f6_b4T0CMuESD387B0yYcTdc2jv36MLhX6ELhNOj7UoV0zRMCKsfQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<p class="text-[10px] font-bold text-secondary uppercase">Your Session</p>
+<p class="text-sm font-bold text-on-surface">Morning Burn</p>
+</div>
+</div>
+<div class="aspect-square rounded-lg overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="cinematic shot of high-end running shoes on a dark track with glowing green lane markers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs3i4-CbxespYXeWfYmBJ5cFkDyaf9MdltxFZJUixl1zy0fr8juJsUx2FRYgBRAHWaAkWV0B32qFLkd5BO-EHx5oB9DEsvEenykS60YyvF6llbnbkck2hkHyigD0Q11HfwzwIgDRco9Y6NXAED9ikhmvLpms9Jcto4J0ZTgOQmdgv1TrMSQCPFLb49YLbu6qMdzXUC9xUf_L9_Fe3IQcw3s6fYhzOICJH3hlJi5pmwz9aPXfcNGuQyjIovEy0FyARWCtB6Ro4t7ac"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase">Partner Session</p>
+<p class="text-sm font-bold text-on-surface">Evening Yoga</p>
+</div>
+</div>
+</section>
+</main>
+<!-- CTA Fixed Pill Button -->
+<div class="fixed bottom-24 left-0 right-0 px-6 flex justify-center z-40">
+<button class="emerald-gradient text-[#001233] px-8 py-4 rounded-full font-extrabold flex items-center gap-3 shadow-xl shadow-secondary/30 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+      Snap &amp; Log Workout
+    </button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-full px-2 py-3 bg-blue-900/80 dark:bg-[#002366]/80 backdrop-blur-xl shadow-2xl shadow-[#000d29]/40 flex justify-around items-center z-50">
+<!-- Sanctuary (Active) -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#50C878] to-[#24a459] text-[#001233] rounded-full p-3 shadow-[0_0_15px_rgba(80,200,120,0.4)] transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Sanctuary</span>
+</a>
+<!-- Streaks -->
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">local_fire_department</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Streaks</span>
+</a>
+<!-- Feed -->
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Feed</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-[#d8e2ff]/70 p-3 hover:text-[#50C878] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px]">Settings</span>
+</a>
+</nav>
+</body></html>
