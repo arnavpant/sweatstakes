@@ -45,7 +45,12 @@ Plans:
   1. A logged-in user can generate a shareable invite link
   2. A new user who taps the invite link is prompted to sign in and then joins the group
   3. After joining, both users can see each other as members of the same challenge
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Drizzle ORM client, database schema (challenges, members, invites), and schema push to Supabase
+- [ ] 02-02-PLAN.md — Server Actions (generate, join, leave), public /join/[code] route, and auth next-param threading
+- [ ] 02-03-PLAN.md — Settings invite UI, dashboard member avatar row, share/leave components, and end-to-end verification
 
 ### Phase 3: Check-ins & Goals
 **Goal**: Users can log workouts via photo and track their weekly progress toward personal goals
@@ -54,7 +59,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can tap a button, grant camera permission, take a photo, and submit it as a workout check-in
   2. The submitted photo appears in the activity feed
-  3. User can set their personal weekly workout goal (1–7 days per week)
+  3. User can set their personal weekly workout goal (1-7 days per week)
   4. A progress tracker shows how many days the user has checked in vs their weekly goal
   5. A streak counter correctly increments each week the user hits their goal and resets on a missed week
 **Plans**: TBD
@@ -89,12 +94,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Auth | 0/4 | Planning complete | - |
-| 2. Connections | 0/TBD | Not started | - |
+| 1. Foundation & Auth | 4/4 | Complete | - |
+| 2. Connections | 0/3 | Planning complete | - |
 | 3. Check-ins & Goals | 0/TBD | Not started | - |
 | 4. Points & Stakes | 0/TBD | Not started | - |
 | 5. Dashboard, Feed & Polish | 0/TBD | Not started | - |
