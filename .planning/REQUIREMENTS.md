@@ -20,11 +20,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Check-ins
 
-- [ ] **CHKN-01**: User can take a photo to log a workout (browser camera API)
-- [ ] **CHKN-02**: Photo is uploaded and visible in the activity feed
-- [ ] **CHKN-03**: User sets their personal weekly goal (1-7 days per week)
-- [ ] **CHKN-04**: Weekly progress tracker shows days completed vs goal
-- [ ] **CHKN-05**: Streak counter tracks consecutive weeks of hitting goal
+- [x] **CHKN-01**: User can take a photo to log a workout (browser camera API)
+- [x] **CHKN-02**: Photo is uploaded and visible in the activity feed
+- [x] **CHKN-03**: User sets their personal weekly goal (1-7 days per week)
+- [x] **CHKN-04**: Weekly progress tracker shows days completed vs goal
+- [x] **CHKN-05**: Streak counter tracks consecutive weeks of hitting goal
 
 ### Points & Stakes
 
@@ -109,11 +109,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONN-01 | Phase 2 | Pending |
 | CONN-02 | Phase 2 | Pending |
 | CONN-03 | Phase 2 | Pending |
-| CHKN-01 | Phase 3 | Pending |
-| CHKN-02 | Phase 3 | Pending |
-| CHKN-03 | Phase 3 | Pending |
-| CHKN-04 | Phase 3 | Pending |
-| CHKN-05 | Phase 3 | Pending |
+| CHKN-01 | Phase 3 | Complete |
+| CHKN-02 | Phase 3 | Complete |
+| CHKN-03 | Phase 3 | Complete |
+| CHKN-04 | Phase 3 | Complete |
+| CHKN-05 | Phase 3 | Complete |
 | STAK-01 | Phase 4 | Pending |
 | STAK-02 | Phase 4 | Pending |
 | STAK-03 | Phase 4 | Pending |
