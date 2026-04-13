@@ -6,15 +6,19 @@ import { eq } from 'drizzle-orm'
 import { SignOutButton } from '@/components/auth/sign-out-button'
 import { InviteLinkSection } from '@/components/connections/invite-link-section'
 import { LeaveChallengeButton } from '@/components/connections/leave-challenge-button'
+import { GoalStepper } from '@/components/settings/goal-stepper'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Check if user is in a challenge
+  // Check if user is in a challenge and get their weekly goal
   const membership = await db
-    .select({ challengeId: challengeMembers.challengeId })
+    .select({
+      challengeId: challengeMembers.challengeId,
+      weeklyGoal: challengeMembers.weeklyGoal,
+    })
     .from(challengeMembers)
     .where(eq(challengeMembers.userId, user.id))
     .limit(1)
@@ -27,6 +31,11 @@ export default async function SettingsPage() {
 
       {/* Invite Friends section (D-04: invite generation lives on Settings page) */}
       <InviteLinkSection />
+
+      {/* Weekly Goal section -- only shown if user is in a challenge (D-08) */}
+      {isInChallenge && (
+        <GoalStepper currentGoal={membership[0].weeklyGoal} />
+      )}
 
       {/* Leave Challenge section -- only shown if user is in a challenge (D-13) */}
       {isInChallenge && (
