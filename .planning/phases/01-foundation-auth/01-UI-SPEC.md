@@ -26,7 +26,7 @@ created: 2026-04-12
 | Component library | Base UI (December 2025 shadcn rebuild) | RESEARCH.md Standard Stack |
 | Icon library (nav) | Material Symbols Outlined (Google Fonts) | stitch-copy-paste-code-inspiration.txt |
 | Icon library (utility) | lucide-react v1.8.0 | RESEARCH.md Standard Stack |
-| Font | Plus Jakarta Sans, weights 400/600/700/800 via next/font/google | stitch-copy-paste-code-inspiration.txt |
+| Font | Plus Jakarta Sans, weights 400/700 via next/font/google | stitch-copy-paste-code-inspiration.txt |
 | Shadcn components (Phase 1) | Button, Card, Input | CONTEXT.md D-12 |
 
 ### shadcn Initialization Gate
@@ -65,16 +65,16 @@ Exceptions:
 
 ## Typography
 
-Single typeface: Plus Jakarta Sans throughout.
+Single typeface: Plus Jakarta Sans throughout. Exactly 2 weights: 400 (regular) and 700 (bold).
 
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
-| Display | 40px (text-5xl) | 800 (extrabold) | 1.1 | Login screen headline ("Ready to sweat?") |
+| Display | 40px (text-5xl) | 700 (bold) | 1.1 | Login screen headline ("Ready to sweat?") |
 | Heading | 24px (text-2xl) | 700 (bold) | 1.2 | Dashboard greeting ("Welcome, Arnav!"), section titles |
 | Body | 16px (text-base) | 400 (regular) | 1.5 | Body copy, placeholder text, error messages |
-| Label | 12px (text-xs) | 600 (semibold) | 1.4 | Form labels (uppercase + tracking-widest), nav labels, badges |
+| Label | 12px (text-xs) | 700 (bold) | 1.4 | Form labels (uppercase + tracking-widest), nav labels, badges |
 
-Weight contract: exactly 2 weights in use — regular (400) and bold/extrabold (700/800 treated as one "heavy" tier). Semibold (600) is permitted on labels only as a special case for legibility at 12px.
+Font loading declaration: `weights: [400, 700]` — no other weights loaded.
 
 ---
 
@@ -213,13 +213,15 @@ Phase 1 delivers two screens plus navigation shell:
 
 **Layout:** Full-height flex column, vertically centered. Portrait only (CONTEXT.md D-19).
 
+**Primary focal point:** The emerald-glow logo container and the 40px "SweatStakes" headline directly below it — everything else on the screen is subordinate to this pairing.
+
 **Background:** `bg-background` (#001233) with two radial blur decorative blobs:
 - Top-left: `bg-secondary/10` at 50% viewport width, `blur-[120px]`
 - Bottom-right: `bg-primary-container/30` at 50% viewport width, `blur-[120px]`
 
 **Structure (top to bottom):**
 1. Logo icon container — 80x80px, `rounded-xl bg-primary-container emerald-glow` — contains placeholder Material Symbol (tracked in icon inventory per CONTEXT.md D-13)
-2. App name — "SweatStakes" — Display size (40px / extrabold)
+2. App name — "SweatStakes" — Display size (40px / bold)
 3. Tagline — "Your friends are watching. Are you?" — Body size (16px / regular), `text-on-surface-variant` (Claude's discretion — CONTEXT.md)
 4. Glass panel card (`glass-panel` + `rounded-xl border border-outline-variant/15`) containing:
    - Google sign-in button (see button spec below)
@@ -253,8 +255,8 @@ Phase 1 delivers two screens plus navigation shell:
 
 **Empty state card (CONTEXT.md D-08):**
 - `bg-surface-container` card, `rounded-xl`, `p-6`
-- Heading: "No active challenge yet." — 16px / 600 semibold
-- Body: "Invite friends to get started." — 16px / 400 regular, `text-on-surface-variant`
+- Heading: "No active challenge yet." — 16px / bold
+- Body: "Invite friends to get started." — 16px / regular, `text-on-surface-variant`
 - Placeholder icon: Material Symbol `group_add` (tracked in icon inventory)
 
 ---
@@ -280,7 +282,7 @@ Floating pill design from Stitch reference. Fixed at bottom.
 
 **Inactive tab:** `text-on-surface/70 p-3 min-h-[44px]`
 
-**Label:** 10px / 500 medium — `font-medium text-[10px]`
+**Label:** 10px / 700 bold — `font-bold text-[10px]`
 
 All 4 nav icons tracked in icon inventory (CONTEXT.md D-13).
 
@@ -304,7 +306,7 @@ Same layout as other placeholder pages, plus:
 **Sign-out button (CONTEXT.md D-17):**
 - Full width, `rounded-full`, `py-4`
 - Variant: destructive — `bg-error-container text-on-error-container border border-error/30`
-- Label: "Sign out"
+- Label: "Sign out of SweatStakes"
 - Behavior: No confirmation dialog — taps immediately trigger sign-out and redirect to `/login` (CONTEXT.md D-18)
 - Loading state: button shows spinner and disables during sign-out request
 
@@ -335,14 +337,14 @@ All loading states tracked in icon inventory per CONTEXT.md D-14.
 | Dashboard empty state heading | "No active challenge yet." | CONTEXT.md D-08 |
 | Dashboard empty state body | "Invite friends to get started." | CONTEXT.md D-08 |
 | Placeholder page body | "This is coming in a future update." | Claude's discretion (CONTEXT.md D-06) |
-| Sign-out button label | "Sign out" | Claude's discretion |
+| Sign-out button label | "Sign out of SweatStakes" | Revised per checker flag |
 | Session expired (no message shown) | Silent redirect — no copy | CONTEXT.md D-10 |
 
 **Destructive actions in Phase 1:**
 
 | Action | Trigger | Confirmation |
 |--------|---------|-------------|
-| Sign out | "Sign out" button on Settings | None — immediate action (CONTEXT.md D-18) |
+| Sign out | "Sign out of SweatStakes" button on Settings | None — immediate action (CONTEXT.md D-18) |
 
 ---
 
