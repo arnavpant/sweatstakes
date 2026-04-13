@@ -62,8 +62,14 @@ Plans:
   3. User can set their personal weekly workout goal (1-7 days per week)
   4. A progress tracker shows how many days the user has checked in vs their weekly goal
   5. A streak counter correctly increments each week the user hits their goal and resets on a missed week
-**Plans**: TBD
+**Plans:** 4 plans
 **UI hint**: yes
+
+Plans:
+- [ ] 03-01-PLAN.md — Drizzle schema (checkIns table, weeklyGoal column), Server Actions (submit, updateGoal), week utilities, and test scaffolding
+- [ ] 03-02-PLAN.md — BeReal-style dual-camera check-in flow with compression and Supabase Storage upload
+- [ ] 03-03-PLAN.md — Goal stepper on Settings, day dots progress tracker, and streak counter on Dashboard
+- [ ] 03-04-PLAN.md — Bottom nav center FAB, database schema push, and end-to-end verification
 
 ### Phase 4: Points & Stakes
 **Goal**: Points flow correctly — users earn when they hit goals, owe when they miss, and can redeem against a group rewards menu
@@ -100,6 +106,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Foundation & Auth | 4/4 | Complete | - |
 | 2. Connections | 0/3 | Planning complete | - |
-| 3. Check-ins & Goals | 0/TBD | Not started | - |
+| 3. Check-ins & Goals | 0/4 | Planning complete | - |
 | 4. Points & Stakes | 0/TBD | Not started | - |
 | 5. Dashboard, Feed & Polish | 0/TBD | Not started | - |
