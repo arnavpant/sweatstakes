@@ -32,10 +32,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 4 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Next.js 16 with Tailwind v4 Royale design system, shadcn/ui, and test infrastructure
-- [ ] 01-02-PLAN.md — Supabase Auth with Google OAuth, proxy.ts session management, and Login screen UI
-- [ ] 01-03-PLAN.md — Dashboard shell, bottom navigation, placeholder pages, settings sign-out, PWA manifest, and icon inventory
-- [ ] 01-04-PLAN.md — Deploy to Vercel and configure OAuth redirect URIs for production URL
+- [x] 01-01-PLAN.md — Scaffold Next.js 16 with Tailwind v4 Royale design system, shadcn/ui, and test infrastructure
+- [x] 01-02-PLAN.md — Supabase Auth with Google OAuth, proxy.ts session management, and Login screen UI
+- [x] 01-03-PLAN.md — Dashboard shell, bottom navigation, placeholder pages, settings sign-out, PWA manifest, and icon inventory
+- [x] 01-04-PLAN.md — Deploy to Vercel and configure OAuth redirect URIs for production URL
 
 ### Phase 2: Connections
 **Goal**: Users can bring their friends into a shared challenge via a link
