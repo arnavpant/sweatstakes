@@ -82,7 +82,14 @@ Plans:
   4. The Ledger screen shows each member's current running point balance
   5. Any member can add a reward item with a name and point cost to the group rewards menu
   6. A member with sufficient points can redeem a reward; their balance decreases by the item cost
-**Plans**: TBD
+**Plans:** 4 plans
+**UI hint**: yes
+
+Plans:
+- [ ] 04-01-PLAN.md — Drizzle schema (points tables, rewards, redemptions), pure settlement algorithm, and test scaffold
+- [ ] 04-02-PLAN.md — Vercel Cron settlement endpoint, rewards/redemption Server Actions, and Settings timezone pickers
+- [ ] 04-03-PLAN.md — Streaks & Balance page UI (streak section, member leaderboard, rewards menu with bottom sheet and dialog)
+- [ ] 04-04-PLAN.md — Database schema push to Supabase and end-to-end human verification
 
 ### Phase 5: Dashboard, Feed & Polish
 **Goal**: All five Stitch-designed screens are fully functional and visually match the Royale design system
@@ -107,5 +114,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation & Auth | 4/4 | Complete | - |
 | 2. Connections | 0/3 | Planning complete | - |
 | 3. Check-ins & Goals | 0/4 | Planning complete | - |
-| 4. Points & Stakes | 0/TBD | Not started | - |
+| 4. Points & Stakes | 0/4 | Planning complete | - |
 | 5. Dashboard, Feed & Polish | 0/TBD | Not started | - |
