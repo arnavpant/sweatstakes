@@ -1,25 +1,29 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { db } from '@/db'
-import { challengeMembers } from '@/db/schema'
+import { challengeMembers, challenges } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { SignOutButton } from '@/components/auth/sign-out-button'
 import { InviteLinkSection } from '@/components/connections/invite-link-section'
 import { LeaveChallengeButton } from '@/components/connections/leave-challenge-button'
 import { GoalStepper } from '@/components/settings/goal-stepper'
+import { SettlementSettings } from '@/components/settings/settlement-settings'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Check if user is in a challenge and get their weekly goal
+  // Check if user is in a challenge and get their weekly goal + challenge settings
   const membership = await db
     .select({
       challengeId: challengeMembers.challengeId,
       weeklyGoal: challengeMembers.weeklyGoal,
+      timezone: challenges.timezone,
+      settlementHour: challenges.settlementHour,
     })
     .from(challengeMembers)
+    .innerJoin(challenges, eq(challenges.id, challengeMembers.challengeId))
     .where(eq(challengeMembers.userId, user.id))
     .limit(1)
 
@@ -35,6 +39,14 @@ export default async function SettingsPage() {
       {/* Weekly Goal section -- only shown if user is in a challenge (D-08) */}
       {isInChallenge && (
         <GoalStepper currentGoal={membership[0].weeklyGoal} />
+      )}
+
+      {/* Settlement Settings section -- timezone and settlement hour pickers */}
+      {isInChallenge && (
+        <SettlementSettings
+          currentTimezone={membership[0].timezone}
+          currentHour={membership[0].settlementHour}
+        />
       )}
 
       {/* Leave Challenge section -- only shown if user is in a challenge (D-13) */}
