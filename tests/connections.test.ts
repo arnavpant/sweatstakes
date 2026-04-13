@@ -265,3 +265,164 @@ describe('Phase 2: Connections - Auth Next-Param Threading', () => {
     expect(content).toContain("searchParams.get('next')")
   })
 })
+
+// ============================================================
+// Plan 02-03: UI Components Tests
+// ============================================================
+
+describe('Phase 2: Connections - Settings UI (CONN-01)', () => {
+  const inviteLinkPath = 'src/components/connections/invite-link-section.tsx'
+  const shareButtonPath = 'src/components/connections/share-invite-button.tsx'
+  const leaveButtonPath = 'src/components/connections/leave-challenge-button.tsx'
+  const settingsPagePath = 'src/app/(protected)/settings/page.tsx'
+
+  it('invite-link-section.tsx exists and is a client component', () => {
+    expect(fs.existsSync(inviteLinkPath)).toBe(true)
+    const content = fs.readFileSync(inviteLinkPath, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
+  })
+
+  it('invite-link-section.tsx calls generateInviteLinkAction', () => {
+    const content = fs.readFileSync(inviteLinkPath, 'utf-8')
+    expect(content).toContain('generateInviteLinkAction')
+  })
+
+  it('invite-link-section.tsx contains loading state with Loader2 and aria-busy', () => {
+    const content = fs.readFileSync(inviteLinkPath, 'utf-8')
+    expect(content).toContain('Loader2')
+    expect(content).toContain('aria-busy')
+  })
+
+  it('invite-link-section.tsx contains Generate Invite Link button text', () => {
+    const content = fs.readFileSync(inviteLinkPath, 'utf-8')
+    expect(content).toContain('Generate Invite Link')
+  })
+
+  it('invite-link-section.tsx mentions 24 hour expiry in description', () => {
+    const content = fs.readFileSync(inviteLinkPath, 'utf-8')
+    expect(content).toContain('expire after 24 hours')
+  })
+
+  it('share-invite-button.tsx exists and is a client component', () => {
+    expect(fs.existsSync(shareButtonPath)).toBe(true)
+    const content = fs.readFileSync(shareButtonPath, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
+  })
+
+  it('share-invite-button.tsx contains navigator.share (Web Share API)', () => {
+    const content = fs.readFileSync(shareButtonPath, 'utf-8')
+    expect(content).toContain('navigator.share')
+  })
+
+  it('share-invite-button.tsx contains navigator.clipboard.writeText (clipboard fallback)', () => {
+    const content = fs.readFileSync(shareButtonPath, 'utf-8')
+    expect(content).toContain('navigator.clipboard.writeText')
+  })
+
+  it('share-invite-button.tsx contains Copied! feedback text', () => {
+    const content = fs.readFileSync(shareButtonPath, 'utf-8')
+    expect(content).toContain('Copied!')
+  })
+
+  it('leave-challenge-button.tsx exists and is a client component', () => {
+    expect(fs.existsSync(leaveButtonPath)).toBe(true)
+    const content = fs.readFileSync(leaveButtonPath, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
+  })
+
+  it('leave-challenge-button.tsx calls leaveChallengeAction', () => {
+    const content = fs.readFileSync(leaveButtonPath, 'utf-8')
+    expect(content).toContain('leaveChallengeAction')
+  })
+
+  it('leave-challenge-button.tsx has confirmation flow (Are you sure)', () => {
+    const content = fs.readFileSync(leaveButtonPath, 'utf-8')
+    expect(content).toContain('Are you sure')
+    expect(content).toContain('Cancel')
+    expect(content).toContain('Confirm')
+  })
+
+  it('settings page imports InviteLinkSection', () => {
+    const content = fs.readFileSync(settingsPagePath, 'utf-8')
+    expect(content).toContain('InviteLinkSection')
+    expect(content).toContain("from '@/components/connections/invite-link-section'")
+  })
+
+  it('settings page imports LeaveChallengeButton', () => {
+    const content = fs.readFileSync(settingsPagePath, 'utf-8')
+    expect(content).toContain('LeaveChallengeButton')
+    expect(content).toContain("from '@/components/connections/leave-challenge-button'")
+  })
+
+  it('settings page does NOT import Construction (placeholder removed)', () => {
+    const content = fs.readFileSync(settingsPagePath, 'utf-8')
+    expect(content).not.toContain('Construction')
+  })
+
+  it('settings page queries challengeMembers via Drizzle', () => {
+    const content = fs.readFileSync(settingsPagePath, 'utf-8')
+    expect(content).toContain('challengeMembers')
+    expect(content).toContain("from '@/db/schema'")
+  })
+})
+
+describe('Phase 2: Connections - Dashboard UI (CONN-03)', () => {
+  const avatarRowPath = 'src/components/connections/member-avatar-row.tsx'
+  const dashboardPath = 'src/app/(protected)/dashboard/page.tsx'
+
+  it('member-avatar-row.tsx exists', () => {
+    expect(fs.existsSync(avatarRowPath)).toBe(true)
+  })
+
+  it('member-avatar-row.tsx is NOT a client component (no use client)', () => {
+    const content = fs.readFileSync(avatarRowPath, 'utf-8')
+    expect(content).not.toContain("'use client'")
+  })
+
+  it('member-avatar-row.tsx contains MAX_VISIBLE = 5', () => {
+    const content = fs.readFileSync(avatarRowPath, 'utf-8')
+    expect(content).toContain('MAX_VISIBLE = 5')
+  })
+
+  it('member-avatar-row.tsx contains overflow rendering logic (+{overflow})', () => {
+    const content = fs.readFileSync(avatarRowPath, 'utf-8')
+    expect(content).toContain('+{overflow}')
+  })
+
+  it('member-avatar-row.tsx contains Challenge active text', () => {
+    const content = fs.readFileSync(avatarRowPath, 'utf-8')
+    expect(content).toContain('Challenge active')
+  })
+
+  it('member-avatar-row.tsx has referrerPolicy on img tags', () => {
+    const content = fs.readFileSync(avatarRowPath, 'utf-8')
+    expect(content).toContain('referrerPolicy="no-referrer"')
+  })
+
+  it('member-avatar-row.tsx has letter fallback for avatars', () => {
+    const content = fs.readFileSync(avatarRowPath, 'utf-8')
+    expect(content).toContain('charAt(0).toUpperCase()')
+  })
+
+  it('dashboard page imports MemberAvatarRow', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain('MemberAvatarRow')
+    expect(content).toContain("from '@/components/connections/member-avatar-row'")
+  })
+
+  it('dashboard page imports db from @/db', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain("from '@/db'")
+  })
+
+  it('dashboard page still contains empty state: No active challenge yet.', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain('No active challenge yet.')
+    expect(content).toContain('Invite friends to get started.')
+  })
+
+  it('dashboard page conditionally renders based on isInChallenge', () => {
+    const content = fs.readFileSync(dashboardPath, 'utf-8')
+    expect(content).toContain('isInChallenge')
+  })
+})
