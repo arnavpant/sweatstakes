@@ -5,6 +5,7 @@ status: draft
 shadcn_initialized: true
 preset: base-nova
 created: 2026-04-13
+revised: 2026-04-13
 ---
 
 # Phase 4 — UI Design Contract
@@ -62,16 +63,18 @@ Exceptions (inherited + new):
 
 ## Typography
 
-Unchanged from Phase 1. Single typeface, exactly 2 weights.
+Unchanged from Phase 1. Single typeface, exactly 2 weights. Maximum 4 size roles — Phase 4 uses exactly 4.
 
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
 | Display | 40px (text-5xl) | 700 (bold) | 1.1 | Not used in Phase 4 |
 | Heading | 24px (text-2xl) | 700 (bold) | 1.2 | Page title "Streaks & Balance", section headings ("Your Streak", "Balances", "Rewards") |
-| Body | 16px (text-base) | 400 (regular) | 1.5 | Member names, reward item names, empty state body, dialog body copy |
-| Label | 12px (text-xs) | 700 (bold) | 1.4 | Point balance values, "pts" suffix labels, streak count sub-labels, nav labels |
+| Body | 16px (text-base) | 400 (regular) | 1.5 | Member names, reward item names, empty state body, dialog body copy including current balance line |
+| Label | 12px (text-xs) | 700 (bold) | 1.4 | Point balance values, "pts" suffix labels, streak count sub-labels, nav labels, personal best value, field labels |
 
-Point balance display exception: balance numbers use 20px (text-xl) weight 700 for visual emphasis in the leaderboard — this is a label-sized element, not a new role.
+Point balance display exception: balance numbers use 20px (text-xl) weight 700 for visual emphasis in the leaderboard — this is a named exception, not a new role. Section headings "Balances" and "Rewards" also use 20px / bold (text-xl) as a sub-heading within the Heading role range.
+
+**14px is not used anywhere in Phase 4.** All elements previously specified at 14px are mapped to either 12px (Label) or 16px (Body) as documented below.
 
 Font loading: `weights: [400, 700]` — no additional weights.
 
@@ -95,12 +98,13 @@ Royale token system from `globals.css` — unchanged from Phase 1.
 2. Day dots when checked in (`bg-secondary`) — inherited from `day-dots.tsx`
 3. Progress count text when goal met (`text-secondary`) — inherited from `day-dots.tsx`
 4. "Add Reward" "+" button background (`bg-secondary`, `text-on-secondary`)
-5. "Redeem" confirm button background in dialog (`bg-secondary`, `text-on-secondary`)
+5. "Confirm Redeem" button background in dialog (`bg-secondary`, `text-on-secondary`)
 6. Active bottom nav icon — inherited from Phase 1
 7. "Personal best" label badge background (`bg-secondary/20 text-secondary`) — new in Phase 4
 8. Positive balance display: balances > 0 render in `text-secondary`
+9. Current user's leaderboard row ring highlight (`ring-1 ring-secondary/30`) — focal point for Streaks & Balance page
 
-**Accent is NOT applied to:** negative balances, disabled redeem button, delete buttons, leaderboard row borders, inactive list items, dialog cancel button.
+**Accent is NOT applied to:** negative balances, disabled redeem button, delete buttons, leaderboard row borders, inactive list items, dismiss buttons.
 
 **Negative balance color:** `text-error` (#ffb4ab) — negative balances display in error color to signal debt. This is a semantic color use, not destructive-action use.
 
@@ -127,6 +131,8 @@ Phase 4 delivers one screen replacement plus a Settings addition. No new routes.
 
 **Page title:** "Streaks & Balance" — Heading size (24px / bold), `text-on-surface`, at top of scroll content before section 1.
 
+**Focal point:** The current user's leaderboard row is the primary visual anchor of this page. It is distinguished from other rows by a `ring-1 ring-secondary/30` highlight and its balance value rendered in `text-secondary` (if positive). When the user opens this page, their eye should land on their own position and balance first.
+
 **Page structure (top to bottom):**
 
 1. **Streak Section** — reuses `StreakCounter` component pattern
@@ -143,7 +149,7 @@ Phase 4 delivers one screen replacement plus a Settings addition. No new routes.
 
 **Personal best row:** Below the current streak row.
 - Label: "Personal best" — 12px / bold, `text-on-surface-variant`
-- Value: `🏆 N weeks` — 14px / bold, `text-on-surface`
+- Value: `🏆 N weeks` — **12px / bold** (`text-xs font-bold`), `text-on-surface`
 - If personal best is 0: show "No best yet" — `text-on-surface-variant`
 - If current streak equals personal best AND is > 0: append badge `bg-secondary/20 text-secondary text-xs px-2 py-0.5 rounded-full` with text "Current best!"
 
@@ -167,7 +173,7 @@ Row contents left to right:
 
 **Sorting:** Rendered server-side, sorted descending by balance. First place = highest balance.
 
-**You indicator:** The current user's row gets `ring-1 ring-secondary/30` on the container to subtly highlight their position.
+**You indicator:** The current user's row gets `ring-1 ring-secondary/30` on the container to subtly highlight their position. This is the page's primary focal point (see Focal point above).
 
 ---
 
@@ -177,13 +183,15 @@ Row contents left to right:
 
 **Section header row:** heading on left + "+" button on right.
 
-**"+" Add Reward button:** `bg-secondary text-on-secondary rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg min-w-[44px] min-h-[44px]` — tapping opens the Add Reward bottom sheet. Icon: `Plus` from lucide-react, size 18px.
+**"+" Add Reward button affordance:** The "+" icon button sits inline with the "Rewards" section heading, positioned flush right. The section heading provides the label context — the "+" communicates "add to this section." No separate visible text label is needed because the heading immediately to the left reads "Rewards," making the compound affordance unambiguous: "+ [to] Rewards." The button carries `aria-label="Add reward"` for screen readers.
+
+**"+" Add Reward button:** `bg-secondary text-on-secondary rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg min-w-[44px] min-h-[44px]` — tapping opens the Add Reward bottom sheet. Icon: `Plus` from lucide-react, size 18px. `aria-label="Add reward"`.
 
 **Empty state (no rewards yet):**
 - `bg-surface-container rounded-xl p-6 text-center space-y-2`
 - Icon: `lucide-react` `Gift` at 32px, `text-on-surface-variant`
 - Heading: "No rewards yet" — 16px / bold, `text-on-surface`
-- Body: "Add something worth working for." — 14px / regular, `text-on-surface-variant`
+- Body: "Add something worth working for." — 16px / regular, `text-on-surface-variant`
 
 **Reward item list:** `space-y-2`
 
@@ -233,7 +241,7 @@ Row contents left to right:
 **Validation errors:** Inline below each field. `text-error text-sm mt-1`. Renders only after first submit attempt (react-hook-form `mode: "onSubmit"`).
 
 **Action buttons (row, right-aligned):**
-1. Cancel — `variant="ghost"` Button, label "Cancel" — dismisses sheet, no data saved
+1. Discard — `variant="ghost"` Button, label "Discard" — dismisses sheet, unsaved reward data is discarded
 2. Add — `bg-secondary text-on-secondary font-bold rounded-full px-6 py-2` — submits form. Loading state: spinner (`Loader2` lucide, `animate-spin`) replaces label, button disabled.
 
 ---
@@ -253,11 +261,11 @@ Row contents left to right:
 **Dialog body:**
 - Line 1: `"[Reward Name]"` — 16px / bold, `text-on-surface` — quoted reward name
 - Line 2: "This will cost you [N] pts from your balance." — 16px / regular, `text-on-surface-variant`
-- Line 3 (current balance): "Your current balance: [X] pts" — 14px / regular, `text-on-surface-variant`
+- Line 3 (current balance): "Your current balance: [X] pts" — **12px / bold** (`text-xs font-bold`), `text-on-surface-variant` — rendered as a supporting label beneath the main body copy
 
 **Action buttons (row, full-width, stacked vertically on mobile):**
 1. Confirm Redeem — `bg-secondary text-on-secondary font-bold rounded-full w-full py-3` — label "Confirm Redeem". Loading state: spinner replaces label, button disabled.
-2. Cancel — `variant="ghost"` Button, full-width, label "Cancel" — dismisses dialog, no action taken.
+2. Keep my points — `variant="ghost"` Button, full-width, label "Keep my points" — dismisses dialog, no action taken, user retains their current balance.
 
 **Post-redemption:** Dialog closes immediately after server action resolves. No success toast — balance update visible on the leaderboard is the feedback (D-21: silent redemption).
 
@@ -319,14 +327,14 @@ Row contents left to right:
 | Add Reward sheet title | "Add a Reward" | Default |
 | Add Reward name placeholder | "e.g. Movie night pick" | CONTEXT.md specifics note |
 | Add Reward cost placeholder | "e.g. 3" | Default |
-| Add Reward cancel | "Cancel" | Default |
+| Add Reward dismiss | "Discard" | Checker fix — communicates unsaved data is discarded |
 | Add Reward submit | "Add" | Default |
 | Redemption dialog title | "Redeem Reward?" | Default |
 | Redemption dialog body line 1 | "[Reward Name]" (quoted) | CONTEXT.md D-19 |
 | Redemption dialog body line 2 | "This will cost you [N] pts from your balance." | CONTEXT.md D-19 |
 | Redemption dialog body line 3 | "Your current balance: [X] pts" | Default |
 | Redemption confirm | "Confirm Redeem" | Default |
-| Redemption cancel | "Cancel" | Default |
+| Redemption dismiss | "Keep my points" | Checker fix — communicates what user retains |
 | Settlement settings heading | "Settlement Settings" | Default |
 | Timezone label | "Group timezone" | Default |
 | Settlement time label | "Settlement time (Monday)" | Default |
@@ -339,7 +347,7 @@ Row contents left to right:
 | Action | Trigger | Confirmation | Copy |
 |--------|---------|-------------|------|
 | Delete reward | Trash icon on reward row | None — immediate delete (trust-based, D-15) | No copy — icon-only button; `aria-label="Delete [reward name]"` |
-| Redeem reward | "Redeem" button | Confirmation dialog (D-19) | "Redeem Reward?" / "Confirm Redeem" / "Cancel" |
+| Redeem reward | "Redeem" button | Confirmation dialog (D-19) | "Redeem Reward?" / "Confirm Redeem" / "Keep my points" |
 
 **Validation error messages:**
 
@@ -362,6 +370,7 @@ Row contents left to right:
 |-------------|---------------|
 | Touch targets | Minimum 44x44px on all interactive elements |
 | Leaderboard rows | `min-h-14` (56px) — not interactive in Phase 4; future-proofed |
+| Add reward button | `aria-label="Add reward"` — icon-only button requires label |
 | Delete button | `aria-label="Delete [reward name]"` — icon-only button requires label |
 | Redeem button (disabled) | `aria-disabled="true"` + visual opacity — do NOT use `disabled` attribute on Base UI button to preserve focus |
 | Dialog accessibility | Base UI Dialog handles `role="dialog"`, `aria-modal="true"`, focus trap, Escape to close |
