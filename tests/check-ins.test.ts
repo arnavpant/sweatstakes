@@ -416,15 +416,151 @@ describe('Week utilities: getWeekBounds logic (CHKN-04)', () => {
 })
 
 // ============================================================
-// 4. Component stubs (CHKN-01, CHKN-04, CHKN-05)
+// 4. Camera & Upload Components (CHKN-01, CHKN-02) - Plan 02
 // ============================================================
 
-describe('Component stubs: future plans (CHKN-01, CHKN-04, CHKN-05)', () => {
-  it.skip('camera-view.tsx will be created in Plan 02 (CHKN-01)', () => {
-    // Plan 02 will create src/components/check-in/camera-view.tsx
-    expect(fs.existsSync('src/components/check-in/camera-view.tsx')).toBe(true)
+describe('Camera & Upload Components (CHKN-01, CHKN-02)', () => {
+  it('camera-view.tsx exists and is a client component', () => {
+    const path = 'src/components/check-in/camera-view.tsx'
+    expect(fs.existsSync(path)).toBe(true)
+    const content = fs.readFileSync(path, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
   })
 
+  it('camera-view.tsx uses getUserMedia', () => {
+    const content = fs.readFileSync('src/components/check-in/camera-view.tsx', 'utf-8')
+    expect(content).toContain('getUserMedia')
+  })
+
+  it('camera-view.tsx handles both facingMode environment and user', () => {
+    const content = fs.readFileSync('src/components/check-in/camera-view.tsx', 'utf-8')
+    expect(content).toContain("'environment'")
+    expect(content).toContain("'user'")
+    const facingModeMatches = content.match(/facingMode/g)
+    expect(facingModeMatches).not.toBeNull()
+    expect(facingModeMatches!.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('camera-view.tsx calls getTracks for cleanup', () => {
+    const content = fs.readFileSync('src/components/check-in/camera-view.tsx', 'utf-8')
+    expect(content).toContain('getTracks')
+    expect(content).toContain('.forEach(track => track.stop())')
+  })
+
+  it('camera-view.tsx uses createImageBitmap for canvas compositing', () => {
+    const content = fs.readFileSync('src/components/check-in/camera-view.tsx', 'utf-8')
+    expect(content).toContain('createImageBitmap')
+  })
+
+  it('camera-view.tsx applies scaleX(-1) mirror for front camera preview', () => {
+    const content = fs.readFileSync('src/components/check-in/camera-view.tsx', 'utf-8')
+    expect(content).toContain('scaleX(-1)')
+  })
+
+  it('camera-view.tsx uses toBlob for frame capture (rear + composite)', () => {
+    const content = fs.readFileSync('src/components/check-in/camera-view.tsx', 'utf-8')
+    const toBlobMatches = content.match(/toBlob/g)
+    expect(toBlobMatches).not.toBeNull()
+    expect(toBlobMatches!.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('countdown-overlay.tsx exists and is a client component', () => {
+    const path = 'src/components/check-in/countdown-overlay.tsx'
+    expect(fs.existsSync(path)).toBe(true)
+    const content = fs.readFileSync(path, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
+  })
+
+  it('countdown-overlay.tsx shows countdown number', () => {
+    const content = fs.readFileSync('src/components/check-in/countdown-overlay.tsx', 'utf-8')
+    expect(content).toContain('countdown')
+    expect(content).toContain('count')
+  })
+
+  it('capture-button.tsx exists and is a client component', () => {
+    const path = 'src/components/check-in/capture-button.tsx'
+    expect(fs.existsSync(path)).toBe(true)
+    const content = fs.readFileSync(path, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
+  })
+
+  it('capture-button.tsx has onCapture prop', () => {
+    const content = fs.readFileSync('src/components/check-in/capture-button.tsx', 'utf-8')
+    expect(content).toContain('onCapture')
+  })
+
+  it('photo-preview.tsx exists and is a client component', () => {
+    const path = 'src/components/check-in/photo-preview.tsx'
+    expect(fs.existsSync(path)).toBe(true)
+    const content = fs.readFileSync(path, 'utf-8')
+    expect(content.trimStart().startsWith("'use client'")).toBe(true)
+  })
+
+  it('photo-preview.tsx imports submitCheckInAction', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain('submitCheckInAction')
+    expect(content).toContain("from '@/lib/actions/check-ins'")
+  })
+
+  it('photo-preview.tsx uses browser-image-compression', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain('imageCompression')
+    expect(content).toContain("from 'browser-image-compression'")
+  })
+
+  it('photo-preview.tsx uploads to check-in-photos bucket', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain("'check-in-photos'")
+    expect(content).toContain('.upload(')
+  })
+
+  it('photo-preview.tsx uses createObjectURL for preview', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain('createObjectURL')
+    expect(content).toContain('revokeObjectURL')
+  })
+
+  it('photo-preview.tsx has Retake and Submit buttons', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain('Retake')
+    expect(content).toContain('Submit')
+  })
+
+  it('photo-preview.tsx compresses to maxSizeMB 0.5', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain('maxSizeMB: 0.5')
+  })
+
+  it('photo-preview.tsx generates unique filename with timestamp and UUID', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain('Date.now()')
+    expect(content).toContain('crypto.randomUUID()')
+  })
+
+  it('photo-preview.tsx gets today date in local timezone', () => {
+    const content = fs.readFileSync('src/components/check-in/photo-preview.tsx', 'utf-8')
+    expect(content).toContain('getFullYear()')
+    expect(content).toContain('getMonth()')
+    expect(content).toContain('getDate()')
+    expect(content).toContain('padStart')
+  })
+
+  it('check-in page.tsx exists under (protected) route', () => {
+    expect(fs.existsSync('src/app/(protected)/check-in/page.tsx')).toBe(true)
+  })
+
+  it('check-in page.tsx imports CameraView', () => {
+    const content = fs.readFileSync('src/app/(protected)/check-in/page.tsx', 'utf-8')
+    expect(content).toContain('CameraView')
+    expect(content).toContain("from '@/components/check-in/camera-view'")
+  })
+})
+
+// ============================================================
+// 5. Component stubs: future plans (CHKN-04, CHKN-05)
+// ============================================================
+
+describe('Component stubs: future plans (CHKN-04, CHKN-05)', () => {
   it.skip('day-dots.tsx will be created in Plan 03 (CHKN-04)', () => {
     // Plan 03 will create src/components/dashboard/day-dots.tsx
     expect(fs.existsSync('src/components/dashboard/day-dots.tsx')).toBe(true)
@@ -438,10 +574,6 @@ describe('Component stubs: future plans (CHKN-01, CHKN-04, CHKN-05)', () => {
   it.skip('goal-stepper.tsx will be created in Plan 03 (CHKN-03)', () => {
     // Plan 03 will create src/components/settings/goal-stepper.tsx
     expect(fs.existsSync('src/components/settings/goal-stepper.tsx')).toBe(true)
-  })
-
-  it('camera-view.tsx does NOT exist yet (planned for Plan 02)', () => {
-    expect(fs.existsSync('src/components/check-in/camera-view.tsx')).toBe(false)
   })
 
   it('day-dots.tsx does NOT exist yet (planned for Plan 03)', () => {
