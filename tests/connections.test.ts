@@ -101,3 +101,167 @@ describe('Phase 2: Connections - Configuration', () => {
     expect(content).toContain('drizzle-kit push')
   })
 })
+
+// ============================================================
+// Plan 02-02: Server Actions, Join Flow, Auth Next-Param Tests
+// ============================================================
+
+describe('Phase 2: Connections - Server Actions', () => {
+  const actionsPath = 'src/lib/actions/connections.ts'
+
+  it('connections.ts starts with use server directive', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content.trimStart().startsWith("'use server'")).toBe(true)
+  })
+
+  it('exports generateInviteLinkAction function', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('export async function generateInviteLinkAction')
+  })
+
+  it('exports joinChallengeAction function', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('export async function joinChallengeAction')
+  })
+
+  it('exports leaveChallengeAction function', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('export async function leaveChallengeAction')
+  })
+
+  it('uses customAlphabet from nanoid (not Math.random)', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('customAlphabet')
+    expect(content).toContain("from 'nanoid'")
+    expect(content).not.toContain('Math.random')
+  })
+
+  it('invite code alphabet excludes ambiguous characters (0, O, I, 1)', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('ABCDEFGHJKLMNPQRSTUVWXYZ23456789')
+    // Verify excluded: 0, O, I, 1
+    const alphabetMatch = content.match(/INVITE_CODE_ALPHABET\s*=\s*'([^']+)'/)
+    expect(alphabetMatch).not.toBeNull()
+    const alphabet = alphabetMatch![1]
+    expect(alphabet).not.toContain('0')
+    expect(alphabet).not.toContain('O')
+    expect(alphabet).not.toContain('I')
+    expect(alphabet).not.toContain('1')
+  })
+
+  it('invite code length is 8', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toMatch(/INVITE_CODE_LENGTH\s*=\s*8/)
+  })
+
+  it('joinChallengeAction uses atomic update pattern with isNull check (Pitfall 3)', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('isNull(inviteLinks.usedAt)')
+    expect(content).toContain('gt(inviteLinks.expiresAt')
+    expect(content).toContain('.returning()')
+  })
+
+  it('all three actions call supabase.auth.getUser() for auth check', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    const getUserMatches = content.match(/supabase\.auth\.getUser\(\)/g)
+    expect(getUserMatches).not.toBeNull()
+    // All three actions must have their own getUser() call
+    expect(getUserMatches!.length).toBeGreaterThanOrEqual(3)
+  })
+
+  it('generateInviteLinkAction creates challenge implicitly (D-11)', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('db.insert(challenges)')
+  })
+
+  it('generateInviteLinkAction uses 24-hour expiry (D-03)', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('24 * 60 * 60 * 1000')
+  })
+
+  it('joinChallengeAction checks existing membership before joining (D-14)', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain("'already_in_challenge'")
+  })
+
+  it('leaveChallengeAction deletes membership row', () => {
+    const content = fs.readFileSync(actionsPath, 'utf-8')
+    expect(content).toContain('db.delete(challengeMembers)')
+  })
+})
+
+describe('Phase 2: Connections - Join Flow', () => {
+  const joinPagePath = 'src/app/join/[code]/page.tsx'
+  const errorPagePath = 'src/app/join/[code]/error/page.tsx'
+
+  it('join page exists at src/app/join/[code]/page.tsx', () => {
+    expect(fs.existsSync(joinPagePath)).toBe(true)
+  })
+
+  it('join page redirects unauthenticated users to /login?next=', () => {
+    const content = fs.readFileSync(joinPagePath, 'utf-8')
+    expect(content).toContain('/login?next=/join/')
+  })
+
+  it('join page calls joinChallengeAction', () => {
+    const content = fs.readFileSync(joinPagePath, 'utf-8')
+    expect(content).toContain('joinChallengeAction')
+  })
+
+  it('join page uses await params (Next.js 16 async params)', () => {
+    const content = fs.readFileSync(joinPagePath, 'utf-8')
+    expect(content).toContain('await params')
+    expect(content).toContain('Promise<{ code: string }>')
+  })
+
+  it('error page exists at src/app/join/[code]/error/page.tsx', () => {
+    expect(fs.existsSync(errorPagePath)).toBe(true)
+  })
+
+  it('error page contains user-facing expired message', () => {
+    const content = fs.readFileSync(errorPagePath, 'utf-8')
+    expect(content).toContain('expired or already been used')
+  })
+
+  it('error page contains Ask your friend message', () => {
+    const content = fs.readFileSync(errorPagePath, 'utf-8')
+    expect(content).toContain('Ask your friend to send a new invite link')
+  })
+
+  it('error page has a link to /dashboard', () => {
+    const content = fs.readFileSync(errorPagePath, 'utf-8')
+    expect(content).toContain('href="/dashboard"')
+  })
+
+  it('error page maps already_in_challenge error code', () => {
+    const content = fs.readFileSync(errorPagePath, 'utf-8')
+    expect(content).toContain('already_in_challenge')
+  })
+})
+
+describe('Phase 2: Connections - Auth Next-Param Threading', () => {
+  it('signInWithGoogleAction accepts a next parameter', () => {
+    const content = fs.readFileSync('src/lib/actions/auth.ts', 'utf-8')
+    expect(content).toMatch(/signInWithGoogleAction\(next:\s*string/)
+  })
+
+  it('auth.ts encodes next param safely with encodeURIComponent', () => {
+    const content = fs.readFileSync('src/lib/actions/auth.ts', 'utf-8')
+    expect(content).toContain('encodeURIComponent(next)')
+  })
+
+  it('GoogleSignInButton reads next from searchParams', () => {
+    const content = fs.readFileSync('src/components/auth/google-sign-in-button.tsx', 'utf-8')
+    expect(content).toContain("searchParams.get('next')")
+  })
+
+  it('GoogleSignInButton passes next to signInWithGoogleAction', () => {
+    const content = fs.readFileSync('src/components/auth/google-sign-in-button.tsx', 'utf-8')
+    expect(content).toMatch(/signInWithGoogleAction\(nextParam/)
+  })
+
+  it('auth/callback/route.ts reads next param (regression)', () => {
+    const content = fs.readFileSync('src/app/auth/callback/route.ts', 'utf-8')
+    expect(content).toContain("searchParams.get('next')")
+  })
+})
