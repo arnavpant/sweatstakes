@@ -48,9 +48,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Drizzle ORM client, database schema (challenges, members, invites), and schema push to Supabase
-- [ ] 02-02-PLAN.md — Server Actions (generate, join, leave), public /join/[code] route, and auth next-param threading
-- [ ] 02-03-PLAN.md — Settings invite UI, dashboard member avatar row, share/leave components, and end-to-end verification
+- [x] 02-01-PLAN.md — Drizzle ORM client, database schema (challenges, members, invites), and schema push to Supabase
+- [x] 02-02-PLAN.md — Server Actions (generate, join, leave), public /join/[code] route, and auth next-param threading
+- [x] 02-03-PLAN.md — Settings invite UI, dashboard member avatar row, share/leave components, and end-to-end verification
 
 ### Phase 3: Check-ins & Goals
 **Goal**: Users can log workouts via photo and track their weekly progress toward personal goals
