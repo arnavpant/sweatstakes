@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { updateSettlementSettingsAction } from '@/lib/actions/points'
 import { Loader2 } from 'lucide-react'
 
@@ -15,8 +15,13 @@ export function SettlementSettings({ currentTimezone, currentHour }: SettlementS
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
 
-  // Get all IANA timezones from the runtime
-  const timezones = Intl.supportedValuesOf('timeZone')
+  // Populate the IANA timezone list only after mount — server (Node.js) and
+  // browser return different sets from Intl.supportedValuesOf('timeZone') based
+  // on their ICU data versions, causing a hydration mismatch if rendered during SSR.
+  const [timezones, setTimezones] = useState<string[]>([currentTimezone])
+  useEffect(() => {
+    setTimezones(Intl.supportedValuesOf('timeZone'))
+  }, [])
 
   // Generate 24 hourly options
   const hours = Array.from({ length: 24 }, (_, i) => i)
