@@ -1,11 +1,13 @@
 /**
  * Week boundary utilities for Monday-Sunday fitness weeks (D-13).
  * Used by Server Components and Server Actions for progress/streak computation.
+ *
+ * Pure utility functions (getMonday, getSunday, getWeekBounds) have no dependencies
+ * and can be imported safely in any context including tests.
+ *
+ * Data-fetching functions (getWeeklyProgress, computeStreak) use lazy db imports
+ * so importing this module doesn't require DATABASE_URL at module evaluation time.
  */
-
-import { db } from '@/db'
-import { checkIns, challengeMembers } from '@/db/schema'
-import { eq, and, gte, lte } from 'drizzle-orm'
 
 /**
  * Get Monday 00:00:00 of the week containing `date`.
@@ -65,6 +67,10 @@ export async function getWeeklyProgress(
   challengeId: string,
   date: Date
 ): Promise<{ checkedInDays: string[]; goal: number }> {
+  const { db } = await import('@/db')
+  const { checkIns, challengeMembers } = await import('@/db/schema')
+  const { eq, and, gte, lte } = await import('drizzle-orm')
+
   const { start, end } = getWeekBounds(date)
 
   // Query check-ins for this week
@@ -107,6 +113,10 @@ export async function computeStreak(
   challengeId: string,
   weeklyGoal: number
 ): Promise<number> {
+  const { db } = await import('@/db')
+  const { checkIns } = await import('@/db/schema')
+  const { eq, and, gte, lte } = await import('drizzle-orm')
+
   let streak = 0
 
   // Start from the previous week (never current week per D-16)
