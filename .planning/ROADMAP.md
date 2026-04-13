@@ -1,0 +1,94 @@
+# Roadmap: SweatStakes
+
+## Overview
+
+SweatStakes ships in five phases that build on each other without dead ends. Phase 1 gets the project running and users logged in. Phase 2 connects them to each other. Phase 3 delivers the core workout loop — photo check-ins, personal goals, and streaks. Phase 4 implements the points economy that turns accountability into real stakes. Phase 5 assembles all five designed screens into a polished, shippable product.
+
+## Phases
+
+**Phase Numbering:**
+- Integer phases (1, 2, 3): Planned milestone work
+- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+
+Decimal phases appear between their surrounding integers in numeric order.
+
+- [ ] **Phase 1: Foundation & Auth** - Project scaffold, hosting, and Google OAuth login
+- [ ] **Phase 2: Connections** - Invite links and shared group membership
+- [ ] **Phase 3: Check-ins & Goals** - Photo workout logging, personal weekly goals, progress tracking, and streak counting
+- [ ] **Phase 4: Points & Stakes** - Points economy, the ledger, rewards menu, and point redemption
+- [ ] **Phase 5: Dashboard, Feed & Polish** - All five Stitch-designed screens functional with Royale theme
+
+## Phase Details
+
+### Phase 1: Foundation & Auth
+**Goal**: The app is deployed and users can sign in with Google
+**Depends on**: Nothing (first phase)
+**Requirements**: AUTH-01, AUTH-02
+**Success Criteria** (what must be TRUE):
+  1. User can open the app on a phone browser and see the Login screen
+  2. User can tap "Sign in with Google" and complete OAuth in the same browser tab
+  3. User lands on the dashboard after a successful sign-in
+  4. User is still logged in after refreshing the browser tab
+**Plans**: TBD
+
+### Phase 2: Connections
+**Goal**: Users can bring their friends into a shared challenge via a link
+**Depends on**: Phase 1
+**Requirements**: CONN-01, CONN-02, CONN-03
+**Success Criteria** (what must be TRUE):
+  1. A logged-in user can generate a shareable invite link
+  2. A new user who taps the invite link is prompted to sign in and then joins the group
+  3. After joining, both users can see each other as members of the same challenge
+**Plans**: TBD
+
+### Phase 3: Check-ins & Goals
+**Goal**: Users can log workouts via photo and track their weekly progress toward personal goals
+**Depends on**: Phase 2
+**Requirements**: CHKN-01, CHKN-02, CHKN-03, CHKN-04, CHKN-05
+**Success Criteria** (what must be TRUE):
+  1. User can tap a button, grant camera permission, take a photo, and submit it as a workout check-in
+  2. The submitted photo appears in the activity feed
+  3. User can set their personal weekly workout goal (1–7 days per week)
+  4. A progress tracker shows how many days the user has checked in vs their weekly goal
+  5. A streak counter correctly increments each week the user hits their goal and resets on a missed week
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 4: Points & Stakes
+**Goal**: Points flow correctly — users earn when they hit goals, owe when they miss, and can redeem against a group rewards menu
+**Depends on**: Phase 3
+**Requirements**: STAK-01, STAK-02, STAK-03, STAK-04, STAK-05, STAK-06
+**Success Criteria** (what must be TRUE):
+  1. User who hits their weekly goal earns points at week-end settlement
+  2. User who misses their goal sees a negative ledger adjustment equal to points owed to each member who hit their goal
+  3. When all members miss, no points change hands and the ledger is unchanged
+  4. The Ledger screen shows each member's current running point balance
+  5. Any member can add a reward item with a name and point cost to the group rewards menu
+  6. A member with sufficient points can redeem a reward; their balance decreases by the item cost
+**Plans**: TBD
+
+### Phase 5: Dashboard, Feed & Polish
+**Goal**: All five Stitch-designed screens are fully functional and visually match the Royale design system
+**Depends on**: Phase 4
+**Requirements**: FEED-01, FEED-02, DASH-01, DASH-02, DASH-03, SETT-01, SETT-02, SETT-03, DSGN-01, DSGN-02, DSGN-03
+**Success Criteria** (what must be TRUE):
+  1. The Dashboard screen shows the active stakes description, each member's weekly progress side-by-side, and a gallery of recent check-in photos
+  2. The Feed screen shows a reverse-chronological list of check-in photos from all group members, with poster name and timestamp on each entry
+  3. The Settings screen lets the user change their weekly goal, toggle notifications, and update their profile name and photo
+  4. All five screens — Login, Dashboard, Streaks & Balance, Feed, Settings — are reachable via the floating bottom navigation
+  5. Every screen renders in dark navy and emerald green using Plus Jakarta Sans and Material icons on a phone-sized browser viewport
+**Plans**: TBD
+**UI hint**: yes
+
+## Progress
+
+**Execution Order:**
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1. Foundation & Auth | 0/TBD | Not started | - |
+| 2. Connections | 0/TBD | Not started | - |
+| 3. Check-ins & Goals | 0/TBD | Not started | - |
+| 4. Points & Stakes | 0/TBD | Not started | - |
+| 5. Dashboard, Feed & Polish | 0/TBD | Not started | - |
