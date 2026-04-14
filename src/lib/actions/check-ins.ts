@@ -27,19 +27,24 @@ export async function submitCheckInAction(
   const urlResult = z.string().url().safeParse(photoUrl)
   if (!urlResult.success) return { error: 'Invalid photo URL' }
 
-  // Optionally verify it starts with the Supabase URL
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (supabaseUrl && !photoUrl.startsWith(supabaseUrl)) {
-    return { error: 'Invalid photo URL' }
+  // Defense-in-depth: ensure the URL is hosted on *.supabase.co so arbitrary
+  // external hosts can't be embedded via <img src>. Tolerant of trailing
+  // whitespace / slashes in NEXT_PUBLIC_SUPABASE_URL (which caused false-positive
+  // rejections in production when the env value was stored with hidden chars).
+  const isSupabaseHost = (u: string) => {
+    try {
+      return new URL(u).hostname.endsWith('.supabase.co')
+    } catch {
+      return false
+    }
   }
+  if (!isSupabaseHost(photoUrl)) return { error: 'Invalid photo URL' }
 
   // Validate selfieUrl the same way when present.
   if (selfieUrl !== null) {
     const selfieResult = z.string().url().safeParse(selfieUrl)
     if (!selfieResult.success) return { error: 'Invalid selfie URL' }
-    if (supabaseUrl && !selfieUrl.startsWith(supabaseUrl)) {
-      return { error: 'Invalid selfie URL' }
-    }
+    if (!isSupabaseHost(selfieUrl)) return { error: 'Invalid selfie URL' }
   }
 
   // T-03-03: Validate checkedInDate format YYYY-MM-DD

@@ -138,10 +138,9 @@ describe('Server Actions: check-in mutations (CHKN-01, CHKN-03)', () => {
     expect(content).toContain("'Invalid photo URL'")
   })
 
-  it('submitCheckInAction optionally validates photoUrl starts with Supabase URL', () => {
+  it('submitCheckInAction validates photoUrl is hosted on a Supabase host', () => {
     const content = fs.readFileSync(actionsPath, 'utf-8')
-    expect(content).toContain('NEXT_PUBLIC_SUPABASE_URL')
-    expect(content).toContain('startsWith')
+    expect(content).toContain('supabase.co')
   })
 
   it('submitCheckInAction validates checkedInDate format with regex - T-03-03', () => {
