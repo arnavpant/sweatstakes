@@ -9,6 +9,7 @@ import { LeaveChallengeButton } from '@/components/connections/leave-challenge-b
 import { GoalStepper } from '@/components/settings/goal-stepper'
 import { SettlementSettings } from '@/components/settings/settlement-settings'
 import { NotificationsSection } from '@/components/settings/notifications-section'
+import { ProfileSection } from '@/components/settings/profile-section'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
@@ -21,6 +22,8 @@ export default async function SettingsPage() {
     .select({
       challengeId: challengeMembers.challengeId,
       weeklyGoal: challengeMembers.weeklyGoal,
+      displayName: challengeMembers.displayName,
+      avatarUrl: challengeMembers.avatarUrl,
       timezone: challenges.timezone,
       settlementHour: challenges.settlementHour,
       notificationsEnabled: challengeMembers.notificationsEnabled,
@@ -44,9 +47,27 @@ export default async function SettingsPage() {
     : []
   const hasActiveSubscription = subRows.length > 0
 
+  // Phase 5 SETT-03: Google OAuth avatar_url is the fallback when the user
+  // hasn't uploaded a custom photo. It's stored on auth.users.user_metadata
+  // at signup.
+  const googleAvatarUrl =
+    (user.user_metadata as Record<string, unknown> | null)?.avatar_url as string | undefined ?? null
+
   return (
     <div className="flex flex-col px-4 pt-8 pb-8 space-y-6">
       <h1 className="text-2xl font-bold text-on-surface">Settings</h1>
+
+      {/* Profile section (SETT-03) -- Plan 04. Only shown when in a challenge
+          since there's no challenge_members row (and therefore no display name
+          to edit) until the user joins. */}
+      {isInChallenge && (
+        <ProfileSection
+          userId={user.id}
+          displayName={membership[0].displayName}
+          customAvatarUrl={membership[0].avatarUrl}
+          googleAvatarUrl={googleAvatarUrl}
+        />
+      )}
 
       {/* Invite Friends section (D-04: invite generation lives on Settings page) */}
       <InviteLinkSection />
