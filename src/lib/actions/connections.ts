@@ -46,7 +46,10 @@ export async function generateInviteLinkAction() {
   // Generate unique 8-char code (D-02) with retry on collision (WR-01)
   // 24-hour expiry (D-03)
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+    'http://localhost:3000'
 
   let attempts = 0
   while (attempts < 3) {
