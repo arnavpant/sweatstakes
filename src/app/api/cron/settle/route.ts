@@ -58,11 +58,15 @@ function getPreviousMonday(now: Date, timezone: string): string {
 
 /**
  * Vercel Cron handler for weekly settlement.
- * Scheduled: Monday 10:00 AM UTC (via vercel.json).
+ * Scheduled: hourly (0 * * * *) via vercel.json so every timezone's
+ * Monday settlementHour can be matched exactly once per week.
+ * NOTE: hourly cron requires Vercel Pro — Hobby allows only 2 cron/day.
  * Protected by CRON_SECRET Bearer token.
  *
  * For each challenge, checks if it's Monday in the challenge's timezone
  * and if the settlement hour has passed. If so, settles the previous week.
+ * The settled_weeks unique constraint prevents double-settlement during the
+ * remaining hours of the same Monday.
  */
 export async function GET(request: NextRequest) {
   // T-04-01: Verify CRON_SECRET
