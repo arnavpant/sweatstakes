@@ -611,24 +611,27 @@ describe('Goal Stepper UI (CHKN-03)', () => {
 })
 
 // ============================================================
-// 6. Day Dots Progress (CHKN-04)
+// 6. Weekly Progress Grid (CHKN-04)
+//
+// Replaces the older DayDots + MemberCardRow pair with a single
+// unified 2-column card showing every member's weekly progress.
 // ============================================================
 
-describe('Day Dots Progress (CHKN-04)', () => {
-  const dayDotsPath = 'src/components/dashboard/day-dots.tsx'
+describe('Weekly Progress Grid (CHKN-04)', () => {
+  const gridPath = 'src/components/dashboard/weekly-progress-grid.tsx'
   const dashboardPath = 'src/app/(protected)/dashboard/page.tsx'
 
-  it('day-dots.tsx exists', () => {
-    expect(fs.existsSync(dayDotsPath)).toBe(true)
+  it('weekly-progress-grid.tsx exists', () => {
+    expect(fs.existsSync(gridPath)).toBe(true)
   })
 
-  it('day-dots.tsx is NOT a client component (Server Component)', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+  it('weekly-progress-grid.tsx is a Server Component', () => {
+    const content = fs.readFileSync(gridPath, 'utf-8')
     expect(content).not.toContain("'use client'")
   })
 
-  it('day-dots.tsx contains day letters M T W T F S S', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+  it('weekly-progress-grid.tsx contains day letters M T W T F S S', () => {
+    const content = fs.readFileSync(gridPath, 'utf-8')
     expect(content).toContain("'M'")
     expect(content).toContain("'T'")
     expect(content).toContain("'W'")
@@ -636,31 +639,26 @@ describe('Day Dots Progress (CHKN-04)', () => {
     expect(content).toContain("'S'")
   })
 
-  it('day-dots.tsx uses emerald fill for checked dots', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+  it('weekly-progress-grid.tsx uses emerald fill for checked dots', () => {
+    const content = fs.readFileSync(gridPath, 'utf-8')
     expect(content).toContain('bg-emerald-500')
   })
 
-  it('day-dots.tsx receives checkedInDays prop', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+  it('weekly-progress-grid.tsx receives per-member checkedInDays', () => {
+    const content = fs.readFileSync(gridPath, 'utf-8')
     expect(content).toContain('checkedInDays')
   })
 
-  it('day-dots.tsx shows progress count with days format', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
-    expect(content).toContain('/{goal} days')
-  })
-
-  it('day-dots.tsx highlights today with ring', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+  it('weekly-progress-grid.tsx highlights today with ring', () => {
+    const content = fs.readFileSync(gridPath, 'utf-8')
     expect(content).toContain('ring-2')
     expect(content).toContain('ring-emerald-400/60')
   })
 
-  it('Dashboard page imports DayDots', () => {
+  it('Dashboard page imports WeeklyProgressGrid', () => {
     const content = fs.readFileSync(dashboardPath, 'utf-8')
-    expect(content).toContain('DayDots')
-    expect(content).toContain("from '@/components/dashboard/day-dots'")
+    expect(content).toContain('WeeklyProgressGrid')
+    expect(content).toContain("from '@/components/dashboard/weekly-progress-grid'")
   })
 
   it('Dashboard page calls getWeeklyProgress', () => {
@@ -672,28 +670,17 @@ describe('Day Dots Progress (CHKN-04)', () => {
 // ============================================================
 // 7. Streak display (CHKN-05)
 //
-// The dashboard redesign (quick 260414-82g) folded the standalone
-// StreakCounter into DayDots as an inline streak pill.
-// StreakSection on /streaks now inlines the same fire-emoji rendering.
+// The standalone streak-counter on the dashboard was removed when
+// the weekly card was consolidated into WeeklyProgressGrid.
+// StreakSection on /streaks remains the dedicated streak surface.
 // ============================================================
 
 describe('Streak display (CHKN-05)', () => {
-  const dashboardPath = 'src/app/(protected)/dashboard/page.tsx'
-  const dayDotsPath = 'src/components/dashboard/day-dots.tsx'
   const streakSectionPath = 'src/components/streaks/streak-section.tsx'
+  const dashboardPath = 'src/app/(protected)/dashboard/page.tsx'
 
-  it('standalone streak-counter.tsx no longer exists (folded into DayDots)', () => {
+  it('standalone streak-counter.tsx no longer exists', () => {
     expect(fs.existsSync('src/components/dashboard/streak-counter.tsx')).toBe(false)
-  })
-
-  it('DayDots exposes a streak prop', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
-    expect(content).toContain('streak')
-  })
-
-  it('DayDots is NOT a client component (Server Component)', () => {
-    const content = fs.readFileSync(dayDotsPath, 'utf-8')
-    expect(content).not.toContain("'use client'")
   })
 
   it('StreakSection handles zero streak with "No streak yet"', () => {
@@ -710,11 +697,6 @@ describe('Streak display (CHKN-05)', () => {
   it('Dashboard page no longer imports StreakCounter', () => {
     const content = fs.readFileSync(dashboardPath, 'utf-8')
     expect(content).not.toContain("from '@/components/dashboard/streak-counter'")
-  })
-
-  it('Dashboard page calls computeStreak', () => {
-    const content = fs.readFileSync(dashboardPath, 'utf-8')
-    expect(content).toContain('computeStreak')
   })
 })
 
@@ -807,7 +789,7 @@ describe('End-to-End Integration (all CHKN)', () => {
       'src/components/check-in/photo-preview.tsx',
       'src/components/check-in/capture-button.tsx',
       'src/components/check-in/countdown-overlay.tsx',
-      'src/components/dashboard/day-dots.tsx',
+      'src/components/dashboard/weekly-progress-grid.tsx',
       'src/components/settings/goal-stepper.tsx',
       'src/components/layout/bottom-nav.tsx',
       'src/app/(protected)/check-in/page.tsx',
@@ -829,10 +811,11 @@ describe('End-to-End Integration (all CHKN)', () => {
     expect(content).toContain('export async function computeStreak')
   })
 
-  it('Dashboard imports DayDots (StreakCounter folded into DayDots pill)', () => {
+  it('Dashboard imports WeeklyProgressGrid (old DayDots + MemberCardRow consolidated)', () => {
     const content = fs.readFileSync('src/app/(protected)/dashboard/page.tsx', 'utf-8')
-    expect(content).toContain("from '@/components/dashboard/day-dots'")
-    expect(content).not.toContain("from '@/components/dashboard/streak-counter'")
+    expect(content).toContain("from '@/components/dashboard/weekly-progress-grid'")
+    expect(content).not.toContain("from '@/components/dashboard/day-dots'")
+    expect(content).not.toContain("from '@/components/dashboard/member-card-row'")
   })
 
   it('Settings imports GoalStepper', () => {

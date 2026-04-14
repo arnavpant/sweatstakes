@@ -1,23 +1,21 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { db } from '@/db'
-import { challengeMembers } from '@/db/schema'
+import { challengeMembers, challenges } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { UserAvatar } from '@/components/dashboard/user-avatar'
 import { MemberAvatarRow } from '@/components/connections/member-avatar-row'
-import { DayDots } from '@/components/dashboard/day-dots'
-import { MemberCardRow } from '@/components/dashboard/member-card-row'
+import { WeeklyProgressGrid } from '@/components/dashboard/weekly-progress-grid'
 import { PhotoGallery } from '@/components/dashboard/photo-gallery'
-import { getWeeklyProgress, computeStreak, getMonday } from '@/lib/utils/week'
+import { getWeeklyProgress, getMonday } from '@/lib/utils/week'
 import {
   getMemberProgressRows,
   getRecentCheckInPhotos,
 } from '@/lib/queries/dashboard'
 
-interface MemberCardRowEntry {
+interface MemberProgressEntry {
   userId: string
   displayName: string
-  avatarUrl: string | null
   weeklyGoal: number
   checkedInDays: string[]
   isCurrentUser: boolean
@@ -54,13 +52,9 @@ export default async function DashboardPage() {
 
   const isInChallenge = members.length > 0
 
-  // Compute weekly progress and streak when user is in a challenge
-  let weeklyProgress = { checkedInDays: [] as string[], goal: 3 }
-  let streak = 0
   let weekStart = ''
-
-  // Phase 5 additions (DASH-02/03)
-  let memberRows: MemberCardRowEntry[] = []
+  let timezone = 'America/New_York'
+  let memberProgress: MemberProgressEntry[] = []
   let recentPhotos: { id: string; photoUrl: string; selfieUrl: string | null }[] = []
 
   if (userMembership.length > 0) {
@@ -70,13 +64,18 @@ export default async function DashboardPage() {
 
     const challengeId = userMembership[0].challengeId
 
-    weeklyProgress = await getWeeklyProgress(user.id, challengeId, now)
-    streak = await computeStreak(user.id, challengeId, weeklyProgress.goal)
+    // Fetch the challenge row for its timezone (used by WeeklyProgressGrid).
+    const [challengeRow] = await db
+      .select({ timezone: challenges.timezone })
+      .from(challenges)
+      .where(eq(challenges.id, challengeId))
+      .limit(1)
+    if (challengeRow) timezone = challengeRow.timezone
 
     // DASH-03: recent check-in photos for the gallery grid
     recentPhotos = await getRecentCheckInPhotos(challengeId, 6)
 
-    // DASH-02: per-member weekly progress rows, with current user pinned first
+    // Per-member weekly progress (every member, current user pinned first)
     const rawMembers = await getMemberProgressRows(challengeId)
     const progressPerMember = await Promise.all(
       rawMembers.map(async (m) => {
@@ -84,14 +83,13 @@ export default async function DashboardPage() {
         return {
           userId: m.userId,
           displayName: m.displayName,
-          avatarUrl: m.avatarUrl,
           weeklyGoal: m.weeklyGoal,
           checkedInDays: p.checkedInDays,
           isCurrentUser: m.userId === user.id,
         }
       })
     )
-    memberRows = progressPerMember.sort(
+    memberProgress = progressPerMember.sort(
       (a, b) => Number(b.isCurrentUser) - Number(a.isCurrentUser)
     )
   }
@@ -110,13 +108,11 @@ export default async function DashboardPage() {
         {isInChallenge ? (
           <div className="space-y-4">
             <MemberAvatarRow members={members} />
-            <DayDots
-              checkedInDays={weeklyProgress.checkedInDays}
-              goal={weeklyProgress.goal}
+            <WeeklyProgressGrid
+              members={memberProgress}
               weekStart={weekStart}
-              streak={streak}
+              timezone={timezone}
             />
-            <MemberCardRow rows={memberRows} weekStart={weekStart} />
             <PhotoGallery photos={recentPhotos} />
           </div>
         ) : (
