@@ -14,6 +14,31 @@ interface Member {
   weeklyGoal: number
   checkedInDays: string[]
   isCurrentUser: boolean
+  streak: number
+}
+
+/**
+ * Inline streak indicator: flame + "Nw" when the member has an active streak,
+ * a snowflake when they don't. Kept tight so it fits next to the member name
+ * in a narrow 2-column cell.
+ */
+function StreakBadge({ streak }: { streak: number }) {
+  if (streak > 0) {
+    return (
+      <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-orange-300 bg-orange-500/15 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+        <span className="material-symbols-outlined text-[13px] leading-none">local_fire_department</span>
+        {streak}w
+      </span>
+    )
+  }
+  return (
+    <span
+      className="inline-flex items-center text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded-full"
+      title="No streak yet"
+    >
+      <span className="material-symbols-outlined text-[13px] leading-none">ac_unit</span>
+    </span>
+  )
 }
 
 interface WeeklyProgressGridProps {
@@ -108,31 +133,57 @@ export function WeeklyProgressGrid({ members, weekStart, timezone }: WeeklyProgr
           return (
             <div key={m.userId} className="min-w-0">
               <div className="flex items-center justify-between gap-2 mb-2.5">
-                <span className="text-sm font-semibold text-white truncate">
-                  {m.displayName}
-                </span>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span className="text-sm font-semibold text-white truncate">
+                    {m.displayName}
+                  </span>
+                  <StreakBadge streak={m.streak} />
+                </div>
                 <span className="text-xs text-slate-300 bg-white/10 px-2 py-0.5 rounded-md whitespace-nowrap">
                   {completed}/{m.weeklyGoal}
                 </span>
               </div>
-              <div className="grid grid-cols-4 gap-1.5">
-                {DAY_LABELS.map((label, i) => {
-                  const date = addDays(weekStart, i)
-                  const isChecked = set.has(date)
-                  const isToday = date === today
-                  return (
-                    <div
-                      key={i}
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-semibold ${
-                        isChecked
-                          ? 'bg-emerald-500 text-white'
-                          : 'bg-white/5 text-slate-400'
-                      } ${isToday && !isChecked ? 'ring-2 ring-emerald-400/60' : ''}`}
-                    >
-                      {label}
-                    </div>
-                  )
-                })}
+              {/*
+                Zig-zag day dots: top row = M T W T (4), bottom row = F S S (3)
+                offset by half a dot-width + half a gap so each bottom dot sits
+                under the gap between two top dots.
+                Dot = w-8 (32px), gap = 6px → offset = 16 + 3 = 19px.
+              */}
+              <div className="space-y-1.5">
+                <div className="flex gap-1.5">
+                  {DAY_LABELS.slice(0, 4).map((label, i) => {
+                    const date = addDays(weekStart, i)
+                    const isChecked = set.has(date)
+                    const isToday = date === today
+                    return (
+                      <div
+                        key={i}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-semibold ${
+                          isChecked ? 'bg-emerald-500 text-white' : 'bg-white/5 text-slate-400'
+                        } ${isToday && !isChecked ? 'ring-2 ring-emerald-400/60' : ''}`}
+                      >
+                        {label}
+                      </div>
+                    )
+                  })}
+                </div>
+                <div className="flex gap-1.5 pl-[19px]">
+                  {DAY_LABELS.slice(4, 7).map((label, i) => {
+                    const date = addDays(weekStart, i + 4)
+                    const isChecked = set.has(date)
+                    const isToday = date === today
+                    return (
+                      <div
+                        key={i + 4}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-semibold ${
+                          isChecked ? 'bg-emerald-500 text-white' : 'bg-white/5 text-slate-400'
+                        } ${isToday && !isChecked ? 'ring-2 ring-emerald-400/60' : ''}`}
+                      >
+                        {label}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           )

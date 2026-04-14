@@ -7,7 +7,7 @@ import { UserAvatar } from '@/components/dashboard/user-avatar'
 import { MemberAvatarRow } from '@/components/connections/member-avatar-row'
 import { WeeklyProgressGrid } from '@/components/dashboard/weekly-progress-grid'
 import { PhotoGallery } from '@/components/dashboard/photo-gallery'
-import { getWeeklyProgress, getMonday } from '@/lib/utils/week'
+import { getWeeklyProgress, computeStreak, getMonday } from '@/lib/utils/week'
 import {
   getMemberProgressRows,
   getRecentCheckInPhotos,
@@ -19,6 +19,7 @@ interface MemberProgressEntry {
   weeklyGoal: number
   checkedInDays: string[]
   isCurrentUser: boolean
+  streak: number
 }
 
 export default async function DashboardPage() {
@@ -79,13 +80,17 @@ export default async function DashboardPage() {
     const rawMembers = await getMemberProgressRows(challengeId)
     const progressPerMember = await Promise.all(
       rawMembers.map(async (m) => {
-        const p = await getWeeklyProgress(m.userId, challengeId, now)
+        const [p, s] = await Promise.all([
+          getWeeklyProgress(m.userId, challengeId, now),
+          computeStreak(m.userId, challengeId, m.weeklyGoal),
+        ])
         return {
           userId: m.userId,
           displayName: m.displayName,
           weeklyGoal: m.weeklyGoal,
           checkedInDays: p.checkedInDays,
           isCurrentUser: m.userId === user.id,
+          streak: s,
         }
       })
     )
