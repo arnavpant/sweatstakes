@@ -1,0 +1,58 @@
+# Scheduled crons for SweatStakes
+#
+# WHY THIS EXISTS:
+#   Vercel Hobby tier caps cron jobs at 2/day and only supports daily schedules.
+#   SweatStakes needs two HOURLY crons (settlement + reminders) for timezone-aware
+#   per-user delivery. GitHub Actions supports any cron schedule for free, so we
+#   run the schedule here and simply curl the already-deployed Vercel endpoints.
+#   The route handlers authenticate via `Authorization: Bearer $CRON_SECRET`, so
+#   no Next.js route code needs to change.
+#
+# REQUIRED GITHUB REPO SECRETS (Settings -> Secrets and variables -> Actions):
+#   1. CRON_SECRET    — MUST match the CRON_SECRET env var set in Vercel
+#                       (the Vercel-side value is still required; the routes
+#                       read process.env.CRON_SECRET server-side).
+#   2. PROD_BASE_URL  — Full origin of the deployed site, no trailing slash.
+#                       Example: https://sweatstakes.vercel.app
+#
+# TESTING MANUALLY:
+#   The `workflow_dispatch` trigger below adds a "Run workflow" button on the
+#   Actions tab in GitHub. Use it to fire both jobs on demand without waiting
+#   for the top of the hour.
+#
+# OPERATIONAL NOTE:
+#   GitHub Actions scheduled runs are best-effort and may be delayed up to
+#   ~15 minutes under high platform load. Both use cases (weekly settlement
+#   check + hourly reminders) tolerate that skew.
+
+name: Scheduled crons
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  settle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit /api/cron/settle
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PROD_BASE_URL: ${{ secrets.PROD_BASE_URL }}
+        run: |
+          curl -fsS --retry 3 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$PROD_BASE_URL/api/cron/settle"
+
+  reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit /api/cron/reminders
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PROD_BASE_URL: ${{ secrets.PROD_BASE_URL }}
+        run: |
+          curl -fsS --retry 3 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$PROD_BASE_URL/api/cron/reminders"
