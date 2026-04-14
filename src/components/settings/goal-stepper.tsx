@@ -30,7 +30,7 @@ export function GoalStepper({ currentGoal }: GoalStepperProps) {
     if ('error' in result) {
       // Revert on failure
       setGoal(previousGoal)
-      setError(result.error)
+      setError(result.error ?? 'Failed to update goal')
     }
 
     setLoading(false)

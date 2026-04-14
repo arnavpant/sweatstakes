@@ -61,11 +61,9 @@ export async function generateInviteLinkAction() {
       return { url: `${siteUrl}/join/${code}` }
     } catch {
       attempts = attempts + 1
-      if (attempts >= 3) {
-        return { error: 'Failed to generate invite link. Please try again.' }
-      }
     }
   }
+  return { error: 'Failed to generate invite link. Please try again.' }
 }
 
 /**
