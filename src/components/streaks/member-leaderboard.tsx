@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 interface LeaderboardMember {
   userId: string
   displayName: string
@@ -37,11 +39,14 @@ export function MemberLeaderboard({ members, currentUserId }: MemberLeaderboardP
 
               {/* Avatar */}
               {member.avatarUrl ? (
-                <img
+                <Image
                   src={member.avatarUrl}
                   alt={member.displayName}
+                  width={36}
+                  height={36}
                   className="w-9 h-9 rounded-full object-cover"
                   referrerPolicy="no-referrer"
+                  unoptimized
                 />
               ) : (
                 <div className="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center">
