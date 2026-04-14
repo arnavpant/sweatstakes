@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: phase_complete
-stopped_at: Phase 4 complete — UAT approved, verification passed
-last_updated: "2026-04-13T23:55:00Z"
-last_activity: 2026-04-13 -- Phase 04 execution complete
+status: executing
+stopped_at: Phase 4 complete — code review fixes applied, all 17 tests pass
+last_updated: "2026-04-14T04:31:41.739Z"
+last_activity: 2026-04-14 -- Completed quick task 260414-5bc: Fix check-in photo upload 400
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 15
+  total_plans: 19
   completed_plans: 15
-  percent: 80
+  percent: 79
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-12)
 
 **Core value:** Friends actually stick to their workout routines because there's something real on the line — social accountability with tangible stakes.
-**Current focus:** Phase 04 — points-stakes (COMPLETE)
+**Current focus:** Phase 05 — dashboard-feed-polish
 
 ## Current Position
 
-Phase: 04 (points-stakes) — COMPLETE
-Plan: 4 of 4 complete
-Status: Phase verified — ready for next phase
-Last activity: 2026-04-13 -- Phase 04 execution complete
+Phase: 05 (dashboard-feed-polish) — EXECUTING
+Plan: 1 of 4
+Status: Executing Phase 05
+Last activity: 2026-04-14 -- Phase 05 execution started
 
 Progress: [████████░░] 80%
 
@@ -87,6 +87,12 @@ Recent decisions affecting current work:
 ### Blockers/Concerns
 
 None blocking. All 7 code review Critical+Warning findings resolved in commits b09d440..30c2fbc.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260414-5bc | Fix check-in photo upload 400 — add check-in-photos bucket migration + folder-scoped upload path | 2026-04-14 | 7b8c091 | [260414-5bc-fix-check-in-photo-upload-400-add-check-](./quick/260414-5bc-fix-check-in-photo-upload-400-add-check-/) |
 
 ## Session Continuity
 
