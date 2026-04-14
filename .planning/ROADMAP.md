@@ -104,7 +104,7 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Foundation: push_subscriptions table, reminder_hour + notifications_enabled columns, avatars bucket + RLS, VAPID keys, web-push install, service worker, sendPushToUsers helper
+- [x] 05-01-PLAN.md — Foundation: push_subscriptions table, reminder_hour + notifications_enabled columns, avatars bucket + RLS, VAPID keys, web-push install, service worker, sendPushToUsers helper
 - [ ] 05-02-PLAN.md — Web Push end-to-end: subscribe flow, Settings notifications section with iOS install detection, 4 triggers (check-in, redemption, settlement, daily reminder cron), notifications_enabled master switch
 - [ ] 05-03-PLAN.md — Dashboard + Feed UI: leader callout, horizontal member progress cards, photo gallery grid, BeReal-style Feed with pull-to-refresh, Intl.RelativeTimeFormat timestamps
 - [ ] 05-04-PLAN.md — Profile editor: display name (challenge_members + auth.users.user_metadata), avatar upload to avatars bucket with cache-busting, Google photo fallback
