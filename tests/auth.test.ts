@@ -73,9 +73,10 @@ describe('Auth infrastructure', () => {
 
   it('dashboard shows personalized greeting', () => {
     const content = fs.readFileSync('src/app/(protected)/dashboard/page.tsx', 'utf-8')
-    expect(content).toContain('Welcome,')
+    // Quick 260414-82g restyled the greeting to a 2-line "Welcome back, / Name"
+    expect(content).toContain('Welcome back')
     expect(content).toContain('avatar_url')
-    expect(content).toContain('No active challenge yet.')
+    expect(content).toContain('No active challenge yet')
   })
 
   it('sign-out button is a client component with loading state', () => {

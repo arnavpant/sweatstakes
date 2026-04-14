@@ -2,8 +2,7 @@ interface DayDotsProps {
   checkedInDays: string[]
   goal: number
   weekStart: string
-  /** Optional in Task 1; required + rendered in Task 2 of 260414-82g. */
-  streak?: number
+  streak: number
 }
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as const
@@ -32,55 +31,55 @@ function getToday(): string {
 }
 
 /**
- * DayDots — 7-dot progress tracker for Monday-Sunday fitness week.
- * Server Component: receives data as props from Dashboard.
+ * DayDots — weekly progress card with header (count + streak pill) and a
+ * 7-dot row for Mon-Sun. Server Component; receives data as props.
  *
- * Shows M T W T F S S with filled dots for checked-in days,
- * today highlight, and "X/Y days" progress count.
+ * Folded the former StreakCounter into the top-right pill (orange-100 bg,
+ * orange-500/600 fg per inspo).
  */
-export function DayDots({ checkedInDays, goal, weekStart, streak: _streak }: DayDotsProps) {
+export function DayDots({ checkedInDays, goal, weekStart, streak }: DayDotsProps) {
   const today = getToday()
   const checkedInSet = new Set(checkedInDays)
   const completed = checkedInDays.length
-  const metGoal = completed >= goal
 
   return (
-    <div className="bg-surface-container rounded-xl p-4">
-      <div className="flex items-center gap-4">
-        {/* 7-day dot row */}
-        <div className="flex flex-1 justify-between">
-          {DAY_LABELS.map((label, i) => {
-            const dateStr = addDays(weekStart, i)
-            const isCheckedIn = checkedInSet.has(dateStr)
-            const isToday = dateStr === today
-
-            return (
-              <div key={i} className="flex flex-col items-center gap-1.5">
-                <span className="text-xs text-on-surface-variant">{label}</span>
-                <span
-                  className={`w-3 h-3 rounded-full ${
-                    isCheckedIn
-                      ? isToday
-                        ? 'bg-secondary ring-2 ring-secondary/30'
-                        : 'bg-secondary'
-                      : isToday
-                        ? 'bg-surface-container-high ring-2 ring-secondary/50'
-                        : 'bg-surface-container-high'
-                  }`}
-                />
-              </div>
-            )
-          })}
+    <div className="bg-surface-container border border-secondary/20 rounded-xl p-4">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <span className="text-sm text-on-surface-variant">This Week</span>
+          <p className="text-lg font-semibold text-on-surface">
+            {completed}/{goal} days
+          </p>
         </div>
-
-        {/* Progress count */}
-        <span
-          className={`text-sm font-bold whitespace-nowrap ${
-            metGoal ? 'text-secondary' : 'text-on-surface'
-          }`}
-        >
-          {completed}/{goal} days
-        </span>
+        {streak > 0 && (
+          <div className="flex items-center gap-1.5 bg-orange-100 px-3 py-1.5 rounded-full">
+            <span className="material-symbols-outlined text-orange-500 text-base">
+              local_fire_department
+            </span>
+            <span className="text-sm font-semibold text-orange-600">
+              {streak}w streak
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="flex justify-between">
+        {DAY_LABELS.map((label, i) => {
+          const dateStr = addDays(weekStart, i)
+          const isChecked = checkedInSet.has(dateStr)
+          const isToday = dateStr === today
+          return (
+            <div
+              key={i}
+              className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
+                isChecked
+                  ? 'bg-secondary text-on-secondary'
+                  : 'bg-surface-container-high text-on-surface-variant'
+              } ${isToday ? 'ring-2 ring-secondary/50' : ''}`}
+            >
+              {label}
+            </div>
+          )
+        })}
       </div>
     </div>
   )

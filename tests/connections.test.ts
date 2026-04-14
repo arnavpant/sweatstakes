@@ -389,9 +389,10 @@ describe('Phase 2: Connections - Dashboard UI (CONN-03)', () => {
     expect(content).toContain('+{overflow}')
   })
 
-  it('member-avatar-row.tsx contains Challenge active text', () => {
+  it('member-avatar-row.tsx contains Challenge Members header label', () => {
     const content = fs.readFileSync(avatarRowPath, 'utf-8')
-    expect(content).toContain('Challenge active')
+    // Restyled per quick 260414-82g: header now reads "Challenge Members"
+    expect(content).toContain('Challenge Members')
   })
 
   it('member-avatar-row.tsx has referrerPolicy on img tags', () => {
@@ -415,9 +416,10 @@ describe('Phase 2: Connections - Dashboard UI (CONN-03)', () => {
     expect(content).toContain("from '@/db'")
   })
 
-  it('dashboard page still contains empty state: No active challenge yet.', () => {
+  it('dashboard page still contains empty state copy', () => {
     const content = fs.readFileSync(dashboardPath, 'utf-8')
-    expect(content).toContain('No active challenge yet.')
+    // Quick 260414-82g dropped the trailing period in the heading.
+    expect(content).toContain('No active challenge yet')
     expect(content).toContain('Invite friends to get started.')
   })
 

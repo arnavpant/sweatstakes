@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { db } from '@/db'
 import { challengeMembers } from '@/db/schema'
 import { eq } from 'drizzle-orm'
+import { UserAvatar } from '@/components/dashboard/user-avatar'
 import { MemberAvatarRow } from '@/components/connections/member-avatar-row'
 import { DayDots } from '@/components/dashboard/day-dots'
 import { MemberCardRow } from '@/components/dashboard/member-card-row'
@@ -96,57 +97,44 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="px-4 pt-8 pb-8">
-      {/* Header: greeting with Google avatar */}
-      <div className="flex items-center gap-3 mb-6">
-        {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt={`${firstName}'s avatar`}
-            className="w-10 h-10 rounded-full object-cover"
-            referrerPolicy="no-referrer"
-          />
+    <div className="min-h-screen bg-background">
+      <div className="max-w-md mx-auto px-4 pt-8 pb-8">
+        <header className="flex items-center gap-3 mb-6">
+          <UserAvatar avatarUrl={avatarUrl} name={firstName} />
+          <div>
+            <p className="text-sm text-on-surface-variant">Welcome back,</p>
+            <h1 className="text-xl font-bold text-on-surface">{firstName}</h1>
+          </div>
+        </header>
+
+        {isInChallenge ? (
+          <div className="space-y-4">
+            <MemberAvatarRow members={members} />
+            <DayDots
+              checkedInDays={weeklyProgress.checkedInDays}
+              goal={weeklyProgress.goal}
+              weekStart={weekStart}
+              streak={streak}
+            />
+            <MemberCardRow rows={memberRows} weekStart={weekStart} />
+            <PhotoGallery photos={recentPhotos} />
+          </div>
         ) : (
-          <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
-            <span className="text-on-surface text-sm font-bold">
-              {firstName.charAt(0).toUpperCase()}
-            </span>
+          <div className="bg-surface-container border border-secondary/20 rounded-xl p-6">
+            <div className="flex flex-col items-center text-center gap-3">
+              <span className="material-symbols-outlined text-4xl text-secondary">
+                group_add
+              </span>
+              <h2 className="text-lg font-semibold text-on-surface">
+                No active challenge yet
+              </h2>
+              <p className="text-sm text-on-surface-variant">
+                Invite friends to get started.
+              </p>
+            </div>
           </div>
         )}
-        <h1 className="text-2xl font-bold text-on-surface">
-          Welcome, {firstName}!
-        </h1>
       </div>
-
-      {/* Challenge state: avatar row OR empty state (D-15, D-16) */}
-      {isInChallenge ? (
-        <div className="space-y-4">
-          <MemberAvatarRow members={members} />
-          <DayDots
-            checkedInDays={weeklyProgress.checkedInDays}
-            goal={weeklyProgress.goal}
-            weekStart={weekStart}
-            streak={streak}
-          />
-          {/* Phase 5: Dashboard additions */}
-          <MemberCardRow rows={memberRows} weekStart={weekStart} />
-          <PhotoGallery photos={recentPhotos} />
-        </div>
-      ) : (
-        <div className="bg-surface-container rounded-xl p-6">
-          <div className="flex flex-col items-center text-center space-y-3">
-            <span className="material-symbols-outlined text-4xl text-on-surface-variant">
-              group_add
-            </span>
-            <h2 className="text-base font-bold text-on-surface">
-              No active challenge yet.
-            </h2>
-            <p className="text-base text-on-surface-variant">
-              Invite friends to get started.
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
