@@ -81,16 +81,15 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- [Phase 04 code review — 2 critical findings to address before public launch]:
-  - CR-01: CRON_SECRET bypass when env var unset (src/app/api/cron/settle/route.ts:68-72)
-  - CR-02: Weekly cron schedule never fires for US timezones with hour=5 (vercel.json + route.ts timezone logic)
+- [Phase 04] **CR-02 requires Vercel Pro plan**: cron schedule changed to hourly (`0 * * * *`) to fix timezone bug. Hobby tier allows only 2 cron/day — must upgrade to Pro before deploy, or revert to daily cron + rework settlement-hour logic.
+- [Phase 04] **WR-02 deferred**: `user_id` FKs to `auth.users` skipped due to Supabase cross-schema complexity. Revisit if orphan rows become a real issue.
 
 ### Blockers/Concerns
 
-None blocking. The 2 critical code review findings are advisory for v1 (friends-only testing); must be fixed before any public/production deployment.
+None blocking. All 7 code review Critical+Warning findings resolved in commits b09d440..30c2fbc.
 
 ## Session Continuity
 
-Last session: 2026-04-13T23:55:00Z
-Stopped at: Phase 4 complete — UAT approved, verification passed
-Resume file: .planning/phases/04-points-stakes/04-VERIFICATION.md
+Last session: 2026-04-14T00:18:00Z
+Stopped at: Phase 4 complete — code review fixes applied, all 17 tests pass
+Resume file: .planning/phases/04-points-stakes/04-REVIEW-FIX.md
