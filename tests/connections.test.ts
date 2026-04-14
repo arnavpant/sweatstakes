@@ -186,7 +186,7 @@ describe('Phase 2: Connections - Server Actions', () => {
 
   it('leaveChallengeAction deletes membership row', () => {
     const content = fs.readFileSync(actionsPath, 'utf-8')
-    expect(content).toContain('db.delete(challengeMembers)')
+    expect(content).toMatch(/db\s*\.delete\(\s*challengeMembers\s*\)/)
   })
 })
 
