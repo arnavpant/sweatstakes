@@ -6,16 +6,13 @@ import { eq } from 'drizzle-orm'
 import { MemberAvatarRow } from '@/components/connections/member-avatar-row'
 import { DayDots } from '@/components/dashboard/day-dots'
 import { StreakCounter } from '@/components/dashboard/streak-counter'
-import { LeaderCallout } from '@/components/dashboard/leader-callout'
 import { MemberCardRow } from '@/components/dashboard/member-card-row'
 import { PhotoGallery } from '@/components/dashboard/photo-gallery'
 import { getWeeklyProgress, computeStreak, getMonday } from '@/lib/utils/week'
 import {
-  getBalancesForChallenge,
   getMemberProgressRows,
   getRecentCheckInPhotos,
 } from '@/lib/queries/dashboard'
-import type { LeaderCalloutInput } from '@/lib/utils/leader-callout'
 
 interface MemberCardRowEntry {
   userId: string
@@ -62,8 +59,7 @@ export default async function DashboardPage() {
   let streak = 0
   let weekStart = ''
 
-  // Phase 5 additions (DASH-01/02/03)
-  let balances: LeaderCalloutInput[] = []
+  // Phase 5 additions (DASH-02/03)
   let memberRows: MemberCardRowEntry[] = []
   let recentPhotos: { id: string; photoUrl: string }[] = []
 
@@ -76,9 +72,6 @@ export default async function DashboardPage() {
 
     weeklyProgress = await getWeeklyProgress(user.id, challengeId, now)
     streak = await computeStreak(user.id, challengeId, weeklyProgress.goal)
-
-    // DASH-01: balance aggregation for leader callout
-    balances = await getBalancesForChallenge(challengeId)
 
     // DASH-03: recent check-in photos for the gallery grid
     recentPhotos = await getRecentCheckInPhotos(challengeId, 6)
@@ -137,7 +130,6 @@ export default async function DashboardPage() {
           />
           <StreakCounter streak={streak} />
           {/* Phase 5: Dashboard additions */}
-          <LeaderCallout balances={balances} viewerUserId={user.id} />
           <MemberCardRow rows={memberRows} weekStart={weekStart} />
           <PhotoGallery photos={recentPhotos} />
         </div>

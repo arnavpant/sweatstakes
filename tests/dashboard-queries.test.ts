@@ -2,8 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 /**
  * Phase 5 Plan 03 — dashboard query helper tests.
- * Mocks @/db to capture the drizzle builder chain for getRecentCheckInPhotos
- * and getBalancesForChallenge.
+ * Mocks @/db to capture the drizzle builder chain for getRecentCheckInPhotos.
  */
 
 // Capture calls on the chainable builder
@@ -57,25 +56,5 @@ describe('getRecentCheckInPhotos', () => {
 
     const limitCall = chainCalls.find((c) => c.method === 'limit')
     expect(limitCall!.args[0]).toBe(12)
-  })
-})
-
-describe('getBalancesForChallenge', () => {
-  it('groups by userId and displayName', async () => {
-    const { getBalancesForChallenge } = await import('@/lib/queries/dashboard')
-    await getBalancesForChallenge('challenge-1')
-
-    const groupByCall = chainCalls.find((c) => c.method === 'groupBy')
-    expect(groupByCall).toBeDefined()
-    // Two arguments: userId and displayName
-    expect(groupByCall!.args.length).toBe(2)
-  })
-
-  it('joins challengeMembers via innerJoin', async () => {
-    const { getBalancesForChallenge } = await import('@/lib/queries/dashboard')
-    await getBalancesForChallenge('challenge-1')
-
-    const joinCall = chainCalls.find((c) => c.method === 'innerJoin')
-    expect(joinCall).toBeDefined()
   })
 })
