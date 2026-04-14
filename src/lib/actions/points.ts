@@ -112,38 +112,48 @@ export async function redeemRewardAction(rewardId: string) {
 
   if (reward.length === 0) return { error: 'Reward not found' }
 
-  // Get current balance via SUM(delta) — the authoritative computation
-  const balanceResult = await db
-    .select({ balance: sql<number>`COALESCE(SUM(${pointTransactions.delta}), 0)` })
-    .from(pointTransactions)
-    .where(and(
-      eq(pointTransactions.challengeId, auth.challengeId),
-      eq(pointTransactions.userId, auth.user.id)
-    ))
+  // WR-01: Read balance + write inside a single transaction guarded by an
+  // advisory lock keyed on (challengeId, userId). Without the lock, two
+  // concurrent redeem calls can both observe the same balance and both
+  // succeed, overspending the user's points.
+  try {
+    await db.transaction(async (tx) => {
+      await tx.execute(sql`SELECT pg_advisory_xact_lock(
+        hashtext(${auth.challengeId}::text || ':' || ${auth.user.id}::text)
+      )`)
 
-  const currentBalance = Number(balanceResult[0]?.balance ?? 0)
+      const balanceResult = await tx
+        .select({ balance: sql<number>`COALESCE(SUM(${pointTransactions.delta}), 0)` })
+        .from(pointTransactions)
+        .where(and(
+          eq(pointTransactions.challengeId, auth.challengeId),
+          eq(pointTransactions.userId, auth.user.id)
+        ))
 
-  if (currentBalance < reward[0].pointCost) {
-    return { error: `You need ${reward[0].pointCost - currentBalance} more points.` }
+      const currentBalance = Number(balanceResult[0]?.balance ?? 0)
+
+      if (currentBalance < reward[0].pointCost) {
+        throw new Error(`You need ${reward[0].pointCost - currentBalance} more points.`)
+      }
+
+      await tx.insert(pointTransactions).values({
+        challengeId: auth.challengeId,
+        userId: auth.user.id,
+        weekStart: new Date().toISOString().split('T')[0], // current date as reference
+        delta: -reward[0].pointCost,
+        reason: 'redemption',
+      })
+
+      await tx.insert(redemptions).values({
+        challengeId: auth.challengeId,
+        userId: auth.user.id,
+        rewardId: reward[0].id,
+        pointCost: reward[0].pointCost,
+      })
+    })
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Redemption failed' }
   }
-
-  // Insert negative transaction (deduction) + redemption record in a transaction
-  await db.transaction(async (tx) => {
-    await tx.insert(pointTransactions).values({
-      challengeId: auth.challengeId,
-      userId: auth.user.id,
-      weekStart: new Date().toISOString().split('T')[0], // current date as reference
-      delta: -reward[0].pointCost,
-      reason: 'redemption',
-    })
-
-    await tx.insert(redemptions).values({
-      challengeId: auth.challengeId,
-      userId: auth.user.id,
-      rewardId: reward[0].id,
-      pointCost: reward[0].pointCost,
-    })
-  })
 
   return { success: true }
 }
