@@ -120,7 +120,7 @@ export default async function DashboardPage() {
             <PhotoGallery photos={recentPhotos} />
           </div>
         ) : (
-          <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-6">
+          <div className="bg-[#0b1a3a] border border-white/10 rounded-lg p-6">
             <div className="flex flex-col items-center text-center gap-3">
               <span className="material-symbols-outlined text-4xl text-emerald-400">
                 group_add

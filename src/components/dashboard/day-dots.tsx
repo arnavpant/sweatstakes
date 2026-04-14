@@ -43,7 +43,7 @@ export function DayDots({ checkedInDays, goal, weekStart, streak }: DayDotsProps
   const completed = checkedInDays.length
 
   return (
-    <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-4">
+    <div className="bg-[#0b1a3a] border border-white/10 rounded-lg p-4">
       <div className="flex items-center justify-between mb-4">
         <div>
           <span className="text-sm text-slate-400">This Week</span>

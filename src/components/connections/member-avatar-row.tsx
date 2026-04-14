@@ -21,7 +21,7 @@ export function MemberAvatarRow({ members }: MemberAvatarRowProps) {
   const overflow = members.length - MAX_VISIBLE
 
   return (
-    <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-4">
+    <div className="bg-[#0b1a3a] border border-white/10 rounded-lg p-4">
       <div className="flex items-center gap-2 mb-3">
         <span className="material-symbols-outlined text-emerald-400 text-lg">group</span>
         <span className="text-sm text-slate-400">Challenge Members</span>
