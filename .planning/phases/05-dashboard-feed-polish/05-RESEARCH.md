@@ -750,21 +750,23 @@ Wave 3:
 
 Realistic timeline: **7-9 days** if Plan 02 & 03 run in parallel across two working days + buffer for UAT and design-fidelity tweaks.
 
-## Open Questions For The Planner
+## Open Questions For The Planner (RESOLVED)
 
-1. **Leader callout phrasing:** always leader-POV (`"Arnav leads with 12 pts — 3 ahead of Max"`) vs viewer-POV (`"You're 3 pts behind Arnav"`)? CONTEXT.md example shows `"Arnav leads with 12 pts — 3 behind Max"` which reads as leader-POV using "behind" ambiguously. Recommend leader-POV everywhere for simplicity. **Confirm with user before plan locks.**
+All 7 questions were answered during `/gsd-discuss-phase` follow-up — authoritative answers now live in `05-CONTEXT.md`. The resolutions below are mirrored here for traceability:
 
-2. **Reminder UX:** CONTEXT.md says "user sets a preferred time". Confirm UX is a **single hour per user** (0-23 picker) vs multiple reminder times vs "remind me every day at X for Y days". Recommend single hour for v1.
+1. **Leader callout phrasing:** RESOLVED → **viewer-POV** (user selected "Viewer-POV (recommended)" post-research). Caller passes `viewerUserId` to `computeLeaderCallout`; string personalizes per viewer. Overrides research's leader-POV recommendation.
 
-3. **Settings toggle granularity:** should `notifications_enabled` be one master switch (simpler) vs four per-trigger-type booleans (`notify_on_checkin`, `notify_on_settlement`, `notify_on_redemption`, `notify_on_reminder`)? CONTEXT.md says "master switch". Confirm we're OK with all-or-nothing.
+2. **Reminder UX:** RESOLVED → **single hour per user** (0-23 picker). `challenge_members.reminder_hour smallint`. Multi-time deferred to v2.
 
-4. **Avatar dimensions:** 256×256 @ 50 KB vs 512×512 @ 100 KB? Consider retina rendering — 256 might look soft on a 96-px-wide dashboard avatar on a 3x display. Recommend 512×512 @ 100 KB as safer.
+3. **Settings toggle granularity:** RESOLVED → **single master switch** (`notifications_enabled` boolean). Per-trigger granularity deferred to v2.
 
-5. **Initial notifications state:** should `notifications_enabled` default to `true` (opt-out flow) or `false` (opt-in flow)? Recommend **default true** so the UI toggle shows as "on" — but push only actually fires once the user has also granted browser permission + subscribed, so no accidental notifications.
+4. **Avatar dimensions:** RESOLVED → **512×512** (retina-safe).
 
-6. **Feed cards — selfie thumbnail:** the Phase 3 camera flow generates a composite photo (rear photo with selfie thumbnail overlay embedded). Feed just renders the composite as-is — no separate layout logic needed. Confirm this is the intended visual (not: display two photos side-by-side).
+5. **Initial notifications state:** RESOLVED → **default `false`** (opt-in). User explicitly opts in via Settings toggle AFTER install-to-home-screen on iOS; prevents surprise notifications on first use.
 
-7. **Leader callout empty state:** CONTEXT.md says `"No stakes settled yet — keep checking in"`. Confirm this copy. If any user has a non-zero balance but everyone tied at 0-or-equal, do we still show the leader callout? Recommend: if `top.balance === 0` show empty state; otherwise show callout.
+6. **Feed cards — selfie thumbnail:** RESOLVED → **composite rendered as-is** (single image, Phase 3 canvas already embedded selfie overlay). No separate layout logic.
+
+7. **Leader callout empty state:** RESOLVED → copy is `"No stakes settled yet — keep checking in"`. Trigger: `balances.length === 0` OR all balances are zero (sorted.every(b => b.balance === 0)).
 
 ## Sources
 
