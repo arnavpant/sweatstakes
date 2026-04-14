@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, unique, smallint, date, index } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, text, timestamp, unique, smallint, date, index, boolean } from 'drizzle-orm/pg-core'
 
 export const challenges = pgTable('challenges', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -15,6 +15,10 @@ export const challengeMembers = pgTable('challenge_members', {
   avatarUrl: text('avatar_url'),
   weeklyGoal: smallint('weekly_goal').notNull().default(3),
   joinedAt: timestamp('joined_at', { withTimezone: true }).defaultNow().notNull(),
+  // Phase 5 SETT-02: per-user reminder hour (0-23, local time bucket); null = no daily reminder
+  reminderHour: smallint('reminder_hour'),
+  // Phase 5 SETT-02: explicit opt-in master switch for all push notifications
+  notificationsEnabled: boolean('notifications_enabled').notNull().default(false),
 }, (table) => [
   unique('challenge_members_user_id_unique').on(table.userId),
 ])
@@ -84,3 +88,16 @@ export const redemptions = pgTable('redemptions', {
   pointCost: smallint('point_cost').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 })
+
+// Phase 5 SETT-02: Web Push subscriptions — one row per (user, browser/device endpoint).
+// Endpoint is globally unique across all push services (FCM, APNS, Mozilla AutoPush).
+export const pushSubscriptions = pgTable('push_subscriptions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').notNull(),
+  endpoint: text('endpoint').notNull().unique(),
+  p256dh: text('p256dh').notNull(),
+  auth: text('auth').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+}, (t) => [
+  index('push_subs_user_idx').on(t.userId),
+])

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:push-phase5": "node scripts/push-0003-phase05-foundation.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
