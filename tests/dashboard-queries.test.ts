@@ -16,7 +16,10 @@ function record(method: string) {
   }
 }
 
-const builder: Record<string, unknown> & PromiseLike<unknown[]> = {
+// Chainable builder that is also thenable — resolves to [] when awaited.
+// Typed as `any` to satisfy the varying drizzle method signatures at test time.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const builder: any = {
   select: record('select'),
   from: record('from'),
   innerJoin: record('innerJoin'),
@@ -24,8 +27,7 @@ const builder: Record<string, unknown> & PromiseLike<unknown[]> = {
   groupBy: record('groupBy'),
   orderBy: record('orderBy'),
   limit: record('limit'),
-  // Make the chain thenable so `await db...` resolves to []
-  then: (resolve: (v: unknown) => void) => resolve([]),
+  then: (resolve: (v: unknown[]) => void) => resolve([]),
 }
 
 vi.mock('@/db', () => ({
