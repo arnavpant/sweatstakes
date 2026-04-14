@@ -5,7 +5,7 @@ milestone_name: milestone
 status: executing
 stopped_at: Phase 5 complete — all 4 plans shipped (push, dashboard, feed, profile editor)
 last_updated: "2026-04-14T09:15:00.000Z"
-last_activity: 2026-04-14 -- Phase 5 plan 04 (Profile Editor) executed; plan 02 SUMMARY backfilled
+last_activity: 2026-04-14 -- Completed quick task 260414-7f4: connections test fixed (282/282 pass)
 progress:
   total_phases: 5
   completed_phases: 5
@@ -94,6 +94,7 @@ None blocking. All 7 code review Critical+Warning findings resolved in commits b
 |---|-------------|------|--------|-----------|
 | 260414-5bc | Fix check-in photo upload 400 — add check-in-photos bucket migration + folder-scoped upload path | 2026-04-14 | 7b8c091 | [260414-5bc-fix-check-in-photo-upload-400-add-check-](./quick/260414-5bc-fix-check-in-photo-upload-400-add-check-/) |
 | 260414-6lk | Remove leader callout dashboard feature entirely | 2026-04-14 | 68933e7 | [260414-6lk-remove-leader-callout-dashboard-feature-](./quick/260414-6lk-remove-leader-callout-dashboard-feature-/) |
+| 260414-7f4 | Repair fragile string-match in connections leave test | 2026-04-14 | a76267c | [260414-7f4-repair-fragile-string-match-in-connectio](./quick/260414-7f4-repair-fragile-string-match-in-connectio/) |
 
 ## Session Continuity
 
