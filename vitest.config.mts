@@ -12,6 +12,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // Stub Next.js 'server-only' marker package — Vitest doesn't provide it.
+      // The marker only matters in a Next.js bundle; tests don't enforce server/client boundaries.
+      'server-only': fileURLToPath(new URL('./tests/stubs/server-only.ts', import.meta.url)),
     },
   },
 })
