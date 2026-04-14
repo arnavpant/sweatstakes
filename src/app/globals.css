@@ -86,4 +86,11 @@
   .emerald-glow {
     box-shadow: 0 0 20px rgba(80, 200, 120, 0.15);
   }
+  /* Phase 5 DASH-02 — hide horizontal scrollbar on member card row */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
 }
