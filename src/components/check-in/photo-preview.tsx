@@ -49,7 +49,13 @@ export function PhotoPreview({ compositeBlob, onRetake, onSuccess }: PhotoPrevie
 
       // Step 2: Upload to Supabase Storage
       const supabase = createClient()
-      const fileName = `${Date.now()}-${crypto.randomUUID()}.jpg`
+      const { data: { user }, error: userErr } = await supabase.auth.getUser()
+      if (userErr || !user) {
+        setError('Something went wrong. Please try again.')
+        setSubmitting(false)
+        return
+      }
+      const fileName = `${user.id}/${Date.now()}-${crypto.randomUUID()}.jpg`
       const { data, error: uploadError } = await supabase.storage
         .from('check-in-photos')
         .upload(fileName, compressed, {
