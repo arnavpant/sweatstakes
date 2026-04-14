@@ -21,17 +21,17 @@ export function MemberAvatarRow({ members }: MemberAvatarRowProps) {
   const overflow = members.length - MAX_VISIBLE
 
   return (
-    <div className="bg-surface-container border border-secondary/20 rounded-xl p-4">
+    <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
-        <span className="material-symbols-outlined text-secondary text-lg">group</span>
-        <span className="text-sm text-on-surface-variant">Challenge Members</span>
+        <span className="material-symbols-outlined text-emerald-400 text-lg">group</span>
+        <span className="text-sm text-slate-400">Challenge Members</span>
       </div>
       <div className="flex items-center">
         <div className="flex -space-x-2">
           {visible.map((member) => (
             <div
               key={member.userId}
-              className="w-8 h-8 rounded-full border-2 border-surface-container-high flex-shrink-0 overflow-hidden"
+              className="w-8 h-8 rounded-full border-2 border-[#13254f] flex-shrink-0 overflow-hidden"
               title={member.displayName}
             >
               {member.avatarUrl ? (
@@ -42,8 +42,8 @@ export function MemberAvatarRow({ members }: MemberAvatarRowProps) {
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <div className="w-full h-full bg-surface-container-high flex items-center justify-center">
-                  <span className="text-xs font-bold text-on-surface">
+                <div className="w-full h-full bg-[#13254f] flex items-center justify-center">
+                  <span className="text-xs font-bold text-white">
                     {member.displayName.charAt(0).toUpperCase()}
                   </span>
                 </div>
@@ -51,14 +51,14 @@ export function MemberAvatarRow({ members }: MemberAvatarRowProps) {
             </div>
           ))}
           {overflow > 0 && (
-            <div className="w-8 h-8 rounded-full border-2 border-surface-container-high bg-surface-container-high flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-bold text-on-surface-variant">
+            <div className="w-8 h-8 rounded-full border-2 border-[#13254f] bg-[#13254f] flex items-center justify-center flex-shrink-0">
+              <span className="text-xs font-bold text-slate-400">
                 +{overflow}
               </span>
             </div>
           )}
         </div>
-        <span className="ml-3 text-sm text-on-surface-variant">
+        <span className="ml-3 text-sm text-slate-400">
           {members.length} {members.length === 1 ? 'member' : 'members'}
         </span>
       </div>

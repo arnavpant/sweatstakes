@@ -17,14 +17,14 @@ export function UserAvatar({ avatarUrl, name, size: _size }: UserAvatarProps) {
       <img
         src={avatarUrl}
         alt={`${name}'s avatar`}
-        className="w-12 h-12 rounded-full object-cover ring-2 ring-secondary/30"
+        className="w-12 h-12 rounded-full object-cover ring-2 ring-emerald-500/40"
         referrerPolicy="no-referrer"
       />
     )
   }
   return (
-    <div className="w-12 h-12 rounded-full bg-surface-container-high ring-2 ring-secondary/30 flex items-center justify-center">
-      <span className="text-on-surface text-sm font-bold">
+    <div className="w-12 h-12 rounded-full bg-[#13254f] ring-2 ring-emerald-500/40 flex items-center justify-center">
+      <span className="text-white text-sm font-bold">
         {name.charAt(0).toUpperCase()}
       </span>
     </div>

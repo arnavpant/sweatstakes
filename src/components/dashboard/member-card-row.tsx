@@ -44,8 +44,8 @@ function MiniDayDots({
             key={i}
             className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold ${
               isChecked
-                ? 'bg-secondary text-on-secondary'
-                : 'bg-surface-container-high text-on-surface-variant'
+                ? 'bg-emerald-500 text-white'
+                : 'bg-[#13254f] text-slate-400'
             }`}
           >
             {label}
@@ -67,13 +67,13 @@ export function MemberCardRow({
   if (others.length === 0) return null
 
   return (
-    <div className="bg-surface-container border border-secondary/20 rounded-xl p-4">
-      <h3 className="text-sm font-medium text-on-surface mb-4">Member Progress</h3>
+    <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-4">
+      <h3 className="text-sm font-medium text-white mb-4">Member Progress</h3>
       <div className="space-y-3">
         {others.map((m) => (
           <div
             key={m.userId}
-            className="flex items-center gap-3 p-3 rounded-xl bg-surface-container-high"
+            className="flex items-center gap-3 p-3 rounded-xl bg-[#13254f]"
           >
             {m.avatarUrl ? (
               <img
@@ -83,14 +83,14 @@ export function MemberCardRow({
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
-                <span className="text-on-surface text-sm font-bold">
+              <div className="w-10 h-10 rounded-full bg-[#1a2f63] flex items-center justify-center shrink-0">
+                <span className="text-white text-sm font-bold">
                   {m.displayName.charAt(0).toUpperCase()}
                 </span>
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-on-surface truncate mb-2">
+              <p className="text-sm font-medium text-white truncate mb-2">
                 {m.displayName}
               </p>
               <MiniDayDots checkedInDays={m.checkedInDays} weekStart={weekStart} />

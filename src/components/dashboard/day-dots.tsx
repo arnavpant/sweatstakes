@@ -43,24 +43,22 @@ export function DayDots({ checkedInDays, goal, weekStart, streak }: DayDotsProps
   const completed = checkedInDays.length
 
   return (
-    <div className="bg-surface-container border border-secondary/20 rounded-xl p-4">
+    <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-4">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <span className="text-sm text-on-surface-variant">This Week</span>
-          <p className="text-lg font-semibold text-on-surface">
+          <span className="text-sm text-slate-400">This Week</span>
+          <p className="text-lg font-semibold text-white">
             {completed}/{goal} days
           </p>
         </div>
-        {streak > 0 && (
-          <div className="flex items-center gap-1.5 bg-orange-100 px-3 py-1.5 rounded-full">
-            <span className="material-symbols-outlined text-orange-500 text-base">
-              local_fire_department
-            </span>
-            <span className="text-sm font-semibold text-orange-600">
-              {streak}w streak
-            </span>
-          </div>
-        )}
+        <div className="flex items-center gap-2 bg-orange-500/15 px-3 py-1.5 rounded-full">
+          <span className="material-symbols-outlined text-orange-400 text-base">
+            local_fire_department
+          </span>
+          <span className="text-sm font-semibold text-orange-300">
+            {streak}w streak
+          </span>
+        </div>
       </div>
       <div className="flex justify-between">
         {DAY_LABELS.map((label, i) => {
@@ -72,9 +70,9 @@ export function DayDots({ checkedInDays, goal, weekStart, streak }: DayDotsProps
               key={i}
               className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
                 isChecked
-                  ? 'bg-secondary text-on-secondary'
-                  : 'bg-surface-container-high text-on-surface-variant'
-              } ${isToday ? 'ring-2 ring-secondary/50' : ''}`}
+                  ? 'bg-emerald-500 text-white'
+                  : 'bg-[#13254f] text-slate-400'
+              } ${isToday ? 'ring-2 ring-emerald-400/60' : ''}`}
             >
               {label}
             </div>

@@ -97,13 +97,13 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#050b1f]">
       <div className="max-w-md mx-auto px-4 pt-8 pb-8">
         <header className="flex items-center gap-3 mb-6">
           <UserAvatar avatarUrl={avatarUrl} name={firstName} />
           <div>
-            <p className="text-sm text-on-surface-variant">Welcome back,</p>
-            <h1 className="text-xl font-bold text-on-surface">{firstName}</h1>
+            <p className="text-sm text-slate-400">Welcome back,</p>
+            <h1 className="text-xl font-bold text-white">{firstName}</h1>
           </div>
         </header>
 
@@ -120,15 +120,15 @@ export default async function DashboardPage() {
             <PhotoGallery photos={recentPhotos} />
           </div>
         ) : (
-          <div className="bg-surface-container border border-secondary/20 rounded-xl p-6">
+          <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-6">
             <div className="flex flex-col items-center text-center gap-3">
-              <span className="material-symbols-outlined text-4xl text-secondary">
+              <span className="material-symbols-outlined text-4xl text-emerald-400">
                 group_add
               </span>
-              <h2 className="text-lg font-semibold text-on-surface">
+              <h2 className="text-lg font-semibold text-white">
                 No active challenge yet
               </h2>
-              <p className="text-sm text-on-surface-variant">
+              <p className="text-sm text-slate-400">
                 Invite friends to get started.
               </p>
             </div>

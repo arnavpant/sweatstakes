@@ -637,9 +637,9 @@ describe('Day Dots Progress (CHKN-04)', () => {
     expect(content).toContain("'S'")
   })
 
-  it('day-dots.tsx uses bg-secondary for filled dots', () => {
+  it('day-dots.tsx uses emerald fill for checked dots', () => {
     const content = fs.readFileSync(dayDotsPath, 'utf-8')
-    expect(content).toContain('bg-secondary')
+    expect(content).toContain('bg-emerald-500')
   })
 
   it('day-dots.tsx receives checkedInDays prop', () => {
@@ -655,7 +655,7 @@ describe('Day Dots Progress (CHKN-04)', () => {
   it('day-dots.tsx highlights today with ring', () => {
     const content = fs.readFileSync(dayDotsPath, 'utf-8')
     expect(content).toContain('ring-2')
-    expect(content).toContain('ring-secondary')
+    expect(content).toContain('ring-emerald-400/60')
   })
 
   it('Dashboard page imports DayDots', () => {

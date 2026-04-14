@@ -17,9 +17,9 @@ interface Photo {
 export function PhotoGallery({ photos }: { photos: Photo[] }) {
   if (photos.length === 0) {
     return (
-      <div className="bg-surface-container border border-secondary/20 rounded-xl p-6 flex flex-col items-center text-center space-y-2">
-        <ImageIcon className="h-8 w-8 text-on-surface-variant" />
-        <p className="text-sm text-on-surface-variant">
+      <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-6 flex flex-col items-center text-center space-y-2">
+        <ImageIcon className="h-8 w-8 text-slate-400" />
+        <p className="text-sm text-slate-400">
           No check-ins yet. Snap your first workout.
         </p>
       </div>
@@ -27,13 +27,13 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
   }
   return (
     <Link href="/feed" className="block" aria-label="View feed">
-      <div className="bg-surface-container border border-secondary/20 rounded-xl p-4">
-        <h3 className="text-sm font-medium text-on-surface mb-4">Recent Check-ins</h3>
+      <div className="bg-[#0b1a3a] border border-white/10 rounded-xl p-4">
+        <h3 className="text-sm font-medium text-white mb-4">Recent Check-ins</h3>
         <div className="grid grid-cols-3 gap-2">
           {photos.slice(0, 6).map((p) => (
             <div
               key={p.id}
-              className="aspect-square overflow-hidden rounded-xl bg-surface-container-high"
+              className="aspect-square overflow-hidden rounded-xl bg-[#13254f]"
             >
               <img
                 src={p.photoUrl}
