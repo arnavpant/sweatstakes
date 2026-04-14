@@ -5,6 +5,7 @@ import { checkIns, challengeMembers } from '@/db/schema'
 import { createClient } from '@/lib/supabase/server'
 import { eq, and, gte, lte } from 'drizzle-orm'
 import { z } from 'zod'
+import { sendPushToUsers } from '@/lib/push/send'
 
 /**
  * Submit a workout check-in with a photo.
@@ -62,6 +63,32 @@ export async function submitCheckInAction(photoUrl: string, checkedInDate: strin
     photoUrl,
     checkedInDate,
   })
+
+  // Phase 5 SETT-02 — Fire push to other challenge members (fire-and-forget,
+  // never block the response; sendPushToUsers self-handles errors + dead subs).
+  try {
+    const members = await db
+      .select({
+        userId: challengeMembers.userId,
+        enabled: challengeMembers.notificationsEnabled,
+        displayName: challengeMembers.displayName,
+      })
+      .from(challengeMembers)
+      .where(eq(challengeMembers.challengeId, membership[0].challengeId))
+
+    const recipients = members
+      .filter((m) => m.userId !== user.id && m.enabled)
+      .map((m) => m.userId)
+    const senderName = members.find((m) => m.userId === user.id)?.displayName ?? 'A friend'
+
+    void sendPushToUsers(recipients, {
+      title: `${senderName} just checked in`,
+      body: 'Tap to see their workout photo.',
+      url: '/feed',
+    })
+  } catch (err) {
+    console.error('[push] check-in trigger failed', err)
+  }
 
   return { success: true }
 }

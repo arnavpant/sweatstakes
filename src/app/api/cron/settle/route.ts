@@ -1,7 +1,9 @@
 import type { NextRequest } from 'next/server'
 import { db } from '@/db'
-import { challenges } from '@/db/schema'
+import { challenges, challengeMembers, pointTransactions } from '@/db/schema'
+import { and, eq } from 'drizzle-orm'
 import { settleWeekForChallenge } from '@/lib/actions/settlement'
+import { sendPushToUsers } from '@/lib/push/send'
 
 /**
  * Timezone-aware weekday check using Intl API.
@@ -98,9 +100,50 @@ export async function GET(request: NextRequest) {
     const weekStart = getPreviousMonday(now, challenge.timezone)
     const result = await settleWeekForChallenge(challenge.id, weekStart)
 
-    if (result === 'settled') settled++
-    else if (result === 'already_settled') skipped++
-    else washed++
+    if (result === 'settled') {
+      settled++
+
+      // Phase 5 SETT-02 — Personalized settlement push per member with their own delta.
+      // Gated by notifications_enabled; fire-and-forget, swallows its own failures.
+      try {
+        const weekTx = await db
+          .select({ userId: pointTransactions.userId, delta: pointTransactions.delta })
+          .from(pointTransactions)
+          .where(
+            and(
+              eq(pointTransactions.challengeId, challenge.id),
+              eq(pointTransactions.weekStart, weekStart),
+            )
+          )
+        const members = await db
+          .select({ userId: challengeMembers.userId, enabled: challengeMembers.notificationsEnabled })
+          .from(challengeMembers)
+          .where(eq(challengeMembers.challengeId, challenge.id))
+        const enabledSet = new Set(members.filter((m) => m.enabled).map((m) => m.userId))
+
+        // Sum per user (one settlement may produce earned + redemption rows for the same user).
+        const deltaByUser = new Map<string, number>()
+        for (const tx of weekTx) {
+          deltaByUser.set(tx.userId, (deltaByUser.get(tx.userId) ?? 0) + tx.delta)
+        }
+
+        for (const [userId, delta] of deltaByUser) {
+          if (!enabledSet.has(userId)) continue
+          const sign = delta >= 0 ? '+' : ''
+          void sendPushToUsers([userId], {
+            title: 'Weekly stakes settled',
+            body: `You ${delta >= 0 ? 'earned' : 'owe'} ${sign}${delta} pts this week.`,
+            url: '/stakes',
+          })
+        }
+      } catch (err) {
+        console.error('[push] settlement trigger failed', err)
+      }
+    } else if (result === 'already_settled') {
+      skipped++
+    } else {
+      washed++
+    }
   }
 
   return Response.json({ settled, skipped, washed, timestamp: now.toISOString() })

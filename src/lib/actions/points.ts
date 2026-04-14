@@ -5,6 +5,7 @@ import { db } from '@/db'
 import { rewards, redemptions, pointTransactions, challengeMembers, challenges } from '@/db/schema'
 import { createClient } from '@/lib/supabase/server'
 import { eq, and, sql } from 'drizzle-orm'
+import { sendPushToUsers } from '@/lib/push/send'
 
 // --- Schemas ---
 
@@ -153,6 +154,31 @@ export async function redeemRewardAction(rewardId: string) {
     })
   } catch (err) {
     return { error: err instanceof Error ? err.message : 'Redemption failed' }
+  }
+
+  // Phase 5 SETT-02 — Fire push to other challenge members (fire-and-forget).
+  try {
+    const others = await db
+      .select({
+        userId: challengeMembers.userId,
+        enabled: challengeMembers.notificationsEnabled,
+        displayName: challengeMembers.displayName,
+      })
+      .from(challengeMembers)
+      .where(eq(challengeMembers.challengeId, auth.challengeId))
+
+    const recipients = others
+      .filter((m) => m.userId !== auth.user.id && m.enabled)
+      .map((m) => m.userId)
+    const senderName = others.find((m) => m.userId === auth.user.id)?.displayName ?? 'Someone'
+
+    void sendPushToUsers(recipients, {
+      title: `${senderName} redeemed a reward`,
+      body: `${reward[0].name} — ${reward[0].pointCost} pts`,
+      url: '/stakes',
+    })
+  } catch (err) {
+    console.error('[push] redemption trigger failed', err)
   }
 
   return { success: true }
