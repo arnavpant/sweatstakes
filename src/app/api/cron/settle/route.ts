@@ -66,8 +66,15 @@ function getPreviousMonday(now: Date, timezone: string): string {
  */
 export async function GET(request: NextRequest) {
   // T-04-01: Verify CRON_SECRET
+  // Guard against misconfiguration: if CRON_SECRET is missing/empty, refuse to run.
+  // Otherwise the expected header becomes a guessable literal like "Bearer undefined".
+  const secret = process.env.CRON_SECRET
+  if (!secret) {
+    console.error('CRON_SECRET is not configured')
+    return new Response('Server misconfigured', { status: 500 })
+  }
   const authHeader = request.headers.get('authorization')
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (authHeader !== `Bearer ${secret}`) {
     return new Response('Unauthorized', { status: 401 })
   }
 
