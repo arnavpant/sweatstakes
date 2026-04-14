@@ -15,8 +15,13 @@ All five Stitch-designed screens are fully functional and visually match the Roy
 
 ### Dashboard
 
-**DASH-01 — Active stakes display = "Leader callout"**
-Show a dynamic motivational line like `"Arnav leads with 12 pts — 3 behind Max"` rather than describing the rewards. Computes from existing `point_transactions` balance (Phase 4). No new schema. If balances are all zero, show a neutral placeholder ("No stakes settled yet — keep checking in").
+**DASH-01 — Active stakes display = "Leader callout" (viewer-POV)**
+Show a dynamic motivational line from the current user's perspective:
+- If viewer is leading: `"You lead with 12 pts — 3 ahead of Max"`
+- If viewer is not leading: `"You're 3 behind Max — closest: Sara at 9 pts"`
+- If no settled weeks yet (all balances zero): `"No stakes settled yet — keep checking in"`
+
+Computes from existing `point_transactions` balance (Phase 4). No new schema.
 
 **DASH-02 — Comparative progress = Horizontal card scroll**
 Each member of the challenge gets a card showing avatar + name + their own 7-day dot row for the current week. User's own card is pinned first. Horizontal scroll (snap on each card) to see the rest. Reuses `DayDots` component from Phase 3 — one instance per member card.
@@ -55,14 +60,14 @@ Scope this as its own plan — substantial new infrastructure. Key work items:
   3. **Reward redemption** — fires on successful `redeemRewardAction`, sends to all OTHER challenge members
   4. **Daily no-check-in reminder** — user sets a preferred time in Settings ("remind me at 18:00"); a new cron runs hourly and sends to users whose time bucket matches AND who haven't checked in today
 
-Daily reminder requires a new nullable `challenge_members.reminder_hour smallint` column and a second cron entry in `vercel.json` (`0 * * * *` for hourly reminder scan — Pro plan already required for CR-02 hourly settlement cron).
+Daily reminder requires a new nullable `challenge_members.reminder_hour smallint` column (single reminder time per user; morning + evening or custom multi-time deferred to v2) and a second cron entry in `vercel.json` (`0 * * * *` for hourly reminder scan — Pro plan already required for CR-02 hourly settlement cron).
 
-Settings toggle master-switch: `notifications_enabled` boolean on `challenge_members` (or a new `user_preferences` table) gates all 4 triggers at send time.
+Settings toggle master-switch: `notifications_enabled` boolean on `challenge_members` (or a new `user_preferences` table) gates all 4 triggers at send time. **Default value = `false`** — explicit opt-in per browser permission best practice and to avoid surprise notifications on first install.
 
 **SETT-03 — Profile editing = Name (both DB layers) + Custom photo upload**
 
 - **Name edit** — updates both `challenge_members.displayName` AND `auth.users.user_metadata.full_name` (Supabase admin API, server-side). Keeps identity consistent across the app.
-- **Photo edit** — upload to new Supabase Storage `avatars` bucket. On upload success: update `challenge_members.avatarUrl` to the new Storage URL. If no custom photo set, fall back to Google OAuth avatar URL (already captured on signup). Need new RLS policies on the bucket: users can read any avatar, write only their own (`auth.uid()::text = (storage.foldername(name))[1]`).
+- **Photo edit** — upload to new Supabase Storage `avatars` bucket. Client compresses to **512×512** square (retina-ready for small avatars and the larger "hero" uses in Feed header). Cache-bust via `?v=<timestamp>` query param on the stored URL so other members see updates immediately. On upload success: update `challenge_members.avatarUrl` to the new Storage URL. If no custom photo set, fall back to Google OAuth avatar URL (already captured on signup). Need new RLS policies on the bucket: public-read, users can write only their own folder (`auth.uid()::text = (storage.foldername(name))[1]`).
 
 ### Design Polish (DSGN-01, DSGN-02, DSGN-03)
 
