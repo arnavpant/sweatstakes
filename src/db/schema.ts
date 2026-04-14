@@ -58,7 +58,8 @@ export const pointTransactions = pgTable('point_transactions', {
   userId: uuid('user_id').notNull(),
   weekStart: date('week_start', { mode: 'string' }).notNull(),
   delta: smallint('delta').notNull(),
-  reason: text('reason').notNull(),
+  // WR-06: enum type narrows at TS-level; DB CHECK constraint enforces at runtime.
+  reason: text('reason', { enum: ['earned', 'penalty', 'redemption'] }).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('pt_challenge_user_idx').on(t.challengeId, t.userId),
@@ -77,7 +78,9 @@ export const redemptions = pgTable('redemptions', {
   id: uuid('id').primaryKey().defaultRandom(),
   challengeId: uuid('challenge_id').notNull().references(() => challenges.id, { onDelete: 'cascade' }),
   userId: uuid('user_id').notNull(),
-  rewardId: uuid('reward_id').notNull(),
+  // WR-02: FK with ON DELETE RESTRICT — can't delete a reward that has history.
+  // point_cost is already snapshotted, so historical redemption reads stay correct.
+  rewardId: uuid('reward_id').notNull().references(() => rewards.id, { onDelete: 'restrict' }),
   pointCost: smallint('point_cost').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 })
