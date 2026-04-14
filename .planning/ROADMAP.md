@@ -101,7 +101,13 @@ Plans:
   3. The Settings screen lets the user change their weekly goal, toggle notifications, and update their profile name and photo
   4. All five screens — Login, Dashboard, Streaks & Balance, Feed, Settings — are reachable via the floating bottom navigation
   5. Every screen renders in dark navy and emerald green using Plus Jakarta Sans and Material icons on a phone-sized browser viewport
-**Plans**: TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Foundation: push_subscriptions table, reminder_hour + notifications_enabled columns, avatars bucket + RLS, VAPID keys, web-push install, service worker, sendPushToUsers helper
+- [ ] 05-02-PLAN.md — Web Push end-to-end: subscribe flow, Settings notifications section with iOS install detection, 4 triggers (check-in, redemption, settlement, daily reminder cron), notifications_enabled master switch
+- [ ] 05-03-PLAN.md — Dashboard + Feed UI: leader callout, horizontal member progress cards, photo gallery grid, BeReal-style Feed with pull-to-refresh, Intl.RelativeTimeFormat timestamps
+- [ ] 05-04-PLAN.md — Profile editor: display name (challenge_members + auth.users.user_metadata), avatar upload to avatars bucket with cache-busting, Google photo fallback
 **UI hint**: yes
 
 ## Progress
@@ -115,4 +121,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Connections | 0/3 | Planning complete | - |
 | 3. Check-ins & Goals | 0/4 | Planning complete | - |
 | 4. Points & Stakes | 0/4 | Planning complete | - |
-| 5. Dashboard, Feed & Polish | 0/TBD | Not started | - |
+| 5. Dashboard, Feed & Polish | 0/4 | Planning complete | - |
