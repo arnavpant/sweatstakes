@@ -15,6 +15,15 @@ export async function settleWeekForChallenge(
   challengeId: string,
   weekStart: string
 ): Promise<'settled' | 'already_settled' | 'wash_rule'> {
+  // WR-04: Defend the ledger — weekStart must parse AND must be a Monday in
+  // UTC (getUTCDay() === 1). Cron always passes a Monday, but future
+  // manual/test callers could pass any date; the (challengeId, weekStart)
+  // idempotency key would then allow overlapping weeks to coexist.
+  const weekStartValidation = new Date(weekStart + 'T00:00:00Z')
+  if (isNaN(weekStartValidation.getTime()) || weekStartValidation.getUTCDay() !== 1) {
+    throw new Error(`weekStart must be a Monday in YYYY-MM-DD form, got ${weekStart}`)
+  }
+
   // Get all challenge members
   const members = await db
     .select({
