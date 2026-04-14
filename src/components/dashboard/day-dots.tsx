@@ -2,6 +2,8 @@ interface DayDotsProps {
   checkedInDays: string[]
   goal: number
   weekStart: string
+  /** Optional in Task 1; required + rendered in Task 2 of 260414-82g. */
+  streak?: number
 }
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as const
@@ -36,7 +38,7 @@ function getToday(): string {
  * Shows M T W T F S S with filled dots for checked-in days,
  * today highlight, and "X/Y days" progress count.
  */
-export function DayDots({ checkedInDays, goal, weekStart }: DayDotsProps) {
+export function DayDots({ checkedInDays, goal, weekStart, streak: _streak }: DayDotsProps) {
   const today = getToday()
   const checkedInSet = new Set(checkedInDays)
   const completed = checkedInDays.length

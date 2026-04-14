@@ -671,49 +671,46 @@ describe('Day Dots Progress (CHKN-04)', () => {
 })
 
 // ============================================================
-// 7. Streak Counter (CHKN-05)
+// 7. Streak display (CHKN-05)
+//
+// The dashboard redesign (quick 260414-82g) folded the standalone
+// StreakCounter into DayDots as an inline streak pill.
+// StreakSection on /streaks now inlines the same fire-emoji rendering.
 // ============================================================
 
-describe('Streak Counter (CHKN-05)', () => {
-  const streakCounterPath = 'src/components/dashboard/streak-counter.tsx'
+describe('Streak display (CHKN-05)', () => {
   const dashboardPath = 'src/app/(protected)/dashboard/page.tsx'
+  const dayDotsPath = 'src/components/dashboard/day-dots.tsx'
+  const streakSectionPath = 'src/components/streaks/streak-section.tsx'
 
-  it('streak-counter.tsx exists', () => {
-    expect(fs.existsSync(streakCounterPath)).toBe(true)
+  it('standalone streak-counter.tsx no longer exists (folded into DayDots)', () => {
+    expect(fs.existsSync('src/components/dashboard/streak-counter.tsx')).toBe(false)
   })
 
-  it('streak-counter.tsx is NOT a client component (Server Component)', () => {
-    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+  it('DayDots exposes a streak prop', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
+    expect(content).toContain('streak')
+  })
+
+  it('DayDots is NOT a client component (Server Component)', () => {
+    const content = fs.readFileSync(dayDotsPath, 'utf-8')
     expect(content).not.toContain("'use client'")
   })
 
-  it('streak-counter.tsx shows "week streak" text', () => {
-    const content = fs.readFileSync(streakCounterPath, 'utf-8')
-    // Handles both singular "week" and plural "weeks"
-    expect(content.toLowerCase()).toContain('streak')
-    expect(content.toLowerCase()).toContain('week')
-  })
-
-  it('streak-counter.tsx has fire emoji', () => {
-    const content = fs.readFileSync(streakCounterPath, 'utf-8')
-    expect(content).toContain('\u{1F525}')
-  })
-
-  it('streak-counter.tsx handles zero streak', () => {
-    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+  it('StreakSection handles zero streak with "No streak yet"', () => {
+    const content = fs.readFileSync(streakSectionPath, 'utf-8')
     expect(content).toContain('streak === 0')
     expect(content.toLowerCase()).toContain('no streak yet')
   })
 
-  it('streak-counter.tsx handles singular vs plural weeks', () => {
-    const content = fs.readFileSync(streakCounterPath, 'utf-8')
+  it('StreakSection handles singular vs plural weeks', () => {
+    const content = fs.readFileSync(streakSectionPath, 'utf-8')
     expect(content).toContain("streak === 1 ? 'week' : 'weeks'")
   })
 
-  it('Dashboard page imports StreakCounter', () => {
+  it('Dashboard page no longer imports StreakCounter', () => {
     const content = fs.readFileSync(dashboardPath, 'utf-8')
-    expect(content).toContain('StreakCounter')
-    expect(content).toContain("from '@/components/dashboard/streak-counter'")
+    expect(content).not.toContain("from '@/components/dashboard/streak-counter'")
   })
 
   it('Dashboard page calls computeStreak', () => {
@@ -812,7 +809,6 @@ describe('End-to-End Integration (all CHKN)', () => {
       'src/components/check-in/capture-button.tsx',
       'src/components/check-in/countdown-overlay.tsx',
       'src/components/dashboard/day-dots.tsx',
-      'src/components/dashboard/streak-counter.tsx',
       'src/components/settings/goal-stepper.tsx',
       'src/components/layout/bottom-nav.tsx',
       'src/app/(protected)/check-in/page.tsx',
@@ -834,10 +830,10 @@ describe('End-to-End Integration (all CHKN)', () => {
     expect(content).toContain('export async function computeStreak')
   })
 
-  it('Dashboard imports both DayDots and StreakCounter', () => {
+  it('Dashboard imports DayDots (StreakCounter folded into DayDots pill)', () => {
     const content = fs.readFileSync('src/app/(protected)/dashboard/page.tsx', 'utf-8')
     expect(content).toContain("from '@/components/dashboard/day-dots'")
-    expect(content).toContain("from '@/components/dashboard/streak-counter'")
+    expect(content).not.toContain("from '@/components/dashboard/streak-counter'")
   })
 
   it('Settings imports GoalStepper', () => {

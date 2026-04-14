@@ -5,7 +5,6 @@ import { challengeMembers } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { MemberAvatarRow } from '@/components/connections/member-avatar-row'
 import { DayDots } from '@/components/dashboard/day-dots'
-import { StreakCounter } from '@/components/dashboard/streak-counter'
 import { MemberCardRow } from '@/components/dashboard/member-card-row'
 import { PhotoGallery } from '@/components/dashboard/photo-gallery'
 import { getWeeklyProgress, computeStreak, getMonday } from '@/lib/utils/week'
@@ -127,8 +126,8 @@ export default async function DashboardPage() {
             checkedInDays={weeklyProgress.checkedInDays}
             goal={weeklyProgress.goal}
             weekStart={weekStart}
+            streak={streak}
           />
-          <StreakCounter streak={streak} />
           {/* Phase 5: Dashboard additions */}
           <MemberCardRow rows={memberRows} weekStart={weekStart} />
           <PhotoGallery photos={recentPhotos} />
