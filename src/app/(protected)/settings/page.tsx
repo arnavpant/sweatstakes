@@ -1,13 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { db } from '@/db'
-import { challengeMembers, challenges } from '@/db/schema'
+import { challengeMembers, challenges, pushSubscriptions } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { SignOutButton } from '@/components/auth/sign-out-button'
 import { InviteLinkSection } from '@/components/connections/invite-link-section'
 import { LeaveChallengeButton } from '@/components/connections/leave-challenge-button'
 import { GoalStepper } from '@/components/settings/goal-stepper'
 import { SettlementSettings } from '@/components/settings/settlement-settings'
+import { NotificationsSection } from '@/components/settings/notifications-section'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
@@ -15,12 +16,15 @@ export default async function SettingsPage() {
   if (!user) redirect('/login')
 
   // Check if user is in a challenge and get their weekly goal + challenge settings
+  // Extended for Phase 5 SETT-02: notifications_enabled + reminder_hour
   const membership = await db
     .select({
       challengeId: challengeMembers.challengeId,
       weeklyGoal: challengeMembers.weeklyGoal,
       timezone: challenges.timezone,
       settlementHour: challenges.settlementHour,
+      notificationsEnabled: challengeMembers.notificationsEnabled,
+      reminderHour: challengeMembers.reminderHour,
     })
     .from(challengeMembers)
     .innerJoin(challenges, eq(challenges.id, challengeMembers.challengeId))
@@ -28,6 +32,17 @@ export default async function SettingsPage() {
     .limit(1)
 
   const isInChallenge = membership.length > 0
+
+  // Phase 5 SETT-02: does the caller have any active push subscription?
+  // Passed to <NotificationsSection /> so it can render the right state on first paint.
+  const subRows = isInChallenge
+    ? await db
+        .select({ id: pushSubscriptions.id })
+        .from(pushSubscriptions)
+        .where(eq(pushSubscriptions.userId, user.id))
+        .limit(1)
+    : []
+  const hasActiveSubscription = subRows.length > 0
 
   return (
     <div className="flex flex-col px-4 pt-8 pb-8 space-y-6">
@@ -39,6 +54,18 @@ export default async function SettingsPage() {
       {/* Weekly Goal section -- only shown if user is in a challenge (D-08) */}
       {isInChallenge && (
         <GoalStepper currentGoal={membership[0].weeklyGoal} />
+      )}
+
+      {/* Notifications section (SETT-02) -- Phase 5 Plan 02 anchor.
+          Plan 04 may later insert <ProfileSection /> between the greeting and InviteLinkSection;
+          keep that area untouched so the two plans don't collide. */}
+      {isInChallenge && (
+        <NotificationsSection
+          initialEnabled={membership[0].notificationsEnabled}
+          initialReminderHour={membership[0].reminderHour}
+          hasActiveSubscription={hasActiveSubscription}
+          vapidPublicKey={process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''}
+        />
       )}
 
       {/* Settlement Settings section -- timezone and settlement hour pickers */}
