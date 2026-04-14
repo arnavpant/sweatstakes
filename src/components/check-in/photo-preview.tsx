@@ -8,11 +8,12 @@ import { submitCheckInAction } from '@/lib/actions/check-ins'
 
 interface PhotoPreviewProps {
   compositeBlob: Blob
+  selfieBlob: Blob | null
   onRetake: () => void
   onSuccess: () => void
 }
 
-export function PhotoPreview({ compositeBlob, onRetake, onSuccess }: PhotoPreviewProps) {
+export function PhotoPreview({ compositeBlob, selfieBlob, onRetake, onSuccess }: PhotoPreviewProps) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const objectUrlRef = useRef<string | null>(null)
@@ -47,7 +48,7 @@ export function PhotoPreview({ compositeBlob, onRetake, onSuccess }: PhotoPrevie
         fileType: 'image/jpeg',
       })
 
-      // Step 2: Upload to Supabase Storage
+      // Step 2: Upload composite to Supabase Storage
       const supabase = createClient()
       const { data: { user }, error: userErr } = await supabase.auth.getUser()
       if (userErr || !user) {
@@ -55,7 +56,8 @@ export function PhotoPreview({ compositeBlob, onRetake, onSuccess }: PhotoPrevie
         setSubmitting(false)
         return
       }
-      const fileName = `${user.id}/${Date.now()}-${crypto.randomUUID()}.jpg`
+      const stamp = `${Date.now()}-${crypto.randomUUID()}`
+      const fileName = `${user.id}/${stamp}.jpg`
       const { data, error: uploadError } = await supabase.storage
         .from('check-in-photos')
         .upload(fileName, compressed, {
@@ -70,17 +72,47 @@ export function PhotoPreview({ compositeBlob, onRetake, onSuccess }: PhotoPrevie
         return
       }
 
-      // Step 3: Get public URL
+      // Step 3: Get public URL for composite
       const { data: urlData } = supabase.storage
         .from('check-in-photos')
         .getPublicUrl(data.path)
+
+      // Step 3b: Compress + upload standalone selfie (used by Dashboard gallery).
+      // Best-effort: if it fails, the check-in still succeeds with composite only.
+      let selfieUrl: string | null = null
+      if (selfieBlob) {
+        try {
+          const selfieFile = new File([selfieBlob], 'selfie.jpg', { type: 'image/jpeg' })
+          const compressedSelfie = await imageCompression(selfieFile, {
+            maxSizeMB: 0.2,
+            maxWidthOrHeight: 640,
+            useWebWorker: true,
+            fileType: 'image/jpeg',
+          })
+          const selfieName = `${user.id}/${stamp}-selfie.jpg`
+          const { data: selfieData, error: selfieErr } = await supabase.storage
+            .from('check-in-photos')
+            .upload(selfieName, compressedSelfie, {
+              cacheControl: '31536000',
+              contentType: 'image/jpeg',
+              upsert: false,
+            })
+          if (!selfieErr && selfieData) {
+            selfieUrl = supabase.storage
+              .from('check-in-photos')
+              .getPublicUrl(selfieData.path).data.publicUrl
+          }
+        } catch {
+          // Swallow — selfie is optional.
+        }
+      }
 
       // Step 4: Get today's date in local timezone
       const today = new Date()
       const checkedInDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
 
       // Step 5: Call server action to record check-in
-      const result = await submitCheckInAction(urlData.publicUrl, checkedInDate)
+      const result = await submitCheckInAction(urlData.publicUrl, checkedInDate, selfieUrl)
 
       if ('error' in result && result.error) {
         setError(result.error)

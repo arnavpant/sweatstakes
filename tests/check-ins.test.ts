@@ -118,7 +118,7 @@ describe('Server Actions: check-in mutations (CHKN-01, CHKN-03)', () => {
 
   it('submitCheckInAction accepts photoUrl and checkedInDate parameters', () => {
     const content = fs.readFileSync(actionsPath, 'utf-8')
-    expect(content).toMatch(/submitCheckInAction\(photoUrl:\s*string,\s*checkedInDate:\s*string\)/)
+    expect(content).toMatch(/submitCheckInAction\(\s*photoUrl:\s*string,\s*checkedInDate:\s*string/)
   })
 
   it('updateWeeklyGoalAction accepts goal parameter', () => {

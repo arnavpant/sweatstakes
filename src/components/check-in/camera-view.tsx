@@ -307,6 +307,7 @@ export function CameraView() {
     return (
       <PhotoPreview
         compositeBlob={compositeBlob}
+        selfieBlob={selfieBlob}
         onRetake={handleRetake}
         onSuccess={handleSuccess}
       />

@@ -19,6 +19,7 @@ export async function getRecentCheckInPhotos(challengeId: string, limit = 6) {
     .select({
       id: checkIns.id,
       photoUrl: checkIns.photoUrl,
+      selfieUrl: checkIns.selfieUrl,
       createdAt: checkIns.createdAt,
     })
     .from(checkIns)

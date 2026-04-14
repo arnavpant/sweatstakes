@@ -38,6 +38,10 @@ export const checkIns = pgTable('check_ins', {
   userId: uuid('user_id').notNull(),
   challengeId: uuid('challenge_id').notNull().references(() => challenges.id, { onDelete: 'cascade' }),
   photoUrl: text('photo_url').notNull(),
+  // Nullable: standalone front-camera selfie. Older rows (before this column was
+  // added) only have the composite in photoUrl. Dashboard gallery prefers this;
+  // feed keeps using the composite.
+  selfieUrl: text('selfie_url'),
   checkedInDate: date('checked_in_date', { mode: 'string' }).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [

@@ -61,7 +61,7 @@ export default async function DashboardPage() {
 
   // Phase 5 additions (DASH-02/03)
   let memberRows: MemberCardRowEntry[] = []
-  let recentPhotos: { id: string; photoUrl: string }[] = []
+  let recentPhotos: { id: string; photoUrl: string; selfieUrl: string | null }[] = []
 
   if (userMembership.length > 0) {
     const now = new Date()
@@ -120,7 +120,7 @@ export default async function DashboardPage() {
             <PhotoGallery photos={recentPhotos} />
           </div>
         ) : (
-          <div className="bg-[#0b1a3a] border border-white/10 rounded-lg p-6">
+          <div className="bg-[#0b1a3a] border border-white/10 rounded-md p-6">
             <div className="flex flex-col items-center text-center gap-3">
               <span className="material-symbols-outlined text-4xl text-emerald-400">
                 group_add

@@ -14,7 +14,11 @@ import { sendPushToUsers } from '@/lib/push/send'
  * Per D-17: No deduplication on insert -- unlimited check-ins per day.
  * Per D-18: No delete action -- once submitted, permanent.
  */
-export async function submitCheckInAction(photoUrl: string, checkedInDate: string) {
+export async function submitCheckInAction(
+  photoUrl: string,
+  checkedInDate: string,
+  selfieUrl: string | null = null,
+) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -27,6 +31,15 @@ export async function submitCheckInAction(photoUrl: string, checkedInDate: strin
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   if (supabaseUrl && !photoUrl.startsWith(supabaseUrl)) {
     return { error: 'Invalid photo URL' }
+  }
+
+  // Validate selfieUrl the same way when present.
+  if (selfieUrl !== null) {
+    const selfieResult = z.string().url().safeParse(selfieUrl)
+    if (!selfieResult.success) return { error: 'Invalid selfie URL' }
+    if (supabaseUrl && !selfieUrl.startsWith(supabaseUrl)) {
+      return { error: 'Invalid selfie URL' }
+    }
   }
 
   // T-03-03: Validate checkedInDate format YYYY-MM-DD
@@ -61,6 +74,7 @@ export async function submitCheckInAction(photoUrl: string, checkedInDate: strin
     userId: user.id,
     challengeId: membership[0].challengeId,
     photoUrl,
+    selfieUrl,
     checkedInDate,
   })
 

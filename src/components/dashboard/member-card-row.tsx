@@ -67,13 +67,13 @@ export function MemberCardRow({
   if (others.length === 0) return null
 
   return (
-    <div className="bg-[#0b1a3a] border border-white/10 rounded-lg p-4">
+    <div className="bg-[#0b1a3a] border border-white/10 rounded-md p-4">
       <h3 className="text-sm font-medium text-white mb-4">Member Progress</h3>
       <div className="space-y-3">
         {others.map((m) => (
           <div
             key={m.userId}
-            className="flex items-center gap-3 p-3 rounded-lg bg-[#13254f]"
+            className="flex items-center gap-3 p-3 rounded-md bg-[#13254f]"
           >
             {m.avatarUrl ? (
               <img
